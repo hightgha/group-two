@@ -1,5 +1,6 @@
-import { makeStyles, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import Hotel from './Hotel';
+import InfoCard from './InfoCard';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -24,14 +25,7 @@ export default function Home(props) {
       <h1>Home Page</h1>
       <div className={classes.container}>
         <Hotel />
-        <div>
-          <Typography className={classes.blockText} variant='body1'>
-            Any information about hotel number
-          </Typography>
-          <Typography className={classes.blockText} variant='caption'>
-            Description about hotel number
-          </Typography>
-        </div>
+        <InfoCard />
       </div>
     </div>
   );
