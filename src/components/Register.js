@@ -1,11 +1,11 @@
-import { Button, makeStyles, TextField } from '@material-ui/core';
-import { useState } from 'react';
+import { Button, makeStyles, TextField } from "@material-ui/core";
+import { useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
   formWrap: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   field: {
     margin: theme.spacing(1),
@@ -14,10 +14,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Register(props) {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [rePassword, setRePassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rePassword, setRePassword] = useState("");
   const classes = useStyles();
   const { onSwitch, onRegister } = props;
 
@@ -37,7 +37,7 @@ export default function Register(props) {
           className={classes.field}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
+          required // ????
           label='email adress'
           variant='outlined'
         />
