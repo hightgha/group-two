@@ -42,9 +42,9 @@ export default function Hotel() {
   return (
     <Paper className={classes.hotel}>
       {hotelNumbers.map((flr, i) => (
-        <div key={i} className={classes.floor}>
+        <div key={'floor' + (9 - i)} className={classes.floor}>
           {flr.map((win, j) => (
-            <Paper key={`${i} ${j}`} className={clsx({ [classes.window]: true })}>
+            <Paper key={'room' + (9 - i) + (j + 1)} className={clsx({ [classes.window]: true })}>
               {(9 - i) * 10 + j + 1}
             </Paper>
           ))}

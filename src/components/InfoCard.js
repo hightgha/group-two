@@ -27,7 +27,7 @@ export default function InfoCard(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
 
-  const booked = false; // booked jamanakavor a, heto petqa propsov liqy ban ga
+  const booked = true; // booked jamanakavor a, heto petqa propsov liqy ban ga
 
   return (
     <Card className={classes.root}>
@@ -95,7 +95,7 @@ export default function InfoCard(props) {
             <ListItem>
               <ClearIcon className={classes.red} />
               <ListItemText primary='Juice' />
-              <IconButton disabled={false} size='small'>
+              <IconButton disabled={true} size='small'>
                 <ClearIcon />
               </IconButton>
             </ListItem>
