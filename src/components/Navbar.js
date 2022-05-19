@@ -46,7 +46,7 @@ export default function Navbar() {
             <div className={classes.wrap}>
               <Button className={classes.button}>Sign out</Button>
               <NavLink className={({ isActive }) => clsx(classes.navlinks, { [classes.activeAvatar]: isActive })} to='/profile'>
-                <Avatar className={classes.avatar} />
+                <Avatar />
               </NavLink>
             </div>
           ) : (

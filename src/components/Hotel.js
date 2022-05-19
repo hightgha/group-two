@@ -32,8 +32,24 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Hotel() {
   const classes = useStyles();
-  const [hotelNumbers, setHotelNumbers] = useState(Array(10).fill(Array(6).fill({})));
-
+  const [hotelNumbers, setHotelNumbers] = useState(
+    Array(10).fill(
+      Array(6).fill({
+        room: 0,
+        booked: null,
+        from: null,
+        to: null,
+        bookingDate: null,
+        orders: [
+          {
+            completed: false,
+            canceled: false,
+            title: 'apple',
+          },
+        ],
+      }),
+    ),
+  );
   useEffect(() => {
     console.log(hotelNumbers);
     //fetch(dasda).then(setHotelNumber);
