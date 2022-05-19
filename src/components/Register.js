@@ -1,4 +1,4 @@
-import { Button, makeStyles, TextField } from '@material-ui/core';
+import { Button, FormControl, InputLabel, makeStyles, MenuItem, Select, TextField } from '@material-ui/core';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { useState } from 'react';
 
@@ -14,17 +14,28 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     minWidth: 256,
   },
+  select: {
+    textAlign: 'left',
+  },
 }));
 
 export default function Register(props) {
   const [username, setUsername] = useState('');
+  const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rePassword, setRePassword] = useState('');
-
+  const [gender, setGender] = useState('');
   const classes = useStyles();
   const { onSwitch, onRegister } = props;
 
+  function submitRegister() {
+    let valid = true;
+    // checks, when if need on Register
+    if (valid) {
+      onRegister({ username, email, password, rePassword, displayName, gender });
+    }
+  }
   return (
     <>
       <h3>Register page</h3>
@@ -36,6 +47,15 @@ export default function Register(props) {
           required
           label='username'
           variant='outlined'
+        />
+        <TextField
+          className={classes.field}
+          value={displayName}
+          onChange={(e) => setDisplayName(e.target.value)}
+          required
+          label='full name'
+          variant='outlined'
+          helperText='Name Surname'
         />
         <TextField
           className={classes.field}
@@ -52,6 +72,7 @@ export default function Register(props) {
           required
           label='password'
           variant='outlined'
+          endIcon={'asd'}
         />
         <TextField
           className={classes.field}
@@ -61,10 +82,17 @@ export default function Register(props) {
           label='repeat password'
           variant='outlined'
         />
+        <FormControl variant='outlined' className={classes.field}>
+          <InputLabel required>Gender</InputLabel>
+          <Select className={classes.select} value={gender} onChange={(e) => setGender(e.target.value)} label='Gendera'>
+            <MenuItem value={'m'}>Men</MenuItem>
+            <MenuItem value={'w'}>Women</MenuItem>
+          </Select>
+        </FormControl>
         <Button size='small' onClick={(e) => onSwitch(false)} endIcon={<ArrowForwardIcon />}>
           have an account? sign in
         </Button>
-        <Button variant='outlined' onClick={() => onRegister({ username, email, password, rePassword })}>
+        <Button variant='outlined' onClick={submitRegister}>
           Sign up
         </Button>
       </div>
