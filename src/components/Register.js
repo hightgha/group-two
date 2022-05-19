@@ -1,11 +1,14 @@
-import { Button, makeStyles, TextField } from "@material-ui/core";
-import { useState } from "react";
+import { Button, makeStyles, TextField } from '@material-ui/core';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import { useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   formWrap: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    maxWidth: 256,
+    margin: 'auto',
   },
   field: {
     margin: theme.spacing(1),
@@ -14,10 +17,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Register(props) {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [rePassword, setRePassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [rePassword, setRePassword] = useState('');
+
   const classes = useStyles();
   const { onSwitch, onRegister } = props;
 
@@ -37,8 +41,8 @@ export default function Register(props) {
           className={classes.field}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required // ????
-          label='email adress'
+          required
+          label='email address'
           variant='outlined'
         />
         <TextField
@@ -57,19 +61,10 @@ export default function Register(props) {
           label='repeat password'
           variant='outlined'
         />
-        <Button size='small' onClick={(e) => onSwitch(false)}>
-          If you have account, you can sign in now
+        <Button size='small' onClick={(e) => onSwitch(false)} endIcon={<ArrowForwardIcon />}>
+          have an account? sign in
         </Button>
-        <Button
-          variant='outlined'
-          onClick={() =>
-            onRegister({
-              username: username,
-              email: email,
-              password: password,
-              rePassword: rePassword,
-            })
-          }>
+        <Button variant='outlined' onClick={() => onRegister({ username, email, password, rePassword })}>
           Sign up
         </Button>
       </div>
