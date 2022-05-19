@@ -1,20 +1,23 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
 
-import { NavLink } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
+import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
   logo: {
     maxWidth: 160,
   },
-
   navlinks: {
-    display: "flex",
-    justifyContent: "space-between",
-    color: "black",
+    display: 'flex',
+    justifyContent: 'space-between',
+    color: 'black',
     margin: 15,
+  },
+  activeLink: {
+    color: 'white',
   },
 }));
 
@@ -25,26 +28,19 @@ export default function Navbar() {
     <div>
       <AppBar position='static'>
         <Toolbar>
-          <img
-            src='https://presidenthotel.am/wp-content/uploads/2021/12/President-logo_black-4.png'
-            alt='logo'
-            className={classes.logo}></img>
-
-          <nav className={classes.navlinks}>
-            <NavLink className={classes.navlinks} to='/'>
-              Home
-            </NavLink>
-            <NavLink className={classes.navlinks} to='/about'>
-              About us
-            </NavLink>
-            <NavLink className={classes.navlinks} to='/profile'>
-              Profile
-            </NavLink>
-
-            <NavLink className={classes.navlinks} to='/auth'>
-              Authentication page
-            </NavLink>
-          </nav>
+          <img src='https://presidenthotel.am/wp-content/uploads/2021/12/President-logo_black-4.png' alt='logo' className={classes.logo} />
+          <NavLink className={({ isActive }) => clsx(classes.navlinks, { [classes.activeLink]: isActive })} to='/'>
+            Home
+          </NavLink>
+          <NavLink className={({ isActive }) => clsx(classes.navlinks, { [classes.activeLink]: isActive })} to='/about'>
+            About us
+          </NavLink>
+          <NavLink className={({ isActive }) => clsx(classes.navlinks, { [classes.activeLink]: isActive })} to='/profile'>
+            Profile
+          </NavLink>
+          <NavLink className={({ isActive }) => clsx(classes.navlinks, { [classes.activeLink]: isActive })} to='/auth'>
+            Authentication page
+          </NavLink>
         </Toolbar>
       </AppBar>
     </div>

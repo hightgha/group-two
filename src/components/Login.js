@@ -1,4 +1,5 @@
 import { Button, makeStyles, TextField } from '@material-ui/core';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
@@ -6,6 +7,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    maxWidth: 256,
+    margin: 'auto',
   },
   field: {
     margin: theme.spacing(1),
@@ -39,10 +42,10 @@ export default function Login(props) {
           label='password'
           variant='outlined'
         />
-        <Button size='small' onClick={(e) => onSwitch(true)}>
-          If you don't have account. You can sign up
+        <Button size='small' onClick={(e) => onSwitch(true)} startIcon={<ArrowBackIcon />}>
+          need account? sign up!
         </Button>
-        <Button onClick={() => onLogin({ username: username, password: password })} variant='outlined'>
+        <Button onClick={() => onLogin({ username, password })} variant='outlined'>
           Sign in
         </Button>
       </div>
