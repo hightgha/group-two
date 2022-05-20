@@ -2,13 +2,12 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, signOut } from 'firebase/auth';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { onAuthStateChanged } from 'firebase/auth';
 import { updateProfile } from 'firebase/auth';
 import { sendEmailVerification } from 'firebase/auth';
 import { updatePassword } from 'firebase/auth';
 import { getDatabase } from 'firebase/database';
+import { get, ref, set } from 'firebase/database';
 
-import { ref, set } from 'firebase/database';
 export const app = initializeApp({
   apiKey: 'AIzaSyCDoUMfv-TeUdvXCzkxwp1466BBhAkKj00',
   authDomain: 'project-group-two.firebaseapp.com',
@@ -21,40 +20,30 @@ export const app = initializeApp({
 });
 export const auth = getAuth(app);
 export const database = getDatabase(app);
-console.log(database);
 
 export async function createUser(email, password) {
+  let user, err;
   await createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      const user = userCredential.user;
-      console.log(user);
+      user = userCredential.user;
     })
     .catch((error) => {
-      console.log(error);
+      err = error;
     });
-  console.log('user created');
+  return err || user;
 }
-async function signInUser(email, password) {
+export async function signInUser(email, password) {
+  let user, err;
   await signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      const user = userCredential.user;
+      user = userCredential.user;
     })
     .catch((error) => {
-      console.log(error);
+      err = error;
     });
-  console.log('login user');
+  return err || user;
 }
 
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    // User is signed in, see docs for a list of available properties
-    const uid = user.uid;
-    console.log('signed in');
-  } else {
-    // User is signed out
-    console.log('signed out');
-  }
-});
 function updateProData(displayName, photoURL) {
   updateProfile(auth.currentUser, { displayName, photoURL })
     .then(() => {
@@ -75,19 +64,27 @@ function changePassword(newPassword) {
     });
 }
 
-function sendEmailVerif() {
-  sendEmailVerification(auth.currentUser).then(() => {
+async function sendEmailVerif() {
+  await sendEmailVerification(auth.currentUser).then(() => {
     alert('Email verification sent!');
   });
 }
-function signOutUser() {
+export function signOutUser() {
   signOut(auth);
 }
-signOutUser();
 
-function writeRoomStatus(roomNumber, bookedName) {
-  set(ref(database, `/rooms/${roomNumber}`), {
-    roomNumber,
-    bookedName,
+export async function getUserData(username) {
+  const snapshot = await get(ref(database, `/users/${username}`));
+  return await snapshot.val();
+}
+
+export function writeUserData({ username, email, displayName, gender }) {
+  set(ref(database, `/users/${username}`), {
+    username,
+    email,
+    displayName,
+    gender,
+    avatar: Math.round(Math.random() * 4),
+    permission: 'user',
   });
 }

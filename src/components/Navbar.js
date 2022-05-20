@@ -6,6 +6,8 @@ import { NavLink } from 'react-router-dom';
 import clsx from 'clsx';
 import UserContext from '../contexts/UserContext';
 import { Avatar, Button } from '@material-ui/core';
+import { ABOUT_ROUTE, HOME_ROUTE, PROFILE_ROUTE, SIGNIN_ROUTE, SIGNUP_ROUTE } from '../constants/routes';
+import { signOutUser } from '../requests/firebase';
 
 const useStyles = makeStyles((theme) => ({
   logo: {
@@ -35,26 +37,28 @@ export default function Navbar() {
       <AppBar position='static'>
         <Toolbar className={classes.toolbar}>
           <div>
-            <NavLink className={({ isActive }) => clsx(classes.navlinks, { [classes.activeLink]: isActive })} to='/'>
+            <NavLink className={({ isActive }) => clsx(classes.navlinks, { [classes.activeLink]: isActive })} to={HOME_ROUTE}>
               <Button className={classes.button}>Home</Button>
             </NavLink>
-            <NavLink className={({ isActive }) => clsx(classes.navlinks, { [classes.activeLink]: isActive })} to='/about'>
+            <NavLink className={({ isActive }) => clsx(classes.navlinks, { [classes.activeLink]: isActive })} to={ABOUT_ROUTE}>
               <Button className={classes.button}>About us</Button>
             </NavLink>
           </div>
           {user ? (
             <div className={classes.wrap}>
-              <Button className={classes.button}>Sign out</Button>
-              <NavLink className={({ isActive }) => clsx(classes.navlinks, { [classes.activeAvatar]: isActive })} to='/profile'>
+              <Button className={classes.button} onClick={signOutUser}>
+                Sign out
+              </Button>
+              <NavLink className={({ isActive }) => clsx(classes.navlinks, { [classes.activeAvatar]: isActive })} to={PROFILE_ROUTE}>
                 <Avatar />
               </NavLink>
             </div>
           ) : (
             <div className={classes.wrap}>
-              <NavLink className={({ isActive }) => clsx(classes.navlinks, { [classes.activeLink]: isActive })} to='/signin'>
+              <NavLink className={({ isActive }) => clsx(classes.navlinks, { [classes.activeLink]: isActive })} to={SIGNIN_ROUTE}>
                 <Button className={classes.button}>Sign in</Button>
               </NavLink>
-              <NavLink className={({ isActive }) => clsx(classes.navlinks, { [classes.activeLink]: isActive })} to='/signup'>
+              <NavLink className={({ isActive }) => clsx(classes.navlinks, { [classes.activeLink]: isActive })} to={SIGNUP_ROUTE}>
                 <Button className={classes.button}>Sign up</Button>
               </NavLink>
             </div>
