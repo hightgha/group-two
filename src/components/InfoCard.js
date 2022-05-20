@@ -12,6 +12,8 @@ import ClearIcon from '@material-ui/icons/Clear';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
+import BooklIconDialog from './BookIconDialog';
+import CancelIconDialog from './CancelIconDialog';
 
 const useStyles = makeStyles((theme) => ({
   root: { margin: 'auto', maxWidth: 345 },
@@ -26,82 +28,119 @@ const useStyles = makeStyles((theme) => ({
 export default function InfoCard(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
+  const [showCancelDialog, setshowCancelDialog] = useState(false);
+  const [showBookDialog, setshowBookDialog] = useState(false);
+  const [inputValue, setInputValue] = useState('Name Surname.20.05.2022 - 30.05.2022 ');
+  const roomInfo = {
+    room: 0,
+    booked: true,
+    from: null,
+    to: null,
+    bookingDate: null,
+    orders: [
+      {
+        completed: false,
+        canceled: false,
+        title: 'apple',
+      },
+    ],
+  };
 
-  const booked = true; // booked jamanakavor a, heto petqa propsov liqy ban ga
+  // booked jamanakavor a, heto petqa propsov liqy ban ga //romm.book
 
+  function onCancelClick() {
+    setshowCancelDialog(true);
+  }
+  function onEditBooking() {
+    setshowBookDialog(true);
+  }
+  function handleClose() {
+    setshowCancelDialog(false);
+    setshowBookDialog(false);
+  }
+  function onConfirmCancellation() {
+    //booked = false; red=>green
+    handleClose();
+  }
+  // function onConfirmExtending() {
+  //   handleClose();
+  // } //Dialogi nersum
   return (
-    <Card className={classes.root}>
-      <CardHeader
-        title='Floor 9 - Room 91'
-        subheader={`Status: ${booked ? 'Booked' : 'Free'}`}
-        avatar={<Brightness1Icon className={booked ? classes.red : classes.green} />}
-        action={
-          booked ? (
-            <IconButton>
-              <CancelIcon />
-            </IconButton>
+    <>
+      <Card className={classes.root}>
+        <CardHeader
+          title='Floor 9 - Room 91'
+          subheader={`Status: ${roomInfo.booked ? 'Booked' : 'Free'}`}
+          avatar={<Brightness1Icon className={roomInfo.booked ? classes.red : classes.green} />}
+          action={
+            roomInfo.booked ? (
+              <IconButton>
+                <CancelIcon onClick={onCancelClick} />
+              </IconButton>
+            ) : (
+              <IconButton>
+                <BookIcon />
+              </IconButton>
+            )
+          }
+        />
+        <CardContent>
+          <Typography paragraph>Booked by {inputValue}</Typography>
+          <Typography paragraph color='textSecondary' component='p'>
+            Inchvor text
+          </Typography>
+        </CardContent>
+        <CardActions className={classes.bottomButton}>
+          {roomInfo.booked ? (
+            <>
+              <IconButton onClick={() => setExpanded(!expanded)}>
+                <FormatListBulletedIcon />
+              </IconButton>
+              <IconButton>
+                <AddShoppingCartIcon />
+              </IconButton>
+              <IconButton>
+                <CreateIcon onClick={onEditBooking} />
+              </IconButton>
+            </>
           ) : (
             <IconButton>
-              <BookIcon />
+              <InfoIcon />
             </IconButton>
-          )
-        }
-      />
-      <CardContent>
-        <Typography paragraph>
-          Booked by Name Surname. <br /> 20.05.2022 - 30.05.2022
-        </Typography>
-        <Typography paragraph color='textSecondary' component='p'>
-          Inchvor text
-        </Typography>
-      </CardContent>
-      <CardActions className={classes.bottomButton}>
-        {booked ? (
-          <>
-            <IconButton onClick={() => setExpanded(!expanded)}>
-              <FormatListBulletedIcon />
-            </IconButton>
-            <IconButton>
-              <AddShoppingCartIcon />
-            </IconButton>
-            <IconButton>
-              <CreateIcon />
-            </IconButton>
-          </>
-        ) : (
-          <IconButton>
-            <InfoIcon />
-          </IconButton>
+          )}
+        </CardActions>
+        {roomInfo.booked && (
+          <Collapse in={expanded}>
+            <List dense>
+              <Divider />
+              <ListItem>
+                <CheckIcon className={classes.green} />
+                <ListItemText primary='Apples' />
+                <IconButton disabled={true} size='small'>
+                  <ClearIcon />
+                </IconButton>
+              </ListItem>
+              <ListItem>
+                <AccessTimeIcon className={classes.yellow} />
+                <ListItemText primary='Wine' />
+                <IconButton disabled={false} size='small'>
+                  <ClearIcon />
+                </IconButton>
+              </ListItem>
+              <ListItem>
+                <ClearIcon className={classes.red} />
+                <ListItemText primary='Juice' />
+                <IconButton disabled={true} size='small'>
+                  <ClearIcon />
+                </IconButton>
+              </ListItem>
+            </List>
+          </Collapse>
         )}
-      </CardActions>
-      {booked && (
-        <Collapse in={expanded}>
-          <List dense>
-            <Divider />
-            <ListItem>
-              <CheckIcon className={classes.green} />
-              <ListItemText primary='Apples' />
-              <IconButton disabled={true} size='small'>
-                <ClearIcon />
-              </IconButton>
-            </ListItem>
-            <ListItem>
-              <AccessTimeIcon className={classes.yellow} />
-              <ListItemText primary='Wine' />
-              <IconButton disabled={false} size='small'>
-                <ClearIcon />
-              </IconButton>
-            </ListItem>
-            <ListItem>
-              <ClearIcon className={classes.red} />
-              <ListItemText primary='Juice' />
-              <IconButton disabled={true} size='small'>
-                <ClearIcon />
-              </IconButton>
-            </ListItem>
-          </List>
-        </Collapse>
-      )}
-    </Card>
+      </Card>
+      {showCancelDialog && <CancelIconDialog handleClose={handleClose} onConfirmCancellation={onConfirmCancellation} />}
+
+      {showBookDialog && <BooklIconDialog handleClose={handleClose} data={inputValue} />}
+    </>
   );
 }
