@@ -10,36 +10,8 @@ import ImageListItemBar from '@material-ui/core/ImageListItemBar';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import IconButton from '@material-ui/core/IconButton';
 import { BottomNavigation, BottomNavigationAction, makeStyles, Tab, Tabs } from '@material-ui/core';
+import { DRINKS, MEALS } from '../constants/categories';
 
-const drinks = [
-  'Ordinary Drink',
-  'Cocktail',
-  'Shake',
-  'Other/Unknown',
-  'Cocoa',
-  'Shot',
-  'Coffee / Tea',
-  'Homemade Liqueur',
-  'Punch / Party Drink',
-  'Beer',
-  'Soft Drink',
-];
-const meals = [
-  'Beef',
-  'Chicken',
-  'Dessert',
-  'Lamb',
-  'Miscellaneous',
-  'Pasta',
-  'Pork',
-  'Seafood',
-  'Side',
-  'Starter',
-  'Vegan',
-  'Vegetarian',
-  'Breakfast',
-  'Goat',
-];
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -67,19 +39,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MenuDialog(props) {
-  const { handleClose } = props;
+  const { handleClose, onAddItem } = props;
   const [navigation, setNavigation] = useState(0);
   const [drinkM, setDrinkM] = useState(0);
   const [mealM, setMealM] = useState(0);
   const [content, setContent] = useState([]);
   const classes = useStyles();
-  function addItemToRoom() {}
 
   useEffect(() => {
     function fetchFromApi() {
       const url = navigation
-        ? `https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${drinks[drinkM]}`
-        : `https://www.themealdb.com/api/json/v1/1/filter.php?c=${meals[mealM]}`;
+        ? `https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${DRINKS[drinkM]}`
+        : `https://www.themealdb.com/api/json/v1/1/filter.php?c=${MEALS[mealM]}`;
 
       fetch(url)
         .then((response) => response.json())
@@ -90,7 +61,7 @@ export default function MenuDialog(props) {
 
   return (
     <div>
-      <Dialog open={false} onClose={handleClose}>
+      <Dialog open onClose={handleClose}>
         <DialogTitle>
           <BottomNavigation value={navigation} onChange={(event, newValue) => setNavigation(newValue)} showLabels>
             <BottomNavigationAction label='Meal' icon={<FastfoodIcon />} />
@@ -102,7 +73,7 @@ export default function MenuDialog(props) {
               value={navigation ? drinkM : mealM}
               onChange={(event, newValue) => (navigation ? setDrinkM(newValue) : setMealM(newValue))}
               indicatorColor='primary'>
-              {navigation ? drinks.map((e) => <Tab key={e} label={e} />) : meals.map((e) => <Tab key={e} label={e} />)}
+              {navigation ? DRINKS.map((e) => <Tab key={e} label={e} />) : MEALS.map((e) => <Tab key={e} label={e} />)}
             </Tabs>
           </div>
         </DialogTitle>
@@ -119,7 +90,7 @@ export default function MenuDialog(props) {
                       <ImageListItemBar
                         title={str}
                         actionIcon={
-                          <IconButton onClick={addItemToRoom} className={classes.icon}>
+                          <IconButton onClick={() => onAddItem(str)} className={classes.icon}>
                             <AddCircleIcon />
                           </IconButton>
                         }

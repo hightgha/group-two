@@ -13,6 +13,8 @@ import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import MenuDialog from './MenuDialog';
+import BooklIconDialog from './BookIconDialog';
+import CancelIconDialog from './CancelIconDialog';
 
 const useStyles = makeStyles((theme) => ({
   root: { margin: 'auto', maxWidth: 345 },
@@ -27,21 +29,57 @@ const useStyles = makeStyles((theme) => ({
 export default function InfoCard(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
+  const [showCancelDialog, setshowCancelDialog] = useState(false);
+  const [showBookDialog, setshowBookDialog] = useState(false);
+  const [showMenuDialog, setShowMenuDialog] = useState(false);
+  const [inputValue, setInputValue] = useState('Name Surname.20.05.2022 - 30.05.2022 ');
+  const roomInfo = {
+    room: 0,
+    booked: true,
+    from: null,
+    to: null,
+    bookingDate: null,
+    orders: [
+      {
+        completed: false,
+        canceled: false,
+        title: 'apple',
+      },
+    ],
+  };
 
-  const booked = true; // booked jamanakavor a, heto petqa propsov liqy ban ga
+  function addItemFromMenu(item) {
+    console.log(item);
+  }
 
+  function onCancelClick() {
+    setshowCancelDialog(true);
+  }
+  function onEditBooking() {
+    setshowBookDialog(true);
+  }
+  function handleClose() {
+    setshowCancelDialog(false);
+    setshowBookDialog(false);
+  }
+  function onConfirmCancellation() {
+    //booked = false; red=>green
+    handleClose();
+  }
+  // function onConfirmExtending() {
+  //   handleClose();
+  // } //Dialogi nersum
   return (
     <>
-      <MenuDialog />
       <Card className={classes.root}>
         <CardHeader
           title='Floor 9 - Room 91'
-          subheader={`Status: ${booked ? 'Booked' : 'Free'}`}
-          avatar={<Brightness1Icon className={booked ? classes.red : classes.green} />}
+          subheader={`Status: ${roomInfo.booked ? 'Booked' : 'Free'}`}
+          avatar={<Brightness1Icon className={roomInfo.booked ? classes.red : classes.green} />}
           action={
-            booked ? (
+            roomInfo.booked ? (
               <IconButton>
-                <CancelIcon />
+                <CancelIcon onClick={onCancelClick} />
               </IconButton>
             ) : (
               <IconButton>
@@ -51,24 +89,22 @@ export default function InfoCard(props) {
           }
         />
         <CardContent>
-          <Typography paragraph>
-            Booked by Name Surname. <br /> 20.05.2022 - 30.05.2022
-          </Typography>
+          <Typography paragraph>Booked by {inputValue}</Typography>
           <Typography paragraph color='textSecondary' component='p'>
             Inchvor text
           </Typography>
         </CardContent>
         <CardActions className={classes.bottomButton}>
-          {booked ? (
+          {roomInfo.booked ? (
             <>
               <IconButton onClick={() => setExpanded(!expanded)}>
                 <FormatListBulletedIcon />
               </IconButton>
               <IconButton>
-                <AddShoppingCartIcon />
+                <AddShoppingCartIcon onClick={() => setShowMenuDialog(true)} />
               </IconButton>
               <IconButton>
-                <CreateIcon />
+                <CreateIcon onClick={onEditBooking} />
               </IconButton>
             </>
           ) : (
@@ -77,7 +113,7 @@ export default function InfoCard(props) {
             </IconButton>
           )}
         </CardActions>
-        {booked && (
+        {roomInfo.booked && (
           <Collapse in={expanded}>
             <List dense>
               <Divider />
@@ -106,6 +142,9 @@ export default function InfoCard(props) {
           </Collapse>
         )}
       </Card>
+      {showCancelDialog && <CancelIconDialog handleClose={handleClose} onConfirmCancellation={onConfirmCancellation} />}
+      {showMenuDialog && <MenuDialog handleClose={() => setShowMenuDialog(false)} onAddItem={addItemFromMenu} />}
+      {showBookDialog && <BooklIconDialog handleClose={handleClose} data={inputValue} />}
     </>
   );
 }
