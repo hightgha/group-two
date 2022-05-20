@@ -16,14 +16,14 @@ const useStyles = makeStyles({
 
 export default function App() {
   const classes = useStyles();
-  const [user, setUser] = useState({ username: 'arevik', displayName: 'Arevik Mosinyan', accessLvl: '2' }); // user - 0, staff - 1, cheif - 2
+  const [user, setUser] = useState(); // user - 0, staff - 1, cheif - 2
 
   function userSignOut() {
     setUser(null);
   }
 
   return (
-    <UserContext.Provider value={{ ...user, userSignOut }}>
+    <UserContext.Provider value={user}>
       <div className={classes.App}>
         <Navbar />
 
@@ -31,7 +31,8 @@ export default function App() {
           <Route path='/' element={<Home />} />
           <Route path='/about' element={<About />} />
           <Route path='/profile' element={<Profile />} />
-          <Route path='/auth' element={<Auth />} />
+          <Route path='/signin' element={<Auth />} />
+          <Route path='/signup' element={<Auth />} />
         </Routes>
       </div>
     </UserContext.Provider>

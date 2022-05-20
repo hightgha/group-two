@@ -50,9 +50,14 @@ export default function Navbar() {
               </NavLink>
             </div>
           ) : (
-            <NavLink className={({ isActive }) => clsx(classes.navlinks, { [classes.activeLink]: isActive })} to='/auth'>
-              <Button className={classes.button}>Sign in / up</Button>
-            </NavLink>
+            <div className={classes.wrap}>
+              <NavLink className={({ isActive }) => clsx(classes.navlinks, { [classes.activeLink]: isActive })} to='/signin'>
+                <Button className={classes.button}>Sign in</Button>
+              </NavLink>
+              <NavLink className={({ isActive }) => clsx(classes.navlinks, { [classes.activeLink]: isActive })} to='/signup'>
+                <Button className={classes.button}>Sign up</Button>
+              </NavLink>
+            </div>
           )}
         </Toolbar>
       </AppBar>
