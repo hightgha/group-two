@@ -16,7 +16,7 @@ const useStyles = makeStyles({
 
 export default function App() {
   const classes = useStyles();
-  const [user, setUser] = useState({ username: 'arevik', displayName: 'Arevik Mosinyan', accessLvl: '0' }); // user - 0, staff - 1, cheif - 2
+  const [user, setUser] = useState({ username: 'arevik', displayName: 'Arevik Mosinyan', accessLvl: '2' }); // user - 0, staff - 1, cheif - 2
 
   function userSignOut() {
     setUser(null);
