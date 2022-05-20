@@ -12,6 +12,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
+import MenuDialog from './MenuDialog';
 import BooklIconDialog from './BookIconDialog';
 import CancelIconDialog from './CancelIconDialog';
 
@@ -30,6 +31,7 @@ export default function InfoCard(props) {
   const [expanded, setExpanded] = useState(false);
   const [showCancelDialog, setshowCancelDialog] = useState(false);
   const [showBookDialog, setshowBookDialog] = useState(false);
+  const [showMenuDialog, setShowMenuDialog] = useState(false);
   const [inputValue, setInputValue] = useState('Name Surname.20.05.2022 - 30.05.2022 ');
   const roomInfo = {
     room: 0,
@@ -46,7 +48,9 @@ export default function InfoCard(props) {
     ],
   };
 
-  // booked jamanakavor a, heto petqa propsov liqy ban ga //romm.book
+  function addItemFromMenu(item) {
+    console.log(item);
+  }
 
   function onCancelClick() {
     setshowCancelDialog(true);
@@ -97,7 +101,7 @@ export default function InfoCard(props) {
                 <FormatListBulletedIcon />
               </IconButton>
               <IconButton>
-                <AddShoppingCartIcon />
+                <AddShoppingCartIcon onClick={() => setShowMenuDialog(true)} />
               </IconButton>
               <IconButton>
                 <CreateIcon onClick={onEditBooking} />
@@ -139,7 +143,7 @@ export default function InfoCard(props) {
         )}
       </Card>
       {showCancelDialog && <CancelIconDialog handleClose={handleClose} onConfirmCancellation={onConfirmCancellation} />}
-
+      {showMenuDialog && <MenuDialog handleClose={() => setShowMenuDialog(false)} onAddItem={addItemFromMenu} />}
       {showBookDialog && <BooklIconDialog handleClose={handleClose} data={inputValue} />}
     </>
   );

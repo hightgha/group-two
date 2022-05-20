@@ -1,4 +1,4 @@
-import { makeStyles, Paper } from '@material-ui/core';
+import { Button, makeStyles, Paper } from '@material-ui/core';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 
@@ -23,10 +23,16 @@ const useStyles = makeStyles((theme) => ({
     margin: 'auto',
   },
   free: {
-    background: 'green',
+    background: 'rgba(144,238,144, 0.8)', // green
   },
   booked: {
-    background: 'red',
+    background: 'rgba(240,128,128, 0.8)', // red
+  },
+  roomButton: {
+    minWidth: 28,
+    minHeight: 32,
+    padding: 0,
+    margin: 0,
   },
 }));
 
@@ -45,6 +51,7 @@ export default function Hotel() {
             completed: false,
             canceled: false,
             title: 'apple',
+            created: '#server time string#',
           },
         ],
       }),
@@ -54,14 +61,23 @@ export default function Hotel() {
     console.log(hotelNumbers);
     //fetch(dasda).then(setHotelNumber);
   }, []);
+  function hotelRoomClick(floor, room) {
+    console.log(floor, room);
+  }
 
   return (
     <Paper className={classes.hotel}>
       {hotelNumbers.map((flr, i) => (
         <div key={'floor' + (9 - i)} className={classes.floor}>
           {flr.map((win, j) => (
-            <Paper key={'room' + (9 - i) + (j + 1)} className={clsx({ [classes.window]: true })}>
-              {(9 - i) * 10 + j + 1}
+            <Paper
+              key={'room' + (9 - i) + (j + 1)}
+              className={clsx({
+                [classes.window]: true,
+              })}>
+              <Button onClick={() => hotelRoomClick(9 - i, j)} className={classes.roomButton}>
+                {(9 - i) * 10 + j + 1}
+              </Button>
             </Paper>
           ))}
         </div>
