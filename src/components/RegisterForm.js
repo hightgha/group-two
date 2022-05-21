@@ -1,8 +1,7 @@
 import { Button, FormControl, InputLabel, makeStyles, MenuItem, Select, TextField } from '@material-ui/core';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
-import { createUser, getUserData, writeUserData } from '../requests/firebase';
+import { createUser, getUserData, writeUserData, updateUserData, sendEmailVerif } from '../requests/firebase';
+
 const useStyles = makeStyles((theme) => ({
   formWrap: {
     display: 'flex',
@@ -38,8 +37,11 @@ export default function RegisterForm() {
   async function onRegister() {
     const result = await getUserData(username);
     if (!result) {
+      let avatar = Math.round(Math.random() * 4);
       await createUser(email, password);
-      await writeUserData({ username, email, displayName, gender });
+      await writeUserData({ username, email, displayName, gender, avatar });
+      await updateUserData(username, gender + avatar);
+      await sendEmailVerif();
       return true;
     }
     setUsernameError('Please use another username');
@@ -104,9 +106,7 @@ export default function RegisterForm() {
           <MenuItem value='w'>Women</MenuItem>
         </Select>
       </FormControl>
-      <Button size='small' onClick={(e) => <Navigate to='/signin' />} endIcon={<ArrowForwardIcon />}>
-        have an account? sign in
-      </Button>
+
       <Button
         disabled={
           !!(

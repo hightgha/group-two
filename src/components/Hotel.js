@@ -1,6 +1,5 @@
 import { Button, makeStyles, Paper } from '@material-ui/core';
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   hotel: {
@@ -34,53 +33,37 @@ const useStyles = makeStyles((theme) => ({
     padding: 0,
     margin: 0,
   },
+  reverse: {
+    display: 'flex',
+    flexDirection: 'column-reverse',
+  },
 }));
 
-export default function Hotel() {
+export default function Hotel(props) {
   const classes = useStyles();
-  const [hotelNumbers, setHotelNumbers] = useState(
-    Array(10).fill(
-      Array(6).fill({
-        room: 0,
-        booked: null,
-        from: null,
-        to: null,
-        bookingDate: null,
-        orders: [
-          {
-            completed: false,
-            canceled: false,
-            title: 'apple',
-            created: '#server time string#',
-          },
-        ],
-      }),
-    ),
-  );
-  useEffect(() => {
-    //fetch(dasda).then(setHotelNumber);
-  }, []);
-  function hotelRoomClick(floor, room) {
-    console.log(floor, room);
-  }
+  const { hotel, onWindowClick } = props;
 
   return (
     <Paper className={classes.hotel}>
-      {hotelNumbers.map((flr, i) => (
-        <div key={'floor' + (9 - i)} className={classes.floor}>
-          {flr.map((win, j) => (
-            <Paper
-              key={'room' + (9 - i) + (j + 1)}
-              className={clsx({
-                [classes.window]: true,
-              })}>
-              <Button onClick={() => hotelRoomClick(9 - i, j)} className={classes.roomButton}>
-                {(9 - i) * 10 + j + 1}
-              </Button>
-            </Paper>
-          ))}
-        </div>
-      ))}
+      <div className={classes.reverse}>
+        {hotel.map((floor, i) => (
+          <div key={'floor' + (9 - i)} className={classes.floor}>
+            {floor.map((roomInfo, j) => (
+              <Paper
+                key={'room' + (9 - i) + (j + 1)}
+                className={clsx({
+                  [classes.window]: true,
+                  [classes.booked]: roomInfo.booked,
+                  [classes.free]: !roomInfo.booked,
+                })}>
+                <Button onClick={() => onWindowClick(roomInfo)} className={classes.roomButton}>
+                  {roomInfo.room}
+                </Button>
+              </Paper>
+            ))}
+          </div>
+        ))}
+      </div>
       <Paper className={classes.door} />
     </Paper>
   );
