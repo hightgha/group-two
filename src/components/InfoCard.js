@@ -29,13 +29,15 @@ const useStyles = makeStyles((theme) => ({
 export default function InfoCard(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
-  const [showCancelDialog, setshowCancelDialog] = useState(false);
-  const [showBookDialog, setshowBookDialog] = useState(false);
+  const [showCancelDialog, setShowCancelDialog] = useState(false);
+  const [showBookDialog, setShowBookDialog] = useState(false);
   const [showMenuDialog, setShowMenuDialog] = useState(false);
-  const [inputValue, setInputValue] = useState('Name Surname.20.05.2022 - 30.05.2022 ');
+
+  const [bookersName, setBookersName] = useState('Arevik Mosinyan');
+  const [editedDate, setEditedDate] = useState('');
   const roomInfo = {
     room: 0,
-    booked: true,
+    booked: bookersName,
     from: null,
     to: null,
     bookingDate: null,
@@ -52,23 +54,13 @@ export default function InfoCard(props) {
     console.log(item);
   }
 
-  function onCancelClick() {
-    setshowCancelDialog(true);
-  }
-  function onEditBooking() {
-    setshowBookDialog(true);
-  }
-  function handleClose() {
-    setshowCancelDialog(false);
-    setshowBookDialog(false);
-  }
   function onConfirmCancellation() {
-    //booked = false; red=>green
-    handleClose();
+    setBookersName('');
+    setEditedDate('');
+    setShowCancelDialog(false);
+    setShowBookDialog(false);
   }
-  // function onConfirmExtending() {
-  //   handleClose();
-  // } //Dialogi nersum
+
   return (
     <>
       <Card className={classes.root}>
@@ -78,18 +70,24 @@ export default function InfoCard(props) {
           avatar={<Brightness1Icon className={roomInfo.booked ? classes.red : classes.green} />}
           action={
             roomInfo.booked ? (
-              <IconButton onClick={onCancelClick}>
+              <IconButton
+                onClick={() => {
+                  setShowCancelDialog(true);
+                }}>
                 <CancelIcon />
               </IconButton>
             ) : (
-              <IconButton>
+              <IconButton
+                onClick={() => {
+                  setBookersName(' ');
+                }}>
                 <BookIcon />
               </IconButton>
             )
           }
         />
         <CardContent>
-          <Typography paragraph>Booked by {inputValue}</Typography>
+          <Typography paragraph>Booked by {bookersName + ' ' + editedDate} </Typography>
           <Typography paragraph color='textSecondary' component='p'>
             Inchvor text
           </Typography>
@@ -103,7 +101,10 @@ export default function InfoCard(props) {
               <IconButton onClick={() => setShowMenuDialog(true)}>
                 <AddShoppingCartIcon />
               </IconButton>
-              <IconButton onClick={onEditBooking}>
+              <IconButton
+                onClick={() => {
+                  setShowBookDialog(true);
+                }}>
                 <CreateIcon />
               </IconButton>
             </>
@@ -142,9 +143,26 @@ export default function InfoCard(props) {
           </Collapse>
         )}
       </Card>
-      {showCancelDialog && <CancelIconDialog handleClose={handleClose} onConfirmCancellation={onConfirmCancellation} />}
+      {showCancelDialog && (
+        <CancelIconDialog
+          handleClose={() => {
+            setShowCancelDialog(false);
+          }}
+          onConfirmCancellation={onConfirmCancellation}
+        />
+      )}
       {showMenuDialog && <MenuDialog handleClose={() => setShowMenuDialog(false)} onAddItem={addItemFromMenu} />}
-      {showBookDialog && <BooklIconDialog handleClose={handleClose} data={inputValue} />}
+      {showBookDialog && (
+        <BooklIconDialog
+          handleClose={() => {
+            setShowBookDialog(false);
+          }}
+          editedDate={editedDate}
+          onDateChange={(e) => {
+            setEditedDate(e.target.value);
+          }}
+        />
+      )}
     </>
   );
 }
