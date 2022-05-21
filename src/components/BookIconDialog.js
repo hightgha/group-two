@@ -8,24 +8,13 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 
 export default function BooklIconDialog(props) {
-  const [inputValue, setInputValue] = useState(props.data);
   return (
     <Dialog open onClose={props.handleClose} aria-labelledby='form-dialog-title'>
-      <DialogTitle id='form-dialog-title'>new date</DialogTitle>
+      <DialogTitle>new date</DialogTitle>
       <DialogContent>
         <DialogContentText>Please enter how long you are going to be here</DialogContentText>
-        <TextField
-          onChange={(e) => {
-            setInputValue(e.target.value);
-          }}
-          value={inputValue}
-          autoFocus
-          margin='dense'
-          id='name'
-          label='Name Surname and date (from...till)'
-          type='date'
-          fullWidth
-        />
+        <TextField onChange={props.onDateChange} value={props.editedDate} autoFocus margin='dense' type='date' fullWidth />
+        <TextField onChange={props.onDateChange} value={props.editedDate} autoFocus margin='dense' type='date' fullWidth />
       </DialogContent>
       <DialogActions>
         <Button onClick={props.handleClose} color='primary'>
