@@ -22,7 +22,9 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   onAuthStateChanged(auth, (user) => {
-    setLoading(false);
+    if (loading) {
+      setLoading(false);
+    }
     setUser(user);
   });
   return (

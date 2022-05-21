@@ -5,8 +5,9 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { updateProfile } from 'firebase/auth';
 import { sendEmailVerification } from 'firebase/auth';
 import { updatePassword } from 'firebase/auth';
-import { getDatabase } from 'firebase/database';
+import { getDatabase, update } from 'firebase/database';
 import { get, ref, set } from 'firebase/database';
+import { v4 as uuidv4 } from 'uuid';
 
 export const app = initializeApp({
   apiKey: 'AIzaSyCDoUMfv-TeUdvXCzkxwp1466BBhAkKj00',
@@ -22,38 +23,40 @@ export const auth = getAuth(app);
 export const database = getDatabase(app);
 
 export async function createUser(email, password) {
-  let user, err;
+  let result;
   await createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      user = userCredential.user;
+      result = userCredential.user;
     })
     .catch((error) => {
-      err = error;
+      result = error;
     });
-  return err || user;
+  return result;
 }
 export async function signInUser(email, password) {
-  let user, err;
+  let result;
   await signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      user = userCredential.user;
+      result = userCredential.user;
     })
     .catch((error) => {
-      err = error;
+      result = error;
     });
-  return err || user;
+  return result;
 }
 
-function updateProData(displayName, photoURL) {
-  updateProfile(auth.currentUser, { displayName, photoURL })
-    .then(() => {
-      // Profile updated!
+export async function updateUserData(displayName, photoURL) {
+  let result;
+  await updateProfile(auth.currentUser, { displayName, photoURL })
+    .then((data) => {
+      result = data;
     })
     .catch((error) => {
-      // An error occurred
+      result = error;
     });
+  return result;
 }
-function changePassword(newPassword) {
+export function changePassword(newPassword) {
   const user = auth.currentUser;
   updatePassword(user, newPassword)
     .then(() => {
@@ -64,10 +67,8 @@ function changePassword(newPassword) {
     });
 }
 
-async function sendEmailVerif() {
-  await sendEmailVerification(auth.currentUser).then(() => {
-    alert('Email verification sent!');
-  });
+export async function sendEmailVerif() {
+  return await sendEmailVerification(auth.currentUser);
 }
 export function signOutUser() {
   signOut(auth);
@@ -78,13 +79,29 @@ export async function getUserData(username) {
   return await snapshot.val();
 }
 
-export function writeUserData({ username, email, displayName, gender }) {
+export function writeUserData({ username, email, displayName, gender, avatar }) {
   set(ref(database, `/users/${username}`), {
     username,
     email,
     displayName,
     gender,
-    avatar: Math.round(Math.random() * 4),
+    avatar,
     permission: 'user',
   });
+}
+export async function getHotelNumbers() {
+  const snapshot = await get(ref(database, `/hotel`));
+  return await snapshot.val();
+}
+export const hotelRef = ref(database, '/hotel');
+
+export async function setRoomInfo(roomNumber, roomInfo) {
+  const floor = String(roomNumber).slice(0, -1) - 1;
+  const room = String(roomNumber).slice(-1) - 1;
+  const roomRef = ref(database, `/hotel/${floor}/${room}`);
+  const uid = uuidv4();
+  const logRef = ref(database, `/logs/${uid}`);
+  const result = await update(roomRef, roomInfo);
+  const logResult = await update(logRef, roomInfo);
+  return [result, logResult];
 }

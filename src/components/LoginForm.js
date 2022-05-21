@@ -1,7 +1,5 @@
 import { Button, makeStyles, TextField } from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
 import { getUserData, signInUser } from '../requests/firebase';
 
 const useStyles = makeStyles((theme) => ({
@@ -77,9 +75,6 @@ export default function LoginForm() {
           error={(!!password && password.length < 6) || !!passwordError}
           helperText={passwordError}
         />
-        <Button size='small' onClick={(e) => <Navigate to='signup' />} startIcon={<ArrowBackIcon />}>
-          need account? sign up!
-        </Button>
         <Button onClick={onLogin} variant='outlined' disabled={username.length < 3 || password.length < 6}>
           Sign in
         </Button>

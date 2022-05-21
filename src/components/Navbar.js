@@ -8,6 +8,7 @@ import UserContext from '../contexts/UserContext';
 import { Avatar, Button } from '@material-ui/core';
 import { ABOUT_ROUTE, HOME_ROUTE, PROFILE_ROUTE, SIGNIN_ROUTE, SIGNUP_ROUTE } from '../constants/routes';
 import { signOutUser } from '../requests/firebase';
+import avatars from '../avatars';
 
 const useStyles = makeStyles((theme) => ({
   logo: {
@@ -31,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Navbar() {
   const classes = useStyles();
-  let user = useContext(UserContext);
+  const user = useContext(UserContext);
   return (
     <div>
       <AppBar position='static'>
@@ -50,7 +51,7 @@ export default function Navbar() {
                 Sign out
               </Button>
               <NavLink className={({ isActive }) => clsx(classes.navlinks, { [classes.activeAvatar]: isActive })} to={PROFILE_ROUTE}>
-                <Avatar />
+                <Avatar src={avatars[user.photoURL]} />
               </NavLink>
             </div>
           ) : (
