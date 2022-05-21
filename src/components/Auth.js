@@ -1,35 +1,26 @@
 import { makeStyles } from '@material-ui/core';
-import { useState } from 'react';
-import Login from './Login';
-import Register from './Register';
+import { useContext } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
+import { HOME_ROUTE, SIGNIN_ROUTE } from '../constants/routes';
+import UserContext from '../contexts/UserContext';
+import LoginForm from './LoginForm';
+import RegisterForm from './RegisterForm';
 
 const useStyles = makeStyles((theme) => ({
   container: {
     margin: 'auto',
-    maxWidth: 1024,
+    maxWidth: 700,
   },
 }));
 
 export default function Auth() {
-  const [isLogin, setIsLogin] = useState(true);
+  const user = useContext(UserContext);
+  const { pathname } = useLocation();
   const classes = useStyles();
-
-  function onSwitch() {
-    setIsLogin(!isLogin);
-  }
-  function onLogin(data) {
-    // inchvor checker, heto login - database
-    console.log(data);
-  }
-  function onRegister(data) {
-    // inchvor checker, heto register - database
-    console.log(data);
-  }
 
   return (
     <div className={classes.container}>
-      <h1>Authentication page</h1>
-      {isLogin ? <Login onSwitch={onSwitch} onLogin={onLogin} /> : <Register onSwitch={onSwitch} onRegister={onRegister} />}
+      {user ? <Navigate to={HOME_ROUTE} /> : pathname === SIGNIN_ROUTE ? <LoginForm /> : <RegisterForm />}
     </div>
   );
 }

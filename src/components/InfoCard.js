@@ -78,8 +78,8 @@ export default function InfoCard(props) {
           avatar={<Brightness1Icon className={roomInfo.booked ? classes.red : classes.green} />}
           action={
             roomInfo.booked ? (
-              <IconButton>
-                <CancelIcon onClick={onCancelClick} />
+              <IconButton onClick={onCancelClick}>
+                <CancelIcon />
               </IconButton>
             ) : (
               <IconButton>
@@ -100,11 +100,11 @@ export default function InfoCard(props) {
               <IconButton onClick={() => setExpanded(!expanded)}>
                 <FormatListBulletedIcon />
               </IconButton>
-              <IconButton>
-                <AddShoppingCartIcon onClick={() => setShowMenuDialog(true)} />
+              <IconButton onClick={() => setShowMenuDialog(true)}>
+                <AddShoppingCartIcon />
               </IconButton>
-              <IconButton>
-                <CreateIcon onClick={onEditBooking} />
+              <IconButton onClick={onEditBooking}>
+                <CreateIcon />
               </IconButton>
             </>
           ) : (

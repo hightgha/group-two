@@ -58,7 +58,6 @@ export default function Hotel() {
     ),
   );
   useEffect(() => {
-    console.log(hotelNumbers);
     //fetch(dasda).then(setHotelNumber);
   }, []);
   function hotelRoomClick(floor, room) {

@@ -4,6 +4,7 @@ import InfoCard from './InfoCard';
 
 const useStyles = makeStyles((theme) => ({
   container: {
+    paddingTop: 30,
     margin: 'auto',
     display: 'flex',
     justifyContent: 'center',
@@ -22,7 +23,6 @@ export default function Home(props) {
 
   return (
     <div>
-      <h1>Home Page</h1>
       <div className={classes.container}>
         <Hotel />
         <InfoCard />
