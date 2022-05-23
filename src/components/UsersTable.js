@@ -23,7 +23,6 @@ export default function UsersTable() {
         if (['user', 'staff', 'cheif'].includes(params.newValue) && params.oldValue !== params.newValue) {
           changeUserInfo(params.data.username, 'permission', params.newValue);
           params.data.permission = params.newValue;
-          return true;
         }
       },
       cellStyle: ({ value }) => {
@@ -50,7 +49,7 @@ export default function UsersTable() {
   const defaultColDef = { resizable: true, sortable: true };
 
   return (
-    <div className={classes.size + ' ag-theme-material'}>
+    <div className={`${classes.size} ag-theme-material`}>
       <AgGridReact
         animateRows='true'
         enableRangeSelection='true'

@@ -24,7 +24,7 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [userData, setUserData] = useState(null);
-
+  console.log(user, userData);
   onAuthStateChanged(auth, (data) => {
     if (loading) {
       setLoading(false);
@@ -40,6 +40,8 @@ export default function App() {
           setUserData(data);
         }
       });
+    } else {
+      setUserData(null);
     }
   }, [user]);
   return (
