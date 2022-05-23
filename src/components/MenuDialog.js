@@ -1,41 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import { Dialog, DialogContent, DialogTitle, ImageList, ImageListItem, ImageListItemBar, IconButton } from '@material-ui/core';
+import { Divider, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
+import { makeStyles, Tab, Tabs, Typography, Avatar, BottomNavigation, BottomNavigationAction, Button } from '@material-ui/core';
+import { DRINKS, MEALS } from '../constants/categories';
+import RemoveCircle from '@material-ui/icons/RemoveCircle';
 import FastfoodIcon from '@material-ui/icons/Fastfood';
 import LocalBarIcon from '@material-ui/icons/LocalBar';
-import ImageList from '@material-ui/core/ImageList';
-import ImageListItem from '@material-ui/core/ImageListItem';
-import ImageListItemBar from '@material-ui/core/ImageListItemBar';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import IconButton from '@material-ui/core/IconButton';
-import { BottomNavigation, BottomNavigationAction, makeStyles, Tab, Tabs } from '@material-ui/core';
-import { DRINKS, MEALS } from '../constants/categories';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-    display: 'flex',
-    height: 22,
-  },
-  tabs: {
-    borderRight: `1px solid ${theme.palette.divider}`,
-  },
-  rootImageList: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    overflow: 'hidden',
-    backgroundColor: theme.palette.background.paper,
-  },
-  imageList: {
-    width: 600,
-    height: 500,
-  },
-  icon: {
-    color: 'rgba(255, 255, 255, 0.5)',
-  },
+  root: { flexGrow: 1, display: 'flex', height: 24 },
+  tabs: { borderRight: `1px solid ${theme.palette.divider}` },
+  rootImageList: { display: 'flex', justifyContent: 'space-around', overflow: 'hidden', backgroundColor: theme.palette.background.paper },
+  imageList: { width: 350, height: 550 },
+  image: { maxHeight: 170 },
+  addIcon: { color: 'rgba(255, 255, 255, 0.5)' },
+  title: { background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%,  rgba(0,0,0,0.3) 80%, rgba(0,0,0,0) 100%)' },
+  orderWrap: { display: 'flex', flexDirection: 'column' },
+  orderList: { minWidth: 200, maxWidth: 200, minHeight: 460, maxHeight: 460, overflow: 'hidden scroll' },
+  avatar: { width: theme.spacing(6), height: theme.spacing(6) },
+  wrap: { display: 'flex', justifyContent: 'flex-end', alignItems: 'center' },
 }));
 
 export default function MenuDialog(props) {
@@ -44,6 +28,8 @@ export default function MenuDialog(props) {
   const [drinkM, setDrinkM] = useState(0);
   const [mealM, setMealM] = useState(0);
   const [content, setContent] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [reservedData, setReservedData] = useState({ drinks: {}, meals: {} });
   const classes = useStyles();
 
   useEffect(() => {
@@ -54,10 +40,26 @@ export default function MenuDialog(props) {
 
       fetch(url)
         .then((response) => response.json())
-        .then((data) => setContent(data[navigation ? 'drinks' : 'meals']));
+        .then((data) => {
+          setContent(data[navigation ? 'drinks' : 'meals']);
+          setReservedData(
+            navigation
+              ? { ...reservedData, drinks: { ...reservedData.drinks, [DRINKS[drinkM]]: data.drinks } }
+              : { ...reservedData, meals: { ...reservedData.meals, [MEALS[mealM]]: data.meals } },
+          );
+        });
     }
-    fetchFromApi();
+    const reserved = reservedData[navigation ? 'drinks' : 'meals'][navigation ? DRINKS[drinkM] : MEALS[mealM]];
+    if (reserved) {
+      setContent(reserved);
+    } else {
+      fetchFromApi();
+    }
   }, [navigation, drinkM, mealM]);
+
+  function addItem(data) {
+    setOrders([...orders, data]);
+  }
 
   return (
     <div>
@@ -67,6 +69,7 @@ export default function MenuDialog(props) {
             <BottomNavigationAction label='Meal' icon={<FastfoodIcon />} />
             <BottomNavigationAction label='Drinks' icon={<LocalBarIcon />} />
           </BottomNavigation>
+
           <div className={classes.root}>
             <Tabs
               variant='scrollable'
@@ -79,26 +82,80 @@ export default function MenuDialog(props) {
         </DialogTitle>
         <DialogContent>
           <div className={classes.rootImageList}>
-            <ImageList rowHeight={180} className={classes.imageList}>
-              {content.length > 0 &&
-                content.map((e) => {
-                  const str = e.strMeal || e.strDrink;
-                  const strThumb = e.strMealThumb || e.strDrinkThumb;
+            <div>
+              <ImageList cols={2} gap={5} rowHeight={180} className={classes.imageList}>
+                {content.length > 0 &&
+                  content.map((e) => {
+                    const str = e.strMeal || e.strDrink;
+                    const strThumb = e.strMealThumb || e.strDrinkThumb;
+                    return (
+                      <ImageListItem key={str + strThumb} className={classes.image}>
+                        <img src={strThumb} alt={str} />
+                        <ImageListItemBar
+                          title={
+                            <Typography variant='caption' align='center'>
+                              {str}
+                            </Typography>
+                          }
+                          className={classes.title}
+                          actionIcon={
+                            <IconButton
+                              onClick={() =>
+                                addItem({
+                                  completed: false,
+                                  canceled: false,
+                                  str,
+                                  strThumb,
+                                  type: strThumb.slice(15, strThumb.indexOf('db')),
+                                })
+                              }
+                              className={classes.addIcon}
+                              size='small'>
+                              <AddCircleIcon />
+                            </IconButton>
+                          }
+                        />
+                      </ImageListItem>
+                    );
+                  })}
+              </ImageList>
+            </div>
+            <div className={classes.orderWrap}>
+              <div className={classes.wrap}>
+                <Typography variant='button' align='center'>
+                  Order list
+                </Typography>
+                <Button onClick={() => setOrders([])} color='secondary' size='small'>
+                  clear
+                </Button>
+              </div>
+
+              <Divider />
+              <List disablePadding dense className={classes.orderList}>
+                {orders.map((item, index) => {
                   return (
-                    <ImageListItem key={str + strThumb}>
-                      <img src={strThumb} alt={str} />
-                      <ImageListItemBar
-                        title={str}
-                        actionIcon={
-                          <IconButton onClick={() => onAddItem(str)} className={classes.icon}>
-                            <AddCircleIcon />
-                          </IconButton>
-                        }
-                      />
-                    </ImageListItem>
+                    <ListItem classes={classes.shadow} key={index + item.str + item.strThumb}>
+                      <ListItemAvatar>
+                        <Avatar className={classes.small} variant='rounded' src={item.strThumb} />
+                      </ListItemAvatar>
+                      <ListItemText>{item.str}</ListItemText>
+                      <ListItemSecondaryAction>
+                        <IconButton
+                          size='small'
+                          onClick={() => {
+                            setOrders(orders.filter((e, i) => index !== i));
+                          }}>
+                          <RemoveCircle />
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
                   );
                 })}
-            </ImageList>
+              </List>
+              <Button size='large' color='primary' onClick={() => onAddItem(orders)} disabled={!orders.length}>
+                Confirm order
+              </Button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>

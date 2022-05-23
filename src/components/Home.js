@@ -1,10 +1,11 @@
 import { makeStyles } from '@material-ui/core';
-import FormDialog from './FormDialog';
 import Hotel from './Hotel';
 import InfoCard from './InfoCard';
 import { useEffect, useState } from 'react';
 import { getHotelNumbers, hotelRef } from '../requests/firebase';
 import { onValue } from 'firebase/database';
+import FormDialog from './FormDialog';
+import ManagementDialog from './ManagementDialog';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -22,19 +23,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Home(props) {
+export default function Home() {
   const classes = useStyles();
-  const [formOpen, setFormOpen] = useState(false);
+
+  const [form, setForm] = useState(false);
+  const [manage, setManage] = useState(false);
+
   const [currentRoom, setCurrentRoom] = useState(null);
   const [hotelNumbers, setHotelNumbers] = useState(
     Array(10).fill(Array(6).fill({ room: null, booked: null, from: null, to: null, bookingDate: null, orders: [] })),
   );
+
   useEffect(() => {
     getHotelNumbers().then((hotel) => {
       hotel = hotel.map((floor) => floor.map((room) => ({ booked: null, from: null, to: null, bookingDate: null, orders: [], ...room })));
       setHotelNumbers(hotel);
     });
   }, []);
+
   onValue(hotelRef, (snapshot) => {
     const data = snapshot
       .val()
@@ -47,10 +53,11 @@ export default function Home(props) {
   return (
     <div>
       <div className={classes.container}>
-        <Hotel hotel={hotelNumbers} onWindowClick={(roomInfo) => setCurrentRoom(roomInfo)} />
-        {formOpen && <FormDialog onClose={() => setFormOpen(false)} />}
+        <Hotel hotel={hotelNumbers} onDoorClick={() => setManage(true)} onWindowClick={(roomInfo) => setCurrentRoom(roomInfo)} />
+        {form && <FormDialog onClose={() => setForm(false)} />}
+        {manage && <ManagementDialog onClose={() => setManage(false)} />}
         {currentRoom && (
-          <InfoCard onInfoChange={(roomInfo) => setCurrentRoom(roomInfo)} roomInfo={currentRoom} openFormDialog={() => setFormOpen(true)} />
+          <InfoCard onInfoChange={(roomInfo) => setCurrentRoom(roomInfo)} roomInfo={currentRoom} openFormDialog={() => setForm(true)} />
         )}
       </div>
     </div>
