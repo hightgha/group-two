@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core';
 import { Card, CardHeader, CardContent, CardActions, IconButton } from '@material-ui/core';
 import { Collapse, Divider, List, ListItem, ListItemText, Typography } from '@material-ui/core';
@@ -15,6 +15,8 @@ import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import MenuDialog from './MenuDialog';
 import BooklIconDialog from './BookIconDialog';
 import CancelIconDialog from './CancelIconDialog';
+import UserContext from '../contexts/UserContext';
+import { setRoomInfo } from '../requests/firebase';
 
 const useStyles = makeStyles((theme) => ({
   root: { margin: 'auto', maxWidth: 345 },
@@ -27,80 +29,75 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function InfoCard(props) {
+  const { roomInfo, onInfoChange } = props;
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const [showCancelDialog, setShowCancelDialog] = useState(false);
   const [showBookDialog, setShowBookDialog] = useState(false);
   const [showMenuDialog, setShowMenuDialog] = useState(false);
-
-  const [bookersName, setBookersName] = useState('Arevik Mosinyan');
-  const [editedDate, setEditedDate] = useState('');
-  const roomInfo = {
-    room: 0,
-    booked: bookersName,
-    from: null,
-    to: null,
-    bookingDate: null,
-    orders: [
-      {
-        completed: false,
-        canceled: false,
-        title: 'apple',
-      },
-    ],
-  };
+  const user = useContext(UserContext);
 
   function addItemFromMenu(item) {
     console.log(item);
   }
 
-  function onConfirmCancellation() {
-    setBookersName('');
-    setEditedDate('');
+  function onConfirmCancel() {
     setShowCancelDialog(false);
+    setRoomInfo(roomInfo.room, { booked: null, from: null, to: null, bookingDate: null, orders: [] });
+    onInfoChange({ ...{ booked: null, from: null, to: null, bookingDate: null, orders: [] }, room: roomInfo.room });
+  }
+
+  function onConfirmBook(data) {
     setShowBookDialog(false);
+    setRoomInfo(roomInfo.room, data);
+    onInfoChange({ ...data, room: roomInfo.room });
   }
 
   return (
     <>
       <Card className={classes.root}>
         <CardHeader
-          title='Floor 9 - Room 91'
+          title={roomInfo.room}
           subheader={`Status: ${roomInfo.booked ? 'Booked' : 'Free'}`}
           avatar={<Brightness1Icon className={roomInfo.booked ? classes.red : classes.green} />}
           action={
-            roomInfo.booked ? (
+            (roomInfo.booked && user) || user?.displayName === roomInfo.booked ? (
               <IconButton
                 onClick={() => {
                   setShowCancelDialog(true);
                 }}>
                 <CancelIcon />
               </IconButton>
-            ) : (
+            ) : (!roomInfo.booked && user) || (!roomInfo.booked && !user) || user?.displayName === roomInfo.booked ? (
               <IconButton
                 onClick={() => {
-                  setBookersName(' ');
+                  setShowBookDialog(true);
                 }}>
                 <BookIcon />
               </IconButton>
-            )
+            ) : null
           }
         />
         <CardContent>
-          <Typography paragraph>Booked by {bookersName + ' ' + editedDate} </Typography>
+          {user && roomInfo.booked && user?.displayName === roomInfo.booked ? (
+            <Typography paragraph>Booked by {roomInfo.booked + ' ' + roomInfo.from + ' ' + roomInfo.to}</Typography>
+          ) : null}
           <Typography paragraph color='textSecondary' component='p'>
             Inchvor text
           </Typography>
         </CardContent>
         <CardActions className={classes.bottomButton}>
-          {roomInfo.booked ? (
+          {roomInfo.booked && user ? (
             <>
               <IconButton onClick={() => setExpanded(!expanded)}>
                 <FormatListBulletedIcon />
               </IconButton>
-              <IconButton onClick={() => setShowMenuDialog(true)}>
-                <AddShoppingCartIcon />
-              </IconButton>
+
+              {user && (
+                <IconButton onClick={() => setShowMenuDialog(true)}>
+                  <AddShoppingCartIcon />
+                </IconButton>
+              )}
               <IconButton
                 onClick={() => {
                   setShowBookDialog(true);
@@ -114,7 +111,7 @@ export default function InfoCard(props) {
             </IconButton>
           )}
         </CardActions>
-        {roomInfo.booked && (
+        {roomInfo.booked && user?.displayName === roomInfo.booked && (
           <Collapse in={expanded}>
             <List dense>
               <Divider />
@@ -148,7 +145,7 @@ export default function InfoCard(props) {
           handleClose={() => {
             setShowCancelDialog(false);
           }}
-          onConfirmCancellation={onConfirmCancellation}
+          onConfirm={onConfirmCancel}
         />
       )}
       {showMenuDialog && <MenuDialog handleClose={() => setShowMenuDialog(false)} onAddItem={addItemFromMenu} />}
@@ -157,10 +154,7 @@ export default function InfoCard(props) {
           handleClose={() => {
             setShowBookDialog(false);
           }}
-          editedDate={editedDate}
-          onDateChange={(e) => {
-            setEditedDate(e.target.value);
-          }}
+          onConfirm={onConfirmBook}
         />
       )}
     </>

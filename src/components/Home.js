@@ -56,7 +56,9 @@ export default function Home() {
         <Hotel hotel={hotelNumbers} onDoorClick={() => setManage(true)} onWindowClick={(roomInfo) => setCurrentRoom(roomInfo)} />
         {form && <FormDialog onClose={() => setForm(false)} />}
         {manage && <ManagementDialog onClose={() => setManage(false)} />}
-        <InfoCard roomInfo={currentRoom} />
+        {currentRoom && (
+          <InfoCard onInfoChange={(roomInfo) => setCurrentRoom(roomInfo)} roomInfo={currentRoom} openFormDialog={() => setForm(true)} />
+        )}
       </div>
     </div>
   );

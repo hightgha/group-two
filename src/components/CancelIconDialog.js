@@ -7,18 +7,19 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 export default function CancelIconDialog(props) {
+  const { handleClose, onConfirm } = props;
   return (
     <>
-      <Dialog open onClose={props.handleClose}>
+      <Dialog open onClose={handleClose}>
         <DialogTitle>{'Confirm your cancellation'}</DialogTitle>
         <DialogContent>
           <DialogContentText>Are you sure you want to cancel your booking</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleClose} color='primary'>
+          <Button onClick={handleClose} color='primary'>
             Cancel
           </Button>
-          <Button onClick={props.onConfirmCancellation} color='primary' autoFocus>
+          <Button onClick={onConfirm} color='primary' autoFocus>
             Yes
           </Button>
         </DialogActions>
