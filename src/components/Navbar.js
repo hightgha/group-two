@@ -11,6 +11,7 @@ import { signOutUser } from '../requests/firebase';
 import avatars from '../avatars';
 
 const useStyles = makeStyles((theme) => ({
+  appBar: { backgroundColor: 'rgba(105,155,103, 0.5)' },
   logo: {
     maxWidth: 160,
     maxHeight: 50,
@@ -35,7 +36,7 @@ export default function Navbar() {
   const user = useContext(UserContext);
   return (
     <div>
-      <AppBar position='static'>
+      <AppBar position='static' className={classes.appBar}>
         <Toolbar className={classes.toolbar}>
           <div>
             <NavLink className={({ isActive }) => clsx(classes.navlinks, { [classes.activeLink]: isActive })} to={HOME_ROUTE}>
