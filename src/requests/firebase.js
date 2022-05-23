@@ -5,7 +5,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { updateProfile } from 'firebase/auth';
 import { sendEmailVerification } from 'firebase/auth';
 import { updatePassword } from 'firebase/auth';
-import { getDatabase, update } from 'firebase/database';
+import { getDatabase, serverTimestamp, update } from 'firebase/database';
 import { get, ref, set } from 'firebase/database';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -68,7 +68,7 @@ export function changePassword(newPassword) {
 }
 
 export async function sendEmailVerif() {
-  return await sendEmailVerification(auth.currentUser);
+  sendEmailVerification(auth.currentUser);
 }
 export function signOutUser() {
   signOut(auth);
@@ -77,6 +77,10 @@ export function signOutUser() {
 export async function getUserData(username) {
   const snapshot = await get(ref(database, `/users/${username}`));
   return await snapshot.val();
+}
+export async function getUsersList() {
+  const list = await get(ref(database, '/users'));
+  return await list.val();
 }
 
 export function writeUserData({ username, email, displayName, gender, avatar }) {
@@ -87,6 +91,11 @@ export function writeUserData({ username, email, displayName, gender, avatar }) 
     gender,
     avatar,
     permission: 'user',
+  });
+}
+export function changeUserInfo(username, field, value) {
+  update(ref(database, `/users/${username}`), {
+    [field]: value,
   });
 }
 export async function getHotelNumbers() {
@@ -102,6 +111,6 @@ export async function setRoomInfo(roomNumber, roomInfo) {
   const uid = uuidv4();
   const logRef = ref(database, `/logs/${uid}`);
   const result = await update(roomRef, roomInfo);
-  const logResult = await update(logRef, roomInfo);
+  const logResult = await update(logRef, { ...roomInfo, roomNumber, logged: serverTimestamp() });
   return [result, logResult];
 }

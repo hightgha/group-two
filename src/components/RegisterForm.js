@@ -86,6 +86,7 @@ export default function RegisterForm() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
+        type='password'
         label='password'
         variant='outlined'
         error={!!password && password.length < 6}
@@ -95,6 +96,7 @@ export default function RegisterForm() {
         value={rePassword}
         onChange={(e) => setRePassword(e.target.value)}
         required
+        type='password'
         label='repeat password'
         variant='outlined'
         error={!!rePassword && rePassword !== password}
@@ -102,8 +104,8 @@ export default function RegisterForm() {
       <FormControl variant='outlined' className={classes.field}>
         <InputLabel required>Gender</InputLabel>
         <Select className={classes.select} value={gender} onChange={(e) => setGender(e.target.value)} label='Gender_'>
-          <MenuItem value='m'>Men</MenuItem>
-          <MenuItem value='w'>Women</MenuItem>
+          <MenuItem value='m'>Male</MenuItem>
+          <MenuItem value='w'>Female</MenuItem>
         </Select>
       </FormControl>
 

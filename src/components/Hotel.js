@@ -1,5 +1,7 @@
 import { Button, makeStyles, Paper } from '@material-ui/core';
 import clsx from 'clsx';
+import { useContext } from 'react';
+import UserDataContext from '../contexts/UserDataContext';
 
 const useStyles = makeStyles((theme) => ({
   hotel: {
@@ -20,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     width: 32,
     height: 64,
     margin: 'auto',
+    minWidth: 32,
   },
   free: {
     background: 'rgba(144,238,144, 0.8)', // green
@@ -41,7 +44,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Hotel(props) {
   const classes = useStyles();
-  const { hotel, onWindowClick } = props;
+  const { hotel, onWindowClick, onDoorClick } = props;
+  const userData = useContext(UserDataContext);
 
   return (
     <Paper className={classes.hotel}>
@@ -64,7 +68,13 @@ export default function Hotel(props) {
           </div>
         ))}
       </div>
-      <Paper className={classes.door} />
+      <Paper className={classes.door}>
+        {userData?.permission === 'staff' || userData?.permission === 'cheif' ? (
+          <Button className={classes.door} onClick={onDoorClick} />
+        ) : (
+          <Button className={classes.door} />
+        )}
+      </Paper>
     </Paper>
   );
 }

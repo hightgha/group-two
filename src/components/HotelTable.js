@@ -1,0 +1,80 @@
+import React, { useEffect, useState } from 'react';
+import { AgGridReact } from 'ag-grid-react';
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-material.css';
+import { Button, makeStyles } from '@material-ui/core';
+import { getHotelNumbers } from '../requests/firebase';
+
+const useStyles = makeStyles({
+  sizes: { width: 500, height: 500, border: '1px solid rgba(1, 1, 1, 0.1)' },
+});
+
+export default function HotelTable() {
+  const classes = useStyles();
+  const [rowData, setRowData] = useState();
+  const [columnDefs] = useState([
+    { field: 'room', pinned: 'left', width: 80 },
+    {
+      field: 'booked',
+      width: 90,
+      editable: true,
+      cellRenderer: ({ data: { booked } }) => {
+        return booked || 'free';
+      },
+    },
+    {
+      field: 'from',
+      width: 110,
+      cellRenderer: ({ data: { from } }) => {
+        return from ? new Date(from).toLocaleDateString() : '-';
+      },
+    },
+    {
+      field: 'to',
+      width: 110,
+      cellRenderer: ({ data: { to } }) => {
+        return to ? new Date(to).toLocaleDateString() : '-';
+      },
+    },
+    {
+      field: 'bookingDate',
+      width: 110,
+      cellRenderer: ({ data: { bookingDate } }) => {
+        return bookingDate ? new Date(bookingDate).toLocaleDateString() : '-';
+      },
+    },
+    {
+      field: 'orders',
+      width: 110,
+      cellRenderer: ({ data: { orders, room } }) => {
+        return orders ? <Button onClick={() => alert(room)}>{'orders: ' + orders.length}</Button> : '-';
+      },
+    },
+  ]);
+  const defaultColDef = { resizable: true, sortable: true };
+
+  useEffect(() => {
+    getHotelNumbers().then((data) => {
+      setRowData(Object.values(data).flat());
+    });
+  }, []);
+
+  const getRowStyle = ({ data: { booked, room } }) => {
+    return {
+      backgroundColor: booked ? 'rgba(240,128,128, 0.3)' : 'rgba(144,238,144, 0.3)',
+      borderBottom: room % 10 === 6 && room !== 106 ? '3px solid rgba(1, 1, 1, 0.2)' : '',
+    };
+  };
+  return (
+    <div className={classes.sizes + ' ag-theme-material'}>
+      <AgGridReact
+        animateRows='true'
+        suppressRowClickSelection='true'
+        rowData={rowData}
+        columnDefs={columnDefs}
+        defaultColDef={defaultColDef}
+        getRowStyle={getRowStyle}
+      />
+    </div>
+  );
+}

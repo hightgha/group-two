@@ -70,6 +70,7 @@ export default function LoginForm() {
             if (passwordError) setPasswordError('');
           }}
           required
+          type='password'
           label='password'
           variant='outlined'
           error={(!!password && password.length < 6) || !!passwordError}
