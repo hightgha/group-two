@@ -31,6 +31,7 @@ export async function createUser(email, password) {
     .catch((error) => {
       result = error;
     });
+
   return result;
 }
 export async function signInUser(email, password) {
@@ -54,10 +55,12 @@ export async function updateUserData(displayName, photoURL) {
     .catch((error) => {
       result = error;
     });
+
   return result;
 }
 export function changePassword(newPassword) {
   const user = auth.currentUser;
+
   updatePassword(user, newPassword)
     .then(() => {
       // Update successful.

@@ -49,7 +49,9 @@ export default function Home(props) {
       <div className={classes.container}>
         <Hotel hotel={hotelNumbers} onWindowClick={(roomInfo) => setCurrentRoom(roomInfo)} />
         {formOpen && <FormDialog onClose={() => setFormOpen(false)} />}
-        <InfoCard roomInfo={currentRoom} openFormDialog={() => setFormOpen(true)} />
+        {currentRoom && (
+          <InfoCard onInfoChange={(roomInfo) => setCurrentRoom(roomInfo)} roomInfo={currentRoom} openFormDialog={() => setFormOpen(true)} />
+        )}
       </div>
     </div>
   );
