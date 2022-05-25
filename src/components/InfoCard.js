@@ -17,19 +17,41 @@ import BooklIconDialog from './BookIconDialog';
 import CancelIconDialog from './CancelIconDialog';
 import UserContext from '../contexts/UserContext';
 import { setRoomInfo } from '../requests/firebase';
+import { ABOUT_ROUTE } from '../constants/routes';
+import { Link } from 'react-router-dom';
+import { DEFAULT_ROOM } from '../constants/default';
+import { v4 as uuidv4 } from 'uuid';
 
 const useStyles = makeStyles((theme) => ({
-  root: { margin: 'auto', maxWidth: 345 },
+  root: { margin: 'auto', maxWidth: 345, minWidth: 345 },
   bottomButton: { display: 'flex', justifyContent: 'center' },
-  red: { color: 'red' },
-  green: { color: 'green' },
+  red: { color: 'rgba(240,128,128, 1)' },
+  green: { color: 'rgba(144,238,144, 1)' },
   yellow: { color: 'orange' },
   expand: { transform: 'rotate(0deg)' },
   expandOpen: { transform: 'rotate(180deg)' },
+  link: {
+    color: 'black',
+    textDecoration: 'none',
+    '&:hover': {
+      color: 'rgba(144,238,144, 1)',
+    },
+  },
+  collapse: {
+    maxHeight: 310,
+    overflowY: 'scroll',
+    '&::-webkit-scrollbar': {
+      width: 0,
+      background: 'none',
+    },
+    '&::-webkit-scrollbar-thumb': {
+      background: 'none',
+    },
+  },
 }));
 
 export default function InfoCard(props) {
-  const { roomInfo, onInfoChange } = props;
+  const { roomInfo, onInfoChange, openFormDialog } = props;
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const [showCancelDialog, setShowCancelDialog] = useState(false);
@@ -37,14 +59,23 @@ export default function InfoCard(props) {
   const [showMenuDialog, setShowMenuDialog] = useState(false);
   const user = useContext(UserContext);
 
-  function addItemFromMenu(item) {
-    console.log(item);
+  function cancelOrder(index) {
+    const orders = roomInfo.orders.map((e, i) => ({ ...e, canceled: e.canceled || index === i }));
+    setRoomInfo(roomInfo.room, { orders });
+    onInfoChange({ ...roomInfo, orders });
+  }
+
+  function addItemFromMenu(items) {
+    const orders = [...roomInfo?.orders, ...items];
+    setShowMenuDialog(false);
+    setRoomInfo(roomInfo.room, { orders });
+    onInfoChange({ ...roomInfo, orders });
   }
 
   function onConfirmCancel() {
     setShowCancelDialog(false);
-    setRoomInfo(roomInfo.room, { booked: null, from: null, to: null, bookingDate: null, orders: [] });
-    onInfoChange({ ...{ booked: null, from: null, to: null, bookingDate: null, orders: [] }, room: roomInfo.room });
+    setRoomInfo(roomInfo.room, DEFAULT_ROOM);
+    onInfoChange({ room: roomInfo.room, ...DEFAULT_ROOM });
   }
 
   function onConfirmBook(data) {
@@ -57,51 +88,55 @@ export default function InfoCard(props) {
     <>
       <Card className={classes.root}>
         <CardHeader
-          title={roomInfo.room}
+          title={`Room: ${roomInfo.room}`}
           subheader={`Status: ${roomInfo.booked ? 'Booked' : 'Free'}`}
           avatar={<Brightness1Icon className={roomInfo.booked ? classes.red : classes.green} />}
           action={
-            (roomInfo.booked && user) || user?.displayName === roomInfo.booked ? (
-              <IconButton
-                onClick={() => {
-                  setShowCancelDialog(true);
-                }}>
+            roomInfo.booked ? (
+              <IconButton disabled={roomInfo.booked !== user?.displayName} onClick={() => setShowCancelDialog(true)}>
                 <CancelIcon />
               </IconButton>
-            ) : (!roomInfo.booked && user) || (!roomInfo.booked && !user) || user?.displayName === roomInfo.booked ? (
-              <IconButton
-                onClick={() => {
-                  setShowBookDialog(true);
-                }}>
+            ) : (
+              <IconButton onClick={() => (user ? setShowBookDialog(true) : openFormDialog())}>
                 <BookIcon />
               </IconButton>
-            ) : null
+            )
           }
         />
         <CardContent>
-          {user && roomInfo.booked && user?.displayName === roomInfo.booked ? (
-            <Typography paragraph>Booked by {roomInfo.booked + ' ' + roomInfo.from + ' ' + roomInfo.to}</Typography>
-          ) : null}
-          <Typography paragraph color='textSecondary' component='p'>
-            Inchvor text
+          <Typography>
+            {(roomInfo.room % 10 === 1 || roomInfo.room % 10 === 6) && 'DELUXE'}
+            {(roomInfo.room % 10 === 2 || roomInfo.room % 10 === 5) && 'VIP'}
+            {(roomInfo.room % 10 === 3 || roomInfo.room % 10 === 4) && 'STANDART'}
           </Typography>
+          {user?.displayName === roomInfo.booked ? (
+            <Typography paragraph variant='body2'>
+              <b>Booked: </b> {roomInfo.booked} <br />
+              <b>From: </b> {new Date(roomInfo.from).toLocaleDateString()} <br />
+              <b>To: </b> {new Date(roomInfo.to).toLocaleDateString()}
+              <br />
+            </Typography>
+          ) : (
+            <Typography paragraph color='textSecondary'>
+              {'To see more information'}
+              <br />
+              {' about rooms '}
+              <Link className={classes.link} to={ABOUT_ROUTE}>
+                click here
+              </Link>
+            </Typography>
+          )}
         </CardContent>
         <CardActions className={classes.bottomButton}>
-          {roomInfo.booked && user ? (
+          {user?.displayName === roomInfo.booked ? (
             <>
               <IconButton onClick={() => setExpanded(!expanded)}>
                 <FormatListBulletedIcon />
               </IconButton>
-
-              {user && (
-                <IconButton onClick={() => setShowMenuDialog(true)}>
-                  <AddShoppingCartIcon />
-                </IconButton>
-              )}
-              <IconButton
-                onClick={() => {
-                  setShowBookDialog(true);
-                }}>
+              <IconButton onClick={() => setShowMenuDialog(true)}>
+                <AddShoppingCartIcon />
+              </IconButton>
+              <IconButton onClick={() => setShowBookDialog(true)}>
                 <CreateIcon />
               </IconButton>
             </>
@@ -111,52 +146,32 @@ export default function InfoCard(props) {
             </IconButton>
           )}
         </CardActions>
-        {roomInfo.booked && user?.displayName === roomInfo.booked && (
-          <Collapse in={expanded}>
+        {user?.displayName === roomInfo.booked && (
+          <Collapse className={classes.collapse} in={expanded}>
             <List dense>
               <Divider />
-              <ListItem>
-                <CheckIcon className={classes.green} />
-                <ListItemText primary='Apples' />
-                <IconButton disabled={true} size='small'>
-                  <ClearIcon />
-                </IconButton>
-              </ListItem>
-              <ListItem>
-                <AccessTimeIcon className={classes.yellow} />
-                <ListItemText primary='Wine' />
-                <IconButton disabled={false} size='small'>
-                  <ClearIcon />
-                </IconButton>
-              </ListItem>
-              <ListItem>
-                <ClearIcon className={classes.red} />
-                <ListItemText primary='Juice' />
-                <IconButton disabled={true} size='small'>
-                  <ClearIcon />
-                </IconButton>
-              </ListItem>
+              {roomInfo.orders.map((order, index) => (
+                <ListItem key={uuidv4()}>
+                  {order.completed ? (
+                    <CheckIcon className={classes.green} />
+                  ) : order.canceled ? (
+                    <ClearIcon className={classes.red} />
+                  ) : (
+                    <AccessTimeIcon className={classes.yellow} />
+                  )}
+                  <ListItemText secondary={order.str} />
+                  <IconButton disabled={order.canceled || order.completed} onClick={() => cancelOrder(index)} size='small'>
+                    <ClearIcon />
+                  </IconButton>
+                </ListItem>
+              ))}
             </List>
           </Collapse>
         )}
       </Card>
-      {showCancelDialog && (
-        <CancelIconDialog
-          handleClose={() => {
-            setShowCancelDialog(false);
-          }}
-          onConfirm={onConfirmCancel}
-        />
-      )}
+      {showCancelDialog && <CancelIconDialog handleClose={() => setShowCancelDialog(false)} onConfirm={onConfirmCancel} />}
       {showMenuDialog && <MenuDialog handleClose={() => setShowMenuDialog(false)} onAddItem={addItemFromMenu} />}
-      {showBookDialog && (
-        <BooklIconDialog
-          handleClose={() => {
-            setShowBookDialog(false);
-          }}
-          onConfirm={onConfirmBook}
-        />
-      )}
+      {showBookDialog && <BooklIconDialog handleClose={() => setShowBookDialog(false)} onConfirm={onConfirmBook} />}
     </>
   );
 }

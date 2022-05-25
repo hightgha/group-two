@@ -2,24 +2,40 @@ import React, { useEffect, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
-import { Button, makeStyles } from '@material-ui/core';
+import { Button, makeStyles, Typography } from '@material-ui/core';
 import { getHotelNumbers } from '../requests/firebase';
+import OrdersTable from './OrdersTable';
 
 const useStyles = makeStyles({
   sizes: { width: 500, height: 500, border: '1px solid rgba(1, 1, 1, 0.1)' },
+  wrap: { display: 'flex', justifyContent: 'center', alignItems: 'center' },
 });
 
 export default function HotelTable() {
   const classes = useStyles();
   const [rowData, setRowData] = useState();
+  const [orders, setOrders] = useState();
   const [columnDefs] = useState([
     { field: 'room', pinned: 'left', width: 80 },
     {
       field: 'booked',
-      width: 90,
+      width: 120,
       editable: true,
       cellRenderer: ({ data: { booked } }) => {
         return booked || 'free';
+      },
+    },
+    {
+      field: 'orders',
+      width: 120,
+      cellRenderer: ({ data: { orders, room } }) => {
+        return orders ? (
+          <Button size='small' onClick={() => setOrders(room)}>
+            {'orders: ' + orders.length}
+          </Button>
+        ) : (
+          '-'
+        );
       },
     },
     {
@@ -43,13 +59,6 @@ export default function HotelTable() {
         return bookingDate ? new Date(bookingDate).toLocaleDateString() : '-';
       },
     },
-    {
-      field: 'orders',
-      width: 110,
-      cellRenderer: ({ data: { orders, room } }) => {
-        return orders ? <Button onClick={() => alert(room)}>{'orders: ' + orders.length}</Button> : '-';
-      },
-    },
   ]);
   const defaultColDef = { resizable: true, sortable: true };
 
@@ -66,15 +75,30 @@ export default function HotelTable() {
     };
   };
   return (
-    <div className={classes.sizes + ' ag-theme-material'}>
-      <AgGridReact
-        animateRows='true'
-        suppressRowClickSelection='true'
-        rowData={rowData}
-        columnDefs={columnDefs}
-        defaultColDef={defaultColDef}
-        getRowStyle={getRowStyle}
-      />
-    </div>
+    <>
+      <div className={classes.sizes + ' ag-theme-material'}>
+        <AgGridReact
+          animateRows='true'
+          suppressRowClickSelection='true'
+          rowData={rowData}
+          columnDefs={columnDefs}
+          defaultColDef={defaultColDef}
+          getRowStyle={getRowStyle}
+        />
+      </div>
+      {orders && (
+        <>
+          <div className={classes.wrap}>
+            <Typography variant='button' align='center'>
+              Room: {orders}
+            </Typography>
+            <Button onClick={() => setOrders(null)} color='secondary' size='small'>
+              close
+            </Button>
+          </div>
+          <OrdersTable roomNumber={orders} />
+        </>
+      )}
+    </>
   );
 }
