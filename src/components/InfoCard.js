@@ -132,7 +132,6 @@ export default function InfoCard(props) {
               <IconButton onClick={() => setExpanded(!expanded)}>
                 <FormatListBulletedIcon />
               </IconButton>
-
               <IconButton onClick={() => setShowMenuDialog(true)}>
                 <AddShoppingCartIcon />
               </IconButton>
