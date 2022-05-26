@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: `0px 0px 20px rgba(1, 1, 1, 0.12)`,
   },
   wrap: { marginLeft: 'auto', display: 'flex', alignItems: 'center' },
-  toolbar: { margin: 'auto', display: 'flex', justifyContent: 'space-between', width: 700 },
+  toolbar: { margin: 'auto', display: 'flex', justifyContent: 'space-between', width: 900 },
 }));
 
 export default function Navbar() {
