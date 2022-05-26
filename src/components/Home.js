@@ -7,6 +7,7 @@ import { onValue } from 'firebase/database';
 import FormDialog from './FormDialog';
 import ManagementDialog from './ManagementDialog';
 import backgroundHomeImage from './../images/backgroundHome.jpeg';
+import { DEFAULT_ROOM } from '../constants/default';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -36,23 +37,18 @@ export default function Home() {
 
   const [form, setForm] = useState(true);
   const [manage, setManage] = useState(false);
-
   const [currentRoom, setCurrentRoom] = useState(null);
-  const [hotelNumbers, setHotelNumbers] = useState(
-    Array(10).fill(Array(6).fill({ room: null, booked: null, from: null, to: null, bookingDate: null, orders: [] })),
-  );
+  const [hotelNumbers, setHotelNumbers] = useState(Array(10).fill(Array(6).fill({ room: null, ...DEFAULT_ROOM })));
 
   useEffect(() => {
     getHotelNumbers().then((hotel) => {
-      hotel = hotel.map((floor) => floor.map((room) => ({ booked: null, from: null, to: null, bookingDate: null, orders: [], ...room })));
+      hotel = hotel.map((floor) => floor.map((room) => ({ ...DEFAULT_ROOM, ...room })));
       setHotelNumbers(hotel);
     });
   }, []);
 
   onValue(hotelRef, (snapshot) => {
-    const data = snapshot
-      .val()
-      .map((floor) => floor.map((roomInfo) => ({ booked: null, from: null, to: null, bookingDate: null, orders: [], ...roomInfo })));
+    const data = snapshot.val().map((floor) => floor.map((roomInfo) => ({ ...DEFAULT_ROOM, ...roomInfo })));
     if (JSON.stringify(data) !== JSON.stringify(hotelNumbers)) {
       setHotelNumbers(data);
     }
