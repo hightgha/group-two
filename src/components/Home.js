@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Home() {
   const classes = useStyles();
 
-  const [form, setForm] = useState(true);
+  const [form, setForm] = useState(false);
   const [manage, setManage] = useState(false);
   const [currentRoom, setCurrentRoom] = useState(null);
   const [hotelNumbers, setHotelNumbers] = useState(Array(10).fill(Array(6).fill({ room: null, ...DEFAULT_ROOM })));
