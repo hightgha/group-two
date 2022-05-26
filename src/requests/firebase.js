@@ -111,9 +111,34 @@ export async function setRoomInfo(roomNumber, roomInfo) {
   const floor = String(roomNumber).slice(0, -1) - 1;
   const room = String(roomNumber).slice(-1) - 1;
   const roomRef = ref(database, `/hotel/${floor}/${room}`);
-  const uid = uuidv4();
-  const logRef = ref(database, `/logs/${uid}`);
+  const logRef = ref(database, `/logs/${uuidv4()}`);
   const result = await update(roomRef, roomInfo);
   const logResult = await update(logRef, { ...roomInfo, roomNumber, logged: serverTimestamp() });
   return [result, logResult];
+}
+export async function getLogs() {
+  const snapshot = await get(ref(database, `/logs`));
+  return await snapshot.val();
+}
+export async function getOrders(roomNumber) {
+  const floor = String(roomNumber).slice(0, -1) - 1;
+  const room = String(roomNumber).slice(-1) - 1;
+  const snapshot = await get(ref(database, `/hotel/${floor}/${room}/orders`));
+  return await snapshot.val();
+}
+
+export async function setOrderState(roomNumber, order, type) {
+  const floor = String(roomNumber).slice(0, -1) - 1;
+  const room = String(roomNumber).slice(-1) - 1;
+  const orderRef = ref(database, `/hotel/${floor}/${room}/orders/${order.ID}`);
+  const logRef = ref(database, `/logs/${uuidv4()}`);
+  const result = await update(orderRef, { [type]: true });
+  const logResult = await update(logRef, { room: roomNumber, order, action: type });
+  return [result, logResult];
+}
+
+export function roomOrdersRef(number) {
+  const floor = String(number).slice(0, -1) - 1;
+  const room = String(number).slice(-1) - 1;
+  return ref(database, `/hotel/${floor}/${room}/orders/`);
 }
