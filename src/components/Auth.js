@@ -11,7 +11,7 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 const useStyles = makeStyles((theme) => ({
   container: {
     margin: 'auto',
-    maxWidth: 700,
+    maxWidth: 900,
   },
 }));
 

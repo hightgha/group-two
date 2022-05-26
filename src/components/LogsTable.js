@@ -15,31 +15,30 @@ export default function LogsTable() {
   const classes = useStyles();
   const [columnDefs] = useState([
     {
-      field: 'logged at',
+      field: 'Logged at',
       width: 185,
       cellRenderer: ({ data: { logged } }) => new Date(logged).toUTCString().slice(0, -4),
     },
-    { field: 'roomNumber', width: 75 },
+    { field: 'room', width: 85 },
     {
       field: 'action',
       width: 150,
-      cellRenderer: ({ data: { booked, orders } }) => booked || (orders?.length && 'order changed') || 'unbooked',
+      cellRenderer: ({ data: { booked, orders, action, order } }) =>
+        (booked && `Booked ${booked}`) || (orders?.length && 'Orders added') || (action && `Order ${order.ID} ${action}`) || 'Unbooked',
     },
     {
+      headerName: 'orders (changes)',
       field: 'orders',
       width: 100,
-      cellRenderer: ({ data: { orders } }) => orders?.length,
+      cellRenderer: ({ data: { orders, prevOrders } }) =>
+        orders?.length ? `${orders.length} ( +${orders.length - (prevOrders || 0)} )` : '-',
     },
-    { field: 'duration (From / To)', width: 190, cellRenderer: ({ data: { from, to } }) => (from ? from + ' / ' + to : '-') },
+    { field: 'Duration (From / To)', width: 190, cellRenderer: ({ data: { from, to } }) => (from ? from + ' / ' + to : '-') },
   ]);
 
   useEffect(() => {
     getLogs().then((data) => setRowData(Object.values(data).sort((a, b) => b.logged - a.logged)));
   }, []);
-
-  const getRowStyle = ({ data }) => {
-    return { backgroundColor: data.booked || data.orders ? 'rgba(240,128,128, 0.2)' : 'rgba(144,238,144, 0.2)' };
-  };
 
   const defaultColDef = { resizable: true, sortable: true };
 
@@ -54,7 +53,6 @@ export default function LogsTable() {
           rowData={rowData}
           columnDefs={columnDefs}
           defaultColDef={defaultColDef}
-          getRowStyle={getRowStyle}
         />
       </div>
     </>

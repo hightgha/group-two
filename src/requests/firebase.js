@@ -107,13 +107,13 @@ export async function getHotelNumbers() {
 }
 export const hotelRef = ref(database, '/hotel');
 
-export async function setRoomInfo(roomNumber, roomInfo) {
+export async function setRoomInfo(roomNumber, roomInfo, prevOrders) {
   const floor = String(roomNumber).slice(0, -1) - 1;
   const room = String(roomNumber).slice(-1) - 1;
   const roomRef = ref(database, `/hotel/${floor}/${room}`);
   const logRef = ref(database, `/logs/${uuidv4()}`);
   const result = await update(roomRef, roomInfo);
-  const logResult = await update(logRef, { ...roomInfo, roomNumber, logged: serverTimestamp() });
+  const logResult = await update(logRef, { ...roomInfo, room: roomNumber, logged: serverTimestamp(), prevOrders: prevOrders || null });
   return [result, logResult];
 }
 export async function getLogs() {
@@ -133,7 +133,7 @@ export async function setOrderState(roomNumber, order, type) {
   const orderRef = ref(database, `/hotel/${floor}/${room}/orders/${order.ID}`);
   const logRef = ref(database, `/logs/${uuidv4()}`);
   const result = await update(orderRef, { [type]: true });
-  const logResult = await update(logRef, { room: roomNumber, order, action: type });
+  const logResult = await update(logRef, { room: roomNumber, order, action: type, logged: serverTimestamp() });
   return [result, logResult];
 }
 
