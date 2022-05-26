@@ -6,6 +6,7 @@ import { getHotelNumbers, hotelRef } from '../requests/firebase';
 import { onValue } from 'firebase/database';
 import FormDialog from './FormDialog';
 import ManagementDialog from './ManagementDialog';
+import backgroundHomeImage from './../images/backgroundHome.jpeg';
 import { DEFAULT_ROOM } from '../constants/default';
 
 const useStyles = makeStyles((theme) => ({
@@ -13,8 +14,15 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     paddingTop: 30,
-    margin: 'auto',
-    width: 700,
+    margin: '0 auto',
+    width: 900,
+  },
+  body: {
+    backgroundImage: `url(${backgroundHomeImage})`,
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    minHeight: '100%',
   },
   blockText: {
     display: 'block',
@@ -27,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Home() {
   const classes = useStyles();
 
-  const [form, setForm] = useState(false);
+  const [form, setForm] = useState(true);
   const [manage, setManage] = useState(false);
   const [currentRoom, setCurrentRoom] = useState(null);
   const [hotelNumbers, setHotelNumbers] = useState(Array(10).fill(Array(6).fill({ room: null, ...DEFAULT_ROOM })));
@@ -47,7 +55,7 @@ export default function Home() {
   });
 
   return (
-    <div>
+    <div className={classes.body}>
       <div className={classes.container}>
         <Hotel hotel={hotelNumbers} onDoorClick={() => setManage(true)} onWindowClick={(roomInfo) => setCurrentRoom(roomInfo)} />
         {form && <FormDialog onClose={() => setForm(false)} />}

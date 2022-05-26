@@ -7,13 +7,16 @@ const useStyles = makeStyles((theme) => ({
   hotel: {
     width: 264,
     height: 540,
-    backgroundColor: '#dfdfdf',
+    backgroundColor: '#dfdfdf', //'rgba(149,150,149,0.7)', //,
+    boxShadow: ' 0px 0px 0px 5000px rgba(255,255,255,0.25)',
     padding: 8,
+    border: '0.05px solid rgba(63,64,63,0.7)',
   },
   window: {
     width: 28,
     height: 32,
     margin: 8,
+    //border: '0.05px solid rgba(63,64,63,0.7)',
   },
   floor: {
     display: 'flex',
@@ -23,18 +26,22 @@ const useStyles = makeStyles((theme) => ({
     height: 64,
     margin: 'auto',
     minWidth: 32,
+    backgroundColor: 'rgba(105,155,103, 0.5)',
+    //border: '0.05px solid rgba(63,64,63,0.5)',
   },
   free: {
-    background: 'rgba(144,238,144, 0.8)', // green
+    background: 'rgba(105,155,103, 0.5)', // green
   },
   booked: {
-    background: 'rgba(240,128,128, 0.8)', // red
+    background: 'rgba(130,74,74, 0.7)', // red
   },
   roomButton: {
     minWidth: 28,
     minHeight: 32,
     padding: 0,
     margin: 0,
+    border: 5,
+    borderColor: 'black',
   },
   reverse: {
     display: 'flex',

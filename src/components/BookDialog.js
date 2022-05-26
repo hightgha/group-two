@@ -4,15 +4,14 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import UserContext from '../contexts/UserContext';
 
-export default function BooklIconDialog(props) {
+export default function BookDialog(props) {
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const user = useContext(UserContext);
-  const { handleClose, onConfirm } = props;
+  const { handleClose, onConfirm, roomInfo } = props;
   console.log(user);
   return (
     <Dialog open onClose={handleClose} aria-labelledby='form-dialog-title'>

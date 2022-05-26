@@ -17,7 +17,7 @@ const useStyles = makeStyles({
 
 export default function FormDialog(props) {
   const classes = useStyles();
-  const [formType, setFormType] = useState(true);
+  const [formType, setFormType] = useState(false);
   const { onClose } = props;
   const user = useContext(UserContext);
   return (
