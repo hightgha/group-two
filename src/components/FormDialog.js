@@ -19,7 +19,7 @@ const useStyles = makeStyles({
 
 export default function FormDialog(props) {
   const classes = useStyles();
-  const [formType, setFormType] = useState(true);
+  const [formType, setFormType] = useState(false);
   const { onClose } = props;
   return (
     <Dialog open onClose={onClose}>

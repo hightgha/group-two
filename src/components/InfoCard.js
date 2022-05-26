@@ -2,10 +2,8 @@ import React, { useState, useContext, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core';
 import { Card, CardHeader, CardContent, CardActions, IconButton } from '@material-ui/core';
 import { Collapse, Divider, List, ListItem, ListItemText, Typography } from '@material-ui/core';
-import BookIcon from '@material-ui/icons/Book';
 import CancelIcon from '@material-ui/icons/Cancel';
 import CreateIcon from '@material-ui/icons/Create';
-import InfoIcon from '@material-ui/icons/Info';
 import Brightness1Icon from '@material-ui/icons/Brightness1';
 import CheckIcon from '@material-ui/icons/Check';
 import ClearIcon from '@material-ui/icons/Clear';
@@ -13,19 +11,25 @@ import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import MenuDialog from './MenuDialog';
-import BooklIconDialog from './BookIconDialog';
-import CancelIconDialog from './CancelIconDialog';
+import BookDialog from './BookDialog';
+import CancelDialog from './CancelDialog';
 import UserContext from '../contexts/UserContext';
 import { setRoomInfo } from '../requests/firebase';
+import PostAddIcon from '@material-ui/icons/PostAdd';
+import HelpOutlineOutlinedIcon from '@material-ui/icons/HelpOutlineOutlined';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { ABOUT_ROUTE } from '../constants/routes';
 
 const useStyles = makeStyles((theme) => ({
-  root: { margin: 'auto', maxWidth: 345 },
+  root: { margin: 'auto', maxWidth: 345, backgroundColor: '#dfdfdf', border: '0.05px solid rgba(63,64,63,0.7)' },
   bottomButton: { display: 'flex', justifyContent: 'center' },
-  red: { color: 'red' },
-  green: { color: 'green' },
+  red: { color: 'rgba(130,74,74, 0.7)' },
+  green: { color: 'rgba(105,155,103, 0.8)' },
   yellow: { color: 'orange' },
   expand: { transform: 'rotate(0deg)' },
   expandOpen: { transform: 'rotate(180deg)' },
+  helpIcon: { backgroundColor: 'rgba(105,155,103, 0.5)', color: 'black', border: '0.05px solid rgba(63,64,63,0.7)' },
+  bookIcon: { backgroundColor: 'rgba(105,155,103, 0.5)', color: 'black', border: '0.05px solid rgba(63,64,63,0.7)' },
 }));
 
 export default function InfoCard(props) {
@@ -36,6 +40,7 @@ export default function InfoCard(props) {
   const [showBookDialog, setShowBookDialog] = useState(false);
   const [showMenuDialog, setShowMenuDialog] = useState(false);
   const user = useContext(UserContext);
+  const navigate = useNavigate();
 
   function addItemFromMenu(item) {
     console.log(item);
@@ -52,7 +57,7 @@ export default function InfoCard(props) {
     setRoomInfo(roomInfo.room, data);
     onInfoChange({ ...data, room: roomInfo.room });
   }
-
+  //
   return (
     <>
       <Card className={classes.root}>
@@ -73,7 +78,7 @@ export default function InfoCard(props) {
                 onClick={() => {
                   setShowBookDialog(true);
                 }}>
-                <BookIcon />
+                <PostAddIcon className={classes.bookIcon} />
               </IconButton>
             ) : null
           }
@@ -99,6 +104,7 @@ export default function InfoCard(props) {
                 </IconButton>
               )}
               <IconButton
+                className={classes.book}
                 onClick={() => {
                   setShowBookDialog(true);
                 }}>
@@ -107,7 +113,12 @@ export default function InfoCard(props) {
             </>
           ) : (
             <IconButton>
-              <InfoIcon />
+              <HelpOutlineOutlinedIcon
+                className={classes.helpIcon}
+                onClick={() => {
+                  navigate(ABOUT_ROUTE);
+                }}
+              />
             </IconButton>
           )}
         </CardActions>
@@ -141,7 +152,7 @@ export default function InfoCard(props) {
         )}
       </Card>
       {showCancelDialog && (
-        <CancelIconDialog
+        <CancelDialog
           handleClose={() => {
             setShowCancelDialog(false);
           }}
@@ -150,7 +161,7 @@ export default function InfoCard(props) {
       )}
       {showMenuDialog && <MenuDialog handleClose={() => setShowMenuDialog(false)} onAddItem={addItemFromMenu} />}
       {showBookDialog && (
-        <BooklIconDialog
+        <BookDialog
           handleClose={() => {
             setShowBookDialog(false);
           }}
