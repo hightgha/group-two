@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { makeStyles } from '@material-ui/core';
 import { Card, CardHeader, CardContent, CardActions, IconButton } from '@material-ui/core';
 import { Collapse, Divider, List, ListItem, ListItemText, Typography } from '@material-ui/core';
@@ -7,16 +7,18 @@ import CreateIcon from '@material-ui/icons/Create';
 import Brightness1Icon from '@material-ui/icons/Brightness1';
 import CheckIcon from '@material-ui/icons/Check';
 import ClearIcon from '@material-ui/icons/Clear';
+import BookIcon from '@material-ui/icons/Book';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import MenuDialog from './MenuDialog';
 import BookDialog from './BookDialog';
 import CancelDialog from './CancelDialog';
 import UserContext from '../contexts/UserContext';
 import { setRoomInfo } from '../requests/firebase';
 import { ABOUT_ROUTE } from '../constants/routes';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { DEFAULT_ROOM } from '../constants/default';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -141,12 +143,7 @@ export default function InfoCard(props) {
             </>
           ) : (
             <IconButton>
-              <HelpOutlineOutlinedIcon
-                className={classes.helpIcon}
-                onClick={() => {
-                  navigate(ABOUT_ROUTE);
-                }}
-              />
+              <HelpOutlineIcon className={classes.helpIcon} onClick={() => navigate(ABOUT_ROUTE)} />
             </IconButton>
           )}
         </CardActions>
