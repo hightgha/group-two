@@ -21,9 +21,10 @@ import { ABOUT_ROUTE } from '../constants/routes';
 import { Link, useNavigate } from 'react-router-dom';
 import { DEFAULT_ROOM } from '../constants/default';
 import { v4 as uuidv4 } from 'uuid';
+import EditDialog from './EditDialog';
 
 const useStyles = makeStyles((theme) => ({
-  root: { margin: 'auto', maxWidth: 345, minWidth: 345 },
+  root: { maxWidth: 345, minWidth: 345 },
   bottomButton: { display: 'flex', justifyContent: 'center' },
   red: { color: 'rgba(240,128,128, 1)' },
   green: { color: 'rgba(144,238,144, 1)' },
@@ -56,6 +57,7 @@ export default function InfoCard(props) {
   const [expanded, setExpanded] = useState(false);
   const [showCancelDialog, setShowCancelDialog] = useState(false);
   const [showBookDialog, setShowBookDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
   const [showMenuDialog, setShowMenuDialog] = useState(false);
   const user = useContext(UserContext);
   const navigate = useNavigate();
@@ -84,7 +86,13 @@ export default function InfoCard(props) {
     setRoomInfo(roomInfo.room, data);
     onInfoChange({ ...data, room: roomInfo.room });
   }
-  //
+
+  function onConfirmEdit(data) {
+    setShowEditDialog(false);
+    setRoomInfo(roomInfo.room, { ...roomInfo, ...data });
+    onInfoChange({ ...roomInfo, ...data });
+  }
+
   return (
     <>
       <Card className={classes.root}>
@@ -137,13 +145,13 @@ export default function InfoCard(props) {
               <IconButton onClick={() => setShowMenuDialog(true)}>
                 <AddShoppingCartIcon />
               </IconButton>
-              <IconButton onClick={() => setShowBookDialog(true)}>
+              <IconButton onClick={() => setShowEditDialog(true)}>
                 <CreateIcon />
               </IconButton>
             </>
           ) : (
-            <IconButton>
-              <HelpOutlineIcon className={classes.helpIcon} onClick={() => navigate(ABOUT_ROUTE)} />
+            <IconButton onClick={() => navigate(ABOUT_ROUTE)}>
+              <HelpOutlineIcon />
             </IconButton>
           )}
         </CardActions>
@@ -173,6 +181,7 @@ export default function InfoCard(props) {
       {showCancelDialog && <CancelDialog handleClose={() => setShowCancelDialog(false)} onConfirm={onConfirmCancel} />}
       {showMenuDialog && <MenuDialog handleClose={() => setShowMenuDialog(false)} onAddItem={addItemFromMenu} />}
       {showBookDialog && <BookDialog handleClose={() => setShowBookDialog(false)} onConfirm={onConfirmBook} />}
+      {showEditDialog && <EditDialog handleClose={() => setShowEditDialog(false)} onConfirm={onConfirmEdit} roomInfo={roomInfo} />}
     </>
   );
 }

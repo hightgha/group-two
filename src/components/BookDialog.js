@@ -6,67 +6,32 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import TextField from '@material-ui/core/TextField';
 import UserContext from '../contexts/UserContext';
+import { DialogTitle } from '@material-ui/core';
 
 export default function BookDialog(props) {
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const user = useContext(UserContext);
-  const { handleClose, onConfirm, roomInfo } = props;
-  console.log(user);
+  const { handleClose, onConfirm } = props;
+  console.log(from, to);
   return (
-    <Dialog open onClose={handleClose} aria-labelledby='form-dialog-title'>
+    <Dialog open onClose={handleClose}>
+      <DialogTitle>Booking now</DialogTitle>
       <DialogContent>
-        {user ? (
-          <DialogContentText>Please enter how long you are going to be here</DialogContentText>
-        ) : (
-          <DialogContentText>Please Sign in for the first</DialogContentText>
-        )}
-
-        {user && (
-          <TextField
-            onChange={(e) => {
-              setFrom(e.target.value);
-            }}
-            value={from}
-            margin='dense'
-            type='date'
-            fullWidth
-          />
-        )}
-        {user && (
-          <TextField
-            onChange={(e) => {
-              setTo(e.target.value);
-            }}
-            value={to}
-            margin='dense'
-            type='date'
-            fullWidth
-          />
-        )}
+        <DialogContentText>Please enter how long you are going to be here</DialogContentText>
+        <TextField label='From' margin='dense' onChange={(e) => setFrom(e.target.value)} value={from} type='date' fullWidth />
+        <TextField label='To' margin='dense' onChange={(e) => setTo(e.target.value)} value={to} type='date' fullWidth />
       </DialogContent>
       <DialogActions>
-        {user && (
-          <Button onClick={handleClose} color='primary'>
-            Cancel
-          </Button>
-        )}
-        {user && (
-          <Button
-            onClick={() =>
-              onConfirm({
-                booked: user?.displayName,
-                from: from, //new Date(from).valueOf(),
-                to: to, //new Date(to).valueOf(),
-                bookingDate: new Date().valueOf(),
-                orders: [],
-              })
-            }
-            color='primary'
-            disabled={new Date(to).valueOf() < new Date(from).valueOf() || new Date(from).valueOf() < new Date().valueOf()}>
-            confirm
-          </Button>
-        )}
+        <Button onClick={handleClose} color='secondary'>
+          Cancel
+        </Button>
+        <Button
+          onClick={() => onConfirm({ booked: user.displayName, from: from, to: to, bookingDate: new Date().valueOf(), orders: [] })}
+          disabled={new Date(to).valueOf() < new Date(from).valueOf() || new Date(from).valueOf() < new Date().valueOf()}
+          color='primary'>
+          confirm
+        </Button>
       </DialogActions>
     </Dialog>
   );
