@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Dialog, DialogContent, DialogTitle, makeStyles, Tab, Tabs } from '@material-ui/core';
+import { Dialog, DialogContent, DialogTitle, Button, makeStyles, Tab, Tabs, useMediaQuery } from '@material-ui/core';
 import UserDataContext from '../contexts/UserDataContext';
 import UsersTable from './UsersTable';
 import HotelTable from './HotelTable';
@@ -9,11 +9,13 @@ const useStyles = makeStyles({
   root: {
     overflowY: 'scroll',
     '&::-webkit-scrollbar': {
-      width: 0,
-      background: 'none',
+      background: 'white',
+      width: 8,
     },
     '&::-webkit-scrollbar-thumb': {
-      background: 'none',
+      background: 'black',
+      width: 8,
+      borderRadius: 4,
     },
   },
 });
@@ -24,10 +26,13 @@ export default function ManagementTable(props) {
   const { onClose } = props;
   const userData = useContext(UserDataContext);
   const permission = userData?.permission;
+  const fullScreen = useMediaQuery('@media (max-width: 950px)');
+
   return (
-    <Dialog open onClose={onClose}>
+    <Dialog open fullScreen={fullScreen} onClose={onClose}>
       <DialogTitle>
         Management Dialog
+        {fullScreen && <Button onClick={onClose}>Close</Button>}
         <Tabs centered value={value} indicatorColor='primary' textColor='primary' onChange={(e, value) => setValue(value)}>
           <Tab label='Numbers / Orders' />
           <Tab label='Logs' disabled={permission !== 'cheif'} />

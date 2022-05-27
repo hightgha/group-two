@@ -7,6 +7,7 @@ import { changeUserInfo, getUsersList } from '../requests/firebase';
 
 const useStyles = makeStyles({
   size: { width: 500, height: 500, border: '1px solid rgba(1, 1, 1, 0.1)' },
+  '@media (max-width: 950px)': { size: { width: '95vw' } },
 });
 
 export default function UsersTable() {

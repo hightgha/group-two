@@ -15,9 +15,18 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-around',
     margin: '0 auto',
     width: 900,
-    height: 'calc(100vh - 64px)',
+    minHeight: 'calc(100vh - 84px)',
     alignItems: 'center',
     background: 'rgba(0,0,0,0.5)',
+    padding: 10,
+  },
+  '@media (max-width: 950px)': {
+    container: {
+      flexDirection: 'column',
+      maxWidth: '90vw',
+      minHeight: 'calc(100vh - 84px)',
+      maxHeight: 'max-content',
+    },
   },
   body: {
     backgroundImage: `url(${backgroundHomeImage})`,

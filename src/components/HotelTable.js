@@ -9,6 +9,7 @@ import OrdersTable from './OrdersTable';
 const useStyles = makeStyles({
   sizes: { width: 500, height: 500, border: '1px solid rgba(1, 1, 1, 0.1)' },
   wrap: { display: 'flex', justifyContent: 'center', alignItems: 'center' },
+  '@media (max-width: 950px)': { sizes: { width: '95vw' } },
 });
 
 export default function HotelTable() {
@@ -74,6 +75,7 @@ export default function HotelTable() {
       borderBottom: room % 10 === 6 && room !== 106 ? '3px solid rgba(1, 1, 1, 0.2)' : '',
     };
   };
+
   return (
     <>
       <div className={classes.sizes + ' ag-theme-material'}>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogTitle, ImageList, ImageListItem, ImageListItemBar, IconButton } from '@material-ui/core';
-import { Divider, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
+import { Divider, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, useMediaQuery } from '@material-ui/core';
 import { makeStyles, Tab, Tabs, Typography, Avatar, BottomNavigation, BottomNavigationAction, Button } from '@material-ui/core';
 import { DRINKS, MEALS } from '../constants/categories';
 import RemoveCircle from '@material-ui/icons/RemoveCircle';
@@ -20,6 +20,11 @@ const useStyles = makeStyles((theme) => ({
   orderList: { minWidth: 200, maxWidth: 200, minHeight: 460, maxHeight: 460, overflow: 'hidden scroll' },
   avatar: { width: theme.spacing(6), height: theme.spacing(6) },
   wrap: { display: 'flex', justifyContent: 'flex-end', alignItems: 'center' },
+  '@media (max-width: 950px)': {
+    imageList: { width: '90vw' },
+    orderList: { minWidth: '90vw', maxWidth: '90vw', minHeight: 'fit-content' },
+    rootImageList: { flexDirection: 'column' },
+  },
 }));
 
 export default function MenuDialog(props) {
@@ -31,6 +36,7 @@ export default function MenuDialog(props) {
   const [orders, setOrders] = useState([]);
   const [reservedData, setReservedData] = useState({ drinks: {}, meals: {} });
   const classes = useStyles();
+  const fullScreen = useMediaQuery('@media (max-width: 950px)');
 
   useEffect(() => {
     function fetchFromApi() {
@@ -63,7 +69,7 @@ export default function MenuDialog(props) {
 
   return (
     <div>
-      <Dialog open onClose={handleClose}>
+      <Dialog fullScreen={fullScreen} open onClose={handleClose}>
         <DialogTitle>
           <BottomNavigation value={navigation} onChange={(event, newValue) => setNavigation(newValue)} showLabels>
             <BottomNavigationAction label='Meal' icon={<FastfoodIcon />} />

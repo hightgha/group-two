@@ -1,14 +1,16 @@
 import React, { useContext, useState } from 'react';
 import UserContext from '../contexts/UserContext';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, TextField, DialogTitle } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, TextField, DialogTitle, useMediaQuery } from '@material-ui/core';
 
 export default function BookDialog(props) {
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const user = useContext(UserContext);
   const { handleClose, onConfirm } = props;
+  const fullScreen = useMediaQuery('@media (max-width: 950px)');
+
   return (
-    <Dialog open onClose={handleClose}>
+    <Dialog open fullScreen={fullScreen} onClose={handleClose}>
       <DialogTitle>Booking now</DialogTitle>
       <DialogContent>
         <DialogContentText>Please enter how long you are going to be here</DialogContentText>
