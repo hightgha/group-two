@@ -5,8 +5,9 @@ import { allImagesDeluxe, allImagesExecutive, allImagesPremier } from '../consta
 import { useState } from 'react';
 const useStyles = makeStyles({
   about: {
-    width: 900,
+    width: 900, //900
     margin: '0 auto',
+    backgroundColor: 'rgba(38,38,38,0.3)',
   },
   container: {
     display: 'flex',
@@ -15,7 +16,6 @@ const useStyles = makeStyles({
     justifyContent: 'spaceBetween',
     padding: 10,
     fontSize: '25px',
-    backgroundColor: 'rgba(38,38,38,0.5)',
   },
 
   aboutEachRoom: {
@@ -37,7 +37,7 @@ const useStyles = makeStyles({
   header: {
     backgroundImage: `url(${backgroundForHead})`,
     padding: '10px 0px 60px 0px',
-    height: '270px',
+    height: '370px',
     color: 'white',
   },
   aboutHotel: {
