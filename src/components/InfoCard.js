@@ -24,7 +24,7 @@ import { v4 as uuidv4 } from 'uuid';
 import EditDialog from './EditDialog';
 
 const useStyles = makeStyles((theme) => ({
-  root: { maxWidth: 345, minWidth: 345 },
+  root: { maxWidth: 345, minWidth: 345, backgroundColor: '#dfdfdf' },
   bottomButton: { display: 'flex', justifyContent: 'center' },
   red: { color: 'rgba(240,128,128, 1)' },
   green: { color: 'rgba(144,238,144, 1)' },
