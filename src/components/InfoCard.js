@@ -24,7 +24,7 @@ import { v4 as uuidv4 } from 'uuid';
 import EditDialog from './EditDialog';
 
 const useStyles = makeStyles((theme) => ({
-  root: { maxWidth: 345, minWidth: 345 },
+  root: { maxWidth: 345, minWidth: 345, backgroundColor: '#dfdfdf' },
   bottomButton: { display: 'flex', justifyContent: 'center' },
   red: { color: 'rgba(240,128,128, 1)' },
   green: { color: 'rgba(144,238,144, 1)' },
@@ -115,8 +115,8 @@ export default function InfoCard(props) {
         <CardContent>
           <Typography>
             {(roomInfo.room % 10 === 1 || roomInfo.room % 10 === 6) && 'DELUXE'}
-            {(roomInfo.room % 10 === 2 || roomInfo.room % 10 === 5) && 'VIP'}
-            {(roomInfo.room % 10 === 3 || roomInfo.room % 10 === 4) && 'STANDART'}
+            {(roomInfo.room % 10 === 2 || roomInfo.room % 10 === 5) && 'PREMIER'}
+            {(roomInfo.room % 10 === 3 || roomInfo.room % 10 === 4) && 'EXECUTIVE'}
           </Typography>
           {user?.displayName === roomInfo.booked ? (
             <Typography paragraph variant='body2'>

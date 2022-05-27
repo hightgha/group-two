@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#dfdfdf', //'rgba(149,150,149,0.7)', //,
     boxShadow: ' 0px 0px 0px 5000px rgba(255,255,255,0.25)',
     padding: 8,
-    border: '0.05px solid rgba(63,64,63,0.7)',
+    border: '1px solid rgba(63,64,63,0.7)',
   },
   window: {
     width: 28,
