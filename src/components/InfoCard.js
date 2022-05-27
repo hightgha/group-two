@@ -107,8 +107,8 @@ export default function InfoCard(props) {
         <CardContent>
           <Typography>
             {(roomInfo.room % 10 === 1 || roomInfo.room % 10 === 6) && 'DELUXE'}
-            {(roomInfo.room % 10 === 2 || roomInfo.room % 10 === 5) && 'VIP'}
-            {(roomInfo.room % 10 === 3 || roomInfo.room % 10 === 4) && 'STANDART'}
+            {(roomInfo.room % 10 === 2 || roomInfo.room % 10 === 5) && 'PREMIER'}
+            {(roomInfo.room % 10 === 3 || roomInfo.room % 10 === 4) && 'EXECUTIVE'}
           </Typography>
           {user?.displayName === roomInfo.booked ? (
             <Typography paragraph variant='body2'>

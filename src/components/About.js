@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core';
 import Carousel from './Carousel';
 import backgroundForHead from './../images/backgroundForHead.jpg';
-import { allImagesDeluxe, allImagesExecutive, allImagesPremier } from './CarouselData';
+import { allImagesDeluxe, allImagesExecutive, allImagesPremier } from '../constants/carouselData';
 import { useState } from 'react';
 const useStyles = makeStyles({
   about: {
@@ -69,7 +69,7 @@ export default function About() {
       </div>
       <div className={classes.container}>
         <div className={classes.carousel}>
-          <Carousel imgs={allImagesDeluxe} />
+          <Carousel imgs={allImagesDeluxe} subTitle='DeluxeSuite' />
         </div>
         <div className={classes.aboutEachRoom}>
           <p>
@@ -78,7 +78,6 @@ export default function About() {
             stunning view of the city center.
           </p>
           <p>
-            {' '}
             <b>Amenities: </b>
           </p>
           <p>• Size: 35-39 sq. m. </p>
@@ -117,13 +116,13 @@ export default function About() {
           <p>• Kitchen, ask the reception for the kitchen utensils (dial 2).</p>
         </div>
         <div className={classes.carousel}>
-          <Carousel imgs={allImagesPremier} />
+          <Carousel imgs={allImagesPremier} subTitle='PremierSuite' />
         </div>
       </div>
 
       <div className={classes.container}>
         <div className={classes.carousel}>
-          <Carousel imgs={allImagesExecutive} />
+          <Carousel imgs={allImagesExecutive} subTitle='ExecutiveSuite' />
         </div>
         <div className={classes.aboutEachRoom}>
           <p>

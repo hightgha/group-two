@@ -60,7 +60,7 @@ export default function Carousel(props) {
             <ArrowBackIosIcon />
           </div>
 
-          <div className={classes.middle}>{props.imgs[index].subTitle}</div>
+          <div className={classes.middle}>{props.subTitle}</div>
 
           <div className={classes.rightSide} onClick={() => (index < props.imgs.length - 1 ? setIndex(index + 1) : setIndex(0))}>
             <ArrowForwardIosIcon />
