@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { Dialog, DialogContent, DialogTitle, Button, makeStyles, Tab, Tabs, useMediaQuery } from '@material-ui/core';
-import UserDataContext from '../contexts/UserDataContext';
-import UsersTable from './UsersTable';
-import HotelTable from './HotelTable';
-import LogsTable from './LogsTable';
+import UserDataContext from '../../contexts/UserDataContext';
+import UsersTable from '../tables/UsersTable';
+import HotelTable from '../tables/HotelTable';
+import LogsTable from '../tables/LogsTable';
 
 const useStyles = makeStyles({
   root: {
@@ -26,13 +26,12 @@ export default function ManagementTable(props) {
   const { onClose } = props;
   const userData = useContext(UserDataContext);
   const permission = userData?.permission;
-  const fullScreen = useMediaQuery('@media (max-width: 950px)');
 
   return (
-    <Dialog open fullScreen={fullScreen} onClose={onClose}>
+    <Dialog open fullScreen onClose={onClose}>
       <DialogTitle>
         Management Dialog
-        {fullScreen && <Button onClick={onClose}>Close</Button>}
+        <Button onClick={onClose}>Close</Button>
         <Tabs centered value={value} indicatorColor='primary' textColor='primary' onChange={(e, value) => setValue(value)}>
           <Tab label='Numbers / Orders' />
           <Tab label='Logs' disabled={permission !== 'cheif'} />
