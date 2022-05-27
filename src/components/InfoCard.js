@@ -68,10 +68,10 @@ export default function InfoCard(props) {
     onInfoChange({ ...roomInfo, orders });
   }
 
-  function addItemFromMenu(items) {
+  function addItemsFromMenu(items) {
     const orders = [...roomInfo?.orders, ...items];
     setShowMenuDialog(false);
-    setRoomInfo(roomInfo.room, { orders });
+    setRoomInfo(roomInfo.room, { orders }, roomInfo?.orders?.length);
     onInfoChange({ ...roomInfo, orders });
   }
 
@@ -179,7 +179,7 @@ export default function InfoCard(props) {
         )}
       </Card>
       {showCancelDialog && <CancelDialog handleClose={() => setShowCancelDialog(false)} onConfirm={onConfirmCancel} />}
-      {showMenuDialog && <MenuDialog handleClose={() => setShowMenuDialog(false)} onAddItem={addItemFromMenu} />}
+      {showMenuDialog && <MenuDialog handleClose={() => setShowMenuDialog(false)} onAddItem={addItemsFromMenu} />}
       {showBookDialog && <BookDialog handleClose={() => setShowBookDialog(false)} onConfirm={onConfirmBook} />}
       {showEditDialog && <EditDialog handleClose={() => setShowEditDialog(false)} onConfirm={onConfirmEdit} roomInfo={roomInfo} />}
     </>
