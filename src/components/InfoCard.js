@@ -12,16 +12,16 @@ import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
-import MenuDialog from './MenuDialog';
-import BookDialog from './BookDialog';
-import CancelDialog from './CancelDialog';
+import MenuDialog from './dialogs/MenuDialog';
+import BookDialog from './dialogs/BookDialog';
+import CancelDialog from './dialogs/CancelDialog';
 import UserContext from '../contexts/UserContext';
 import { setRoomInfo } from '../requests/firebase';
 import { ABOUT_ROUTE } from '../constants/routes';
 import { Link, useNavigate } from 'react-router-dom';
 import { DEFAULT_ROOM } from '../constants/default';
 import { v4 as uuidv4 } from 'uuid';
-import EditDialog from './EditDialog';
+import EditDialog from './dialogs/EditDialog';
 
 const useStyles = makeStyles((theme) => ({
   root: { maxWidth: 345, minWidth: 345, backgroundColor: '#dfdfdf' },

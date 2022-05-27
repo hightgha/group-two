@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import UserContext from '../contexts/UserContext';
+import UserContext from '../../contexts/UserContext';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, TextField, DialogTitle, useMediaQuery } from '@material-ui/core';
 
 export default function BookDialog(props) {
@@ -22,8 +22,8 @@ export default function BookDialog(props) {
           Cancel
         </Button>
         <Button
-          onClick={() => onConfirm({ booked: user.displayName, from: from, to: to, bookingDate: new Date().valueOf(), orders: [] })}
-          disabled={!from || !to || new Date(to).valueOf() < new Date(from).valueOf() || new Date(from).valueOf() < new Date().valueOf()}
+          onClick={() => onConfirm({ booked: user.displayName, from, to, bookingDate: new Date().valueOf(), orders: [] })}
+          disabled={!from || !to || new Date(to) < new Date(from) || new Date(from) < new Date()}
           color='primary'>
           confirm
         </Button>

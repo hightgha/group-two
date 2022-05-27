@@ -33,6 +33,7 @@ export default function App() {
       setUser(data);
     }
   });
+
   useEffect(() => {
     if (user) {
       getUserData(user.displayName).then((data) => {
@@ -44,6 +45,7 @@ export default function App() {
       setUserData(null);
     }
   }, [user]);
+
   return (
     <>
       <UserContext.Provider value={user}>

@@ -3,13 +3,18 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
 import { Button, makeStyles, Typography } from '@material-ui/core';
-import { getHotelNumbers } from '../requests/firebase';
+import { getHotelNumbers } from '../../requests/firebase';
 import OrdersTable from './OrdersTable';
 
 const useStyles = makeStyles({
-  sizes: { width: 500, height: 500, border: '1px solid rgba(1, 1, 1, 0.1)' },
-  wrap: { display: 'flex', justifyContent: 'center', alignItems: 'center' },
-  '@media (max-width: 950px)': { sizes: { width: '95vw' } },
+  tableWrap: { display: 'flex', justifyContent: 'space-between' },
+  sizes: { width: 650, height: 500, border: '1px solid rgba(1, 1, 1, 0.1)' },
+  buttonWrap: { display: 'flex', justifyContent: 'center', alignItems: 'center' },
+  '@media (max-width: 1250px)': {
+    sizes: { width: '90vw' },
+    tableWrap: { flexDirection: 'column' },
+    wrap: { display: 'flex', flexDirection: 'column-reverse' },
+  },
 });
 
 export default function HotelTable() {
@@ -77,7 +82,7 @@ export default function HotelTable() {
   };
 
   return (
-    <>
+    <div className={classes.tableWrap}>
       <div className={classes.sizes + ' ag-theme-material'}>
         <AgGridReact
           animateRows='true'
@@ -89,8 +94,9 @@ export default function HotelTable() {
         />
       </div>
       {orders && (
-        <>
-          <div className={classes.wrap}>
+        <div className={classes.wrap}>
+          <OrdersTable roomNumber={orders} />
+          <div className={classes.buttonWrap}>
             <Typography variant='button' align='center'>
               Room: {orders}
             </Typography>
@@ -98,9 +104,8 @@ export default function HotelTable() {
               close
             </Button>
           </div>
-          <OrdersTable roomNumber={orders} />
-        </>
+        </div>
       )}
-    </>
+    </div>
   );
 }

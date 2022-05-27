@@ -4,12 +4,12 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
 import { makeStyles } from '@material-ui/core';
 import { Button } from '@material-ui/core';
-import { getOrders, roomOrdersRef, setOrderState } from '../requests/firebase';
+import { getOrders, roomOrdersRef, setOrderState } from '../../requests/firebase';
 import { onValue } from 'firebase/database';
 
 const useStyles = makeStyles({
   size: { width: 500, height: 500, border: '1px solid rgba(1, 1, 1, 0.1)' },
-  '@media (max-width: 950px)': { size: { width: '95vw' } },
+  '@media (max-width: 1250px)': { size: { width: '90vw' } },
 });
 
 export default function OrdersTable(props) {
