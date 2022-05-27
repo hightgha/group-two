@@ -17,7 +17,7 @@ export default function EditDialog(props) {
         <Button onClick={handleClose} color='secondary'>
           Cancel
         </Button>
-        <Button onClick={() => onConfirm({ to })} disabled={new Date(to).valueOf() < new Date().valueOf()} color='primary'>
+        <Button onClick={() => onConfirm({ to })} disabled={new Date(to) < new Date()} color='primary'>
           confirm
         </Button>
       </DialogActions>

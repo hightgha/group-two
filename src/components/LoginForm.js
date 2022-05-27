@@ -57,7 +57,7 @@ export default function LoginForm() {
             if (usernameError) setUsernameError('');
           }}
           required
-          label='username / email address'
+          label='username'
           variant='outlined'
           error={(!!username && username.length < 3) || !!usernameError}
           helperText={usernameError}

@@ -11,7 +11,7 @@ import { signOutUser } from '../requests/firebase';
 import avatars from '../avatars';
 
 const useStyles = makeStyles((theme) => ({
-  appBar: { position: 'sticky', backgroundColor: 'rgba(105,155,103, 1)' },
+  appBar: { position: 'sticky', backgroundColor: 'rgb(169,169,169)' },
   logo: { maxWidth: 160, maxHeight: 50 },
   navlinks: { color: 'black', margin: 5, textDecoration: 'none' },
   button: { fontSize: 16 },

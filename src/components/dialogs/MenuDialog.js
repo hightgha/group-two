@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogTitle, ImageList, ImageListItem, ImageListItemBar, IconButton } from '@material-ui/core';
 import { Divider, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, useMediaQuery } from '@material-ui/core';
 import { makeStyles, Tab, Tabs, Typography, Avatar, BottomNavigation, BottomNavigationAction, Button } from '@material-ui/core';
-import { DRINKS, MEALS } from '../constants/categories';
+import { DRINKS, MEALS } from '../../constants/categories';
 import RemoveCircle from '@material-ui/icons/RemoveCircle';
 import FastfoodIcon from '@material-ui/icons/Fastfood';
 import LocalBarIcon from '@material-ui/icons/LocalBar';

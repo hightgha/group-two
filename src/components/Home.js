@@ -4,8 +4,8 @@ import InfoCard from './InfoCard';
 import { useEffect, useState } from 'react';
 import { getHotelNumbers, hotelRef } from '../requests/firebase';
 import { onValue } from 'firebase/database';
-import FormDialog from './FormDialog';
-import ManagementDialog from './ManagementDialog';
+import FormDialog from './dialogs/FormDialog';
+import ManagementDialog from './dialogs/ManagementDialog';
 import backgroundHomeImage from './../images/backgroundHome.jpeg';
 import { DEFAULT_ROOM } from '../constants/default';
 
