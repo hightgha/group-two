@@ -12,17 +12,18 @@ import { DEFAULT_ROOM } from '../constants/default';
 const useStyles = makeStyles((theme) => ({
   container: {
     display: 'flex',
-    justifyContent: 'center',
-    paddingTop: 30,
+    justifyContent: 'space-around',
     margin: '0 auto',
     width: 900,
+    height: 'calc(100vh - 64px)',
+    alignItems: 'center',
+    background: 'rgba(0,0,0,0.5)',
   },
   body: {
     backgroundImage: `url(${backgroundHomeImage})`,
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
-    minHeight: '100%',
   },
   blockText: {
     display: 'block',
@@ -48,7 +49,7 @@ export default function Home() {
   }, []);
 
   onValue(hotelRef, (snapshot) => {
-    const data = snapshot.val().map((floor) => floor.map((roomInfo) => ({ ...DEFAULT_ROOM, ...roomInfo })));
+    const data = snapshot.val()?.map((floor) => floor.map((roomInfo) => ({ ...DEFAULT_ROOM, ...roomInfo })));
     if (JSON.stringify(data) !== JSON.stringify(hotelNumbers)) {
       setHotelNumbers(data);
     }

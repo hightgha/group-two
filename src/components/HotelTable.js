@@ -60,7 +60,7 @@ export default function HotelTable() {
       },
     },
   ]);
-  const defaultColDef = { resizable: true, sortable: true };
+  const defaultColDef = { sortingOrder: ['desc', 'asc'], resizable: true, sortable: true };
 
   useEffect(() => {
     getHotelNumbers().then((data) => {
