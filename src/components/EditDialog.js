@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Button } from '@material-ui/core';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Button, useMediaQuery } from '@material-ui/core';
 
 export default function EditDialog(props) {
   const [to, setTo] = useState('');
   const { handleClose, onConfirm, roomInfo } = props;
+  const fullScreen = useMediaQuery('@media (max-width: 950px)');
+
   return (
-    <Dialog open onClose={handleClose}>
+    <Dialog open fullScreen={fullScreen} onClose={handleClose}>
       <DialogTitle>Editing room {roomInfo.room}</DialogTitle>
       <DialogContent>
         <DialogContentText>You can only change booking second date</DialogContentText>

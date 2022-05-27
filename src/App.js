@@ -16,7 +16,6 @@ import { auth, getUserData } from './requests/firebase';
 const useStyles = makeStyles((theme) => ({
   App: {
     textAlign: 'center',
-    height: '100vh',
   },
 }));
 

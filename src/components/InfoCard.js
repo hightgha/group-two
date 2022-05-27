@@ -42,12 +42,16 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: 310,
     overflowY: 'scroll',
     '&::-webkit-scrollbar': {
-      width: 0,
+      width: 8,
       background: 'none',
     },
     '&::-webkit-scrollbar-thumb': {
-      background: 'none',
+      background: 'grey',
+      borderRadius: 4,
     },
+  },
+  '@media (max-width: 950px)': {
+    root: { backgroundColor: '#dfdfdf', marginTop: 30 },
   },
 }));
 

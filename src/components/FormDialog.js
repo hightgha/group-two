@@ -8,7 +8,7 @@ import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import { makeStyles, Typography } from '@material-ui/core';
+import { makeStyles, Typography, useMediaQuery } from '@material-ui/core';
 import UserContext from '../contexts/UserContext';
 
 const useStyles = makeStyles({
@@ -20,9 +20,11 @@ export default function FormDialog(props) {
   const [formType, setFormType] = useState(true);
   const { onClose } = props;
   const user = useContext(UserContext);
+  const fullScreen = useMediaQuery('@media (max-width: 950px)');
+
   return (
     !user && (
-      <Dialog open onClose={onClose}>
+      <Dialog open fullScreen={fullScreen} onClose={onClose}>
         <DialogTitle className={classes.center}>
           <Typography variant='button'>{formType ? 'please sign in to continue' : 'please sign up to continue'}</Typography>
         </DialogTitle>
