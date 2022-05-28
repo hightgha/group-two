@@ -172,7 +172,12 @@ export default function InfoCard(props) {
                   ) : (
                     <AccessTimeIcon className={classes.yellow} />
                   )}
-                  <ListItemText secondary={order.str} />
+                  <ListItemText
+                    {...{
+                      primary: !order.canceled && !order.completed && order.str,
+                      secondary: (order.canceled || order.completed) && order.str,
+                    }}
+                  />
                   <IconButton disabled={order.canceled || order.completed} onClick={() => cancelOrder(index)} size='small'>
                     <ClearIcon />
                   </IconButton>

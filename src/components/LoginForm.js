@@ -1,6 +1,6 @@
-import { Button, makeStyles, TextField } from '@material-ui/core';
+import { Button, makeStyles, TextField, Typography } from '@material-ui/core';
 import { useState } from 'react';
-import { getUserData, signInUser } from '../requests/firebase';
+import { getUserData, sendResetPassword, signInUser } from '../requests/firebase';
 
 const useStyles = makeStyles((theme) => ({
   formWrap: {
@@ -21,15 +21,25 @@ export default function LoginForm() {
   const [password, setPassword] = useState('');
   const [usernameError, setUsernameError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [reset, setReset] = useState(false);
+  const [resetInfo, setResetInfo] = useState('');
   const classes = useStyles();
 
   async function onLogin() {
     let login = username;
-    if (!username.includes('@')) {
+    if (
+      !username.includes('@') &&
+      !username.includes('.') &&
+      !username.includes('#') &&
+      !username.includes('$') &&
+      !username.includes('[') &&
+      !username.includes(']')
+    ) {
       const data = await getUserData(username);
       let email = data?.email;
       if (!email) {
         setUsernameError('Incorrect email or username.');
+        setReset(true);
         return;
       }
       login = email;
@@ -38,12 +48,18 @@ export default function LoginForm() {
     if (result.code) {
       if (result.code === 'auth/wrong-password') {
         setPasswordError('Wrong password');
+        setReset(true);
         return;
       }
       setUsernameError('User not found. Incorrect username');
+      setReset(true);
       return;
     }
     return true;
+  }
+  async function resetPassword() {
+    const result = await sendResetPassword(username);
+    setResetInfo(result);
   }
 
   return (
@@ -76,6 +92,12 @@ export default function LoginForm() {
           error={(!!password && password.length < 6) || !!passwordError}
           helperText={passwordError}
         />
+        {reset && <Button onClick={resetPassword}>Reset password</Button>}
+        {resetInfo && (
+          <Typography variant='subtitle2' color={resetInfo.includes('sended') ? 'primary' : 'secondary'}>
+            {resetInfo}
+          </Typography>
+        )}
         <Button onClick={onLogin} variant='outlined' disabled={username.length < 3 || password.length < 6}>
           Sign in
         </Button>

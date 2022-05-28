@@ -12,10 +12,20 @@ import { ABOUT_ROUTE, HOME_ROUTE, PROFILE_ROUTE, SIGNIN_ROUTE, SIGNUP_ROUTE } fr
 import UserContext from './contexts/UserContext';
 import UserDataContext from './contexts/UserDataContext';
 import { auth, getUserData } from './requests/firebase';
+import backgroundHomeImage from './images/';
 
 const useStyles = makeStyles((theme) => ({
   App: {
     textAlign: 'center',
+    backgroundImage: `url(${backgroundHomeImage})`,
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    backgroundAttachment: 'fixed',
+    minHeight: '100vh',
+    justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'column',
   },
 }));
 
