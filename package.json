@@ -19,6 +19,7 @@
     "firebase": "^9.8.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
+    "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "6",
     "react-scripts": "5.0.1",
     "uuidv4": "^6.2.13",

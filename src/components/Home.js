@@ -6,7 +6,6 @@ import { getHotelNumbers, hotelRef } from '../requests/firebase';
 import { onValue } from 'firebase/database';
 import FormDialog from './dialogs/FormDialog';
 import ManagementDialog from './dialogs/ManagementDialog';
-import backgroundHomeImage from './../images/backgroundHome.jpeg';
 import { DEFAULT_ROOM } from '../constants/default';
 
 const useStyles = makeStyles((theme) => ({
@@ -27,12 +26,6 @@ const useStyles = makeStyles((theme) => ({
       minHeight: 'calc(100vh - 84px)',
       maxHeight: 'max-content',
     },
-  },
-  body: {
-    backgroundImage: `url(${backgroundHomeImage})`,
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
   },
   blockText: {
     display: 'block',

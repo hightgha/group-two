@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, signOut } from 'firebase/auth';
+import { getAuth, sendPasswordResetEmail, signOut } from 'firebase/auth';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { updateProfile } from 'firebase/auth';
@@ -141,4 +141,12 @@ export function roomOrdersRef(number) {
   const floor = String(number).slice(0, -1) - 1;
   const room = String(number).slice(-1) - 1;
   return ref(database, `/hotel/${floor}/${room}/orders/`);
+}
+
+export async function sendResetPassword(email) {
+  let result = 'password reset sended. check your email';
+  await sendPasswordResetEmail(auth, email).catch((error) => {
+    result = error.code.slice(5).split('-').join(' ');
+  });
+  return result;
 }
