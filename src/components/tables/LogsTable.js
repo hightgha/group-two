@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core';
 import { getLogs } from '../../requests/firebase';
 
 const useStyles = makeStyles(() => ({
-  size: { width: '90vw', height: 500, border: '1px solid rgba(1, 1, 1, 0.1)' },
+  size: { width: '95vw', height: 500, border: '1px solid rgba(1, 1, 1, 0.1)' },
 }));
 
 export default function LogsTable() {
@@ -15,10 +15,11 @@ export default function LogsTable() {
   const [columnDefs] = useState([
     {
       field: 'Logged at',
-      width: 185,
+      pinned: 'left',
+      width: 200,
       cellRenderer: ({ data: { logged } }) => new Date(logged).toUTCString().slice(0, -4),
     },
-    { field: 'room', width: 85 },
+    { field: 'room', width: 90 },
     {
       field: 'action',
       width: 150,
@@ -28,11 +29,11 @@ export default function LogsTable() {
     {
       headerName: 'orders (changes)',
       field: 'orders',
-      width: 100,
+      width: 150,
       cellRenderer: ({ data: { orders, prevOrders } }) =>
         orders?.length ? `${orders.length} ( +${orders.length - (prevOrders || 0)} )` : '-',
     },
-    { field: 'Duration (From / To)', width: 190, cellRenderer: ({ data: { from, to } }) => (from ? from + ' / ' + to : '-') },
+    { field: 'Duration (From / To)', width: 200, cellRenderer: ({ data: { from, to } }) => (from ? from + ' / ' + to : '-') },
   ]);
 
   useEffect(() => {

@@ -8,10 +8,9 @@ import OrdersTable from './OrdersTable';
 
 const useStyles = makeStyles({
   tableWrap: { display: 'flex', justifyContent: 'space-between' },
-  sizes: { width: 650, height: 500, border: '1px solid rgba(1, 1, 1, 0.1)' },
+  sizes: { width: '95vw', height: 500, border: '1px solid rgba(1, 1, 1, 0.1)' },
   buttonWrap: { display: 'flex', justifyContent: 'center', alignItems: 'center' },
   '@media (max-width: 1250px)': {
-    sizes: { width: '90vw' },
     tableWrap: { flexDirection: 'column' },
     wrap: { display: 'flex', flexDirection: 'column-reverse' },
   },
@@ -24,6 +23,7 @@ export default function HotelTable() {
   const [columnDefs] = useState([
     { field: 'room', pinned: 'left', width: 80 },
     {
+      headerName: 'Status',
       field: 'booked',
       width: 120,
       editable: true,
@@ -46,21 +46,21 @@ export default function HotelTable() {
     },
     {
       field: 'from',
-      width: 110,
+      width: 120,
       cellRenderer: ({ data: { from } }) => {
         return from ? new Date(from).toLocaleDateString() : '-';
       },
     },
     {
       field: 'to',
-      width: 110,
+      width: 120,
       cellRenderer: ({ data: { to } }) => {
         return to ? new Date(to).toLocaleDateString() : '-';
       },
     },
     {
       field: 'bookingDate',
-      width: 110,
+      width: 120,
       cellRenderer: ({ data: { bookingDate } }) => {
         return bookingDate ? new Date(bookingDate).toLocaleDateString() : '-';
       },

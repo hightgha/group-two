@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core';
 import { changeUserInfo, getUsersList } from '../../requests/firebase';
 
 const useStyles = makeStyles({
-  size: { width: '90vw', height: 500, border: '1px solid rgba(1, 1, 1, 0.1)' },
+  size: { width: '95vw', height: 500, border: '1px solid rgba(1, 1, 1, 0.1)' },
 });
 
 export default function UsersTable() {
@@ -16,7 +16,7 @@ export default function UsersTable() {
     { field: 'username', pinned: 'left', width: 110 },
     {
       field: 'permission',
-      width: 90,
+      width: 110,
       editable: true,
       valueGetter: (params) => params.data.permission,
       valueSetter: (params) => {
@@ -33,8 +33,8 @@ export default function UsersTable() {
     },
     { field: 'displayName', width: 150 },
     { field: 'email' },
-    { field: 'gender', width: 75 },
-    { field: 'avatar', width: 75 },
+    { field: 'gender', width: 90, cellRenderer: ({ data: { gender } }) => (gender === 'm' ? 'Male' : 'Female') },
+    { field: 'avatar', width: 90 },
   ]);
 
   useEffect(() => {
