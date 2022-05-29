@@ -1,4 +1,4 @@
-import { Button, List, ListItem, ListItemText, makeStyles } from '@material-ui/core';
+import { Button, Card, List, ListItem, ListItemText, makeStyles, Typography } from '@material-ui/core';
 import { useContext, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { HOME_ROUTE } from '../constants/routes';
@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    minWidth: 700,
+    padding: 20,
   },
 }));
 export default function Profile() {
@@ -28,9 +28,10 @@ export default function Profile() {
   }, [user]);
 
   return (
-    <div className={classes.container}>
+    <Card className={classes.container}>
       {user ? (
         <>
+          <Typography variant='h5'>Profile</Typography>
           <List>
             <ListItem>
               <ListItemText primary={`Username: ${user.displayName}`} />
@@ -41,7 +42,11 @@ export default function Profile() {
             <ListItem>
               <ListItemText
                 primary={`Email address: ${userData.email}`}
-                secondary={'Verified status: ' + (user.emailVerified ? 'Verified' : 'Not Verified')}
+                secondary={
+                  <Typography color={user.emailVerified ? 'primary' : 'secondary'} variant='caption'>
+                    {'Verified status: ' + (user.emailVerified ? 'Verified' : 'Not Verified')}
+                  </Typography>
+                }
               />
             </ListItem>
             {!user.emailVerified && (
@@ -65,6 +70,6 @@ export default function Profile() {
       ) : (
         <Navigate to={HOME_ROUTE} />
       )}
-    </div>
+    </Card>
   );
 }

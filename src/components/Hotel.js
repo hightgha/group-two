@@ -2,14 +2,13 @@ import { Button, makeStyles, Paper } from '@material-ui/core';
 import clsx from 'clsx';
 import { useContext } from 'react';
 import UserDataContext from '../contexts/UserDataContext';
-
+import { COLOR_RED, COLOR_GREEN, COLOR_MOOD_GRAY, COLOR_LIGHT_GRAY } from '../constants/default';
 const useStyles = makeStyles((theme) => ({
   hotel: {
     width: 264,
     height: 540,
-    backgroundColor: '#dfdfdf',
+    backgroundColor: COLOR_LIGHT_GRAY,
     padding: 8,
-    border: '1px solid rgba(63,64,63,0.7)',
   },
   window: {
     width: 28,
@@ -24,21 +23,19 @@ const useStyles = makeStyles((theme) => ({
     height: 64,
     margin: 'auto',
     minWidth: 32,
-    backgroundColor: 'rgba(105,155,103, 0.5)',
+    backgroundColor: COLOR_MOOD_GRAY,
   },
   free: {
-    background: 'rgba(105,155,103, 0.9)', // green
+    background: COLOR_GREEN,
   },
   booked: {
-    background: 'rgba(130,74,74, 0.9)', // red
+    background: COLOR_RED,
   },
   roomButton: {
     minWidth: 28,
     minHeight: 32,
     padding: 0,
     margin: 0,
-    border: 5,
-    borderColor: 'black',
   },
   reverse: {
     display: 'flex',

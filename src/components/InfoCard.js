@@ -19,16 +19,15 @@ import UserContext from '../contexts/UserContext';
 import { setRoomInfo } from '../requests/firebase';
 import { ABOUT_ROUTE } from '../constants/routes';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { DEFAULT_ROOM } from '../constants/default';
+import { COLOR_GREEN, COLOR_RED, DEFAULT_ROOM } from '../constants/default';
 import { v4 as uuidv4 } from 'uuid';
 import EditDialog from './dialogs/EditDialog';
-import animateScroll from 'scroll';
 
 const useStyles = makeStyles((theme) => ({
   root: { maxWidth: 345, minWidth: 345, backgroundColor: '#dfdfdf' },
   bottomButton: { display: 'flex', justifyContent: 'center' },
-  red: { color: 'rgba(240,128,128, 1)' },
-  green: { color: 'rgba(144,238,144, 1)' },
+  red: { color: COLOR_RED },
+  green: { color: COLOR_GREEN },
   yellow: { color: 'orange' },
   expand: { transform: 'rotate(0deg)' },
   expandOpen: { transform: 'rotate(180deg)' },
@@ -176,7 +175,12 @@ export default function InfoCard(props) {
                   ) : (
                     <AccessTimeIcon className={classes.yellow} />
                   )}
-                  <ListItemText secondary={order.str} />
+                  <ListItemText
+                    {...{
+                      primary: !order.canceled && !order.completed && order.str,
+                      secondary: (order.canceled || order.completed) && order.str,
+                    }}
+                  />
                   <IconButton disabled={order.canceled || order.completed} onClick={() => cancelOrder(index)} size='small'>
                     <ClearIcon />
                   </IconButton>

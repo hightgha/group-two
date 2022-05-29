@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Dialog, DialogContent, DialogTitle, Button, makeStyles, Tab, Tabs, useMediaQuery } from '@material-ui/core';
+import { Dialog, DialogContent, DialogTitle, Button, makeStyles, Tab, Tabs } from '@material-ui/core';
 import UserDataContext from '../../contexts/UserDataContext';
 import UsersTable from '../tables/UsersTable';
 import HotelTable from '../tables/HotelTable';
