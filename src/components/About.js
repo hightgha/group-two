@@ -5,6 +5,8 @@ import imagesDeluxe from '../images/DeluxeSuite';
 import imagesExecutive from '../images/ExecutiveSuite';
 import imagesPremier from '../images/PremierSuite';
 import clsx from 'clsx';
+import { useLocation } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
 
 const useStyles = makeStyles({
   container: {
@@ -29,6 +31,24 @@ const useStyles = makeStyles({
 export default function About() {
   const classes = useStyles();
   const device = useMediaQuery('@media (max-width: 950px)');
+  const location = useLocation();
+  const refExecutive = useRef();
+  const refDeluxe = useRef();
+  const refPremier = useRef();
+  useEffect(() => {
+    switch (location.state?.type) {
+      case 'DELUXE':
+        refDeluxe.current?.scrollIntoView({ block: 'center' });
+        break;
+      case 'PREMIER':
+        refPremier.current?.scrollIntoView({ block: 'center' });
+        break;
+      case 'EXECUTIVE':
+        refExecutive.current?.scrollIntoView({ block: 'center' });
+        break;
+    }
+  }, [location.state]);
+
   return (
     <div className={classes.container}>
       <div className={classes.white}>
@@ -45,7 +65,7 @@ export default function About() {
         weather. There is an open-air café. Highly qualified staff and a perfect service system will ensure your pleasant stay at the 'Our'
         hotel.
       </Typography>
-      <Card className={classes.card}>
+      <Card className={classes.card} ref={refDeluxe}>
         <Typography paragraph variant='h4'>
           DELUXE SUITE
         </Typography>
@@ -91,7 +111,7 @@ export default function About() {
           </div>
         </CardContent>
       </Card>
-      <Card className={classes.card}>
+      <Card className={classes.card} ref={refPremier}>
         <Typography paragraph variant='h4'>
           PREMIER SUITE
         </Typography>
@@ -142,7 +162,7 @@ export default function About() {
           </div>
         </CardContent>
       </Card>
-      <Card className={classes.card}>
+      <Card className={classes.card} ref={refExecutive}>
         <Typography paragraph variant='h4'>
           EXECUTIVE SUITE
         </Typography>

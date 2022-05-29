@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import { makeStyles } from '@material-ui/core';
 import { Card, CardHeader, CardContent, CardActions, IconButton } from '@material-ui/core';
 import { Collapse, Divider, List, ListItem, ListItemText, Typography } from '@material-ui/core';
@@ -18,16 +18,16 @@ import CancelDialog from './dialogs/CancelDialog';
 import UserContext from '../contexts/UserContext';
 import { setRoomInfo } from '../requests/firebase';
 import { ABOUT_ROUTE } from '../constants/routes';
-import { Link, useNavigate } from 'react-router-dom';
-import { DEFAULT_ROOM } from '../constants/default';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { COLOR_GREEN, COLOR_RED, DEFAULT_ROOM } from '../constants/default';
 import { v4 as uuidv4 } from 'uuid';
 import EditDialog from './dialogs/EditDialog';
 
 const useStyles = makeStyles((theme) => ({
   root: { maxWidth: 345, minWidth: 345, backgroundColor: '#dfdfdf' },
   bottomButton: { display: 'flex', justifyContent: 'center' },
-  red: { color: 'rgba(240,128,128, 1)' },
-  green: { color: 'rgba(144,238,144, 1)' },
+  red: { color: COLOR_RED },
+  green: { color: COLOR_GREEN },
   yellow: { color: 'orange' },
   expand: { transform: 'rotate(0deg)' },
   expandOpen: { transform: 'rotate(180deg)' },
@@ -65,6 +65,13 @@ export default function InfoCard(props) {
   const [showMenuDialog, setShowMenuDialog] = useState(false);
   const user = useContext(UserContext);
   const navigate = useNavigate();
+
+  const typeOfRoom =
+    roomInfo.room % 10 === 1 || roomInfo.room % 10 === 6
+      ? 'DELUXE'
+      : roomInfo.room % 10 === 2 || roomInfo.room % 10 === 5
+      ? 'PREMIER'
+      : 'EXECUTIVE';
 
   function cancelOrder(index) {
     const orders = roomInfo.orders.map((e, i) => ({ ...e, canceled: e.canceled || index === i }));
@@ -117,11 +124,7 @@ export default function InfoCard(props) {
           }
         />
         <CardContent>
-          <Typography>
-            {(roomInfo.room % 10 === 1 || roomInfo.room % 10 === 6) && 'DELUXE'}
-            {(roomInfo.room % 10 === 2 || roomInfo.room % 10 === 5) && 'PREMIER'}
-            {(roomInfo.room % 10 === 3 || roomInfo.room % 10 === 4) && 'EXECUTIVE'}
-          </Typography>
+          <Typography>{typeOfRoom}</Typography>
           {user?.displayName === roomInfo.booked ? (
             <Typography paragraph variant='body2'>
               <b>Booked: </b> {roomInfo.booked} <br />
@@ -134,7 +137,7 @@ export default function InfoCard(props) {
               {'To see more information'}
               <br />
               {' about rooms '}
-              <Link className={classes.link} to={ABOUT_ROUTE}>
+              <Link className={classes.link} to={ABOUT_ROUTE} state={{ type: typeOfRoom }}>
                 click here
               </Link>
             </Typography>
@@ -154,7 +157,7 @@ export default function InfoCard(props) {
               </IconButton>
             </>
           ) : (
-            <IconButton onClick={() => navigate(ABOUT_ROUTE)}>
+            <IconButton onClick={() => navigate(ABOUT_ROUTE, { state: { type: typeOfRoom } })}>
               <HelpOutlineIcon />
             </IconButton>
           )}

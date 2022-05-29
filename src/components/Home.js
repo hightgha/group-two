@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     width: 900,
     minHeight: 'calc(100vh - 84px)',
     alignItems: 'center',
-    background: 'rgba(0,0,0,0.5)',
+    background: 'rgba(0,0,0,0.2)',
     padding: 10,
   },
   '@media (max-width: 950px)': {
