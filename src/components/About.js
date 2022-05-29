@@ -16,9 +16,9 @@ const useStyles = makeStyles({
   },
   white: { color: 'white' },
   card: { marginTop: 40, padding: 20 },
-  wrap: { display: 'flex', justifyContent: 'space-around' },
+  wrap: { display: 'flex', alignItems: 'center', justifyContent: 'space-around' },
   reverse: { flexDirection: 'row-reverse' },
-  column: { flexDirection: 'column', alignItems: 'center' },
+  column: { flexDirection: 'column' },
   '@media (max-width: 950px)': {
     container: {
       width: '90vw',
@@ -32,7 +32,9 @@ export default function About() {
   return (
     <div className={classes.container}>
       <div className={classes.white}>
-        <Typography variant='h2'>HOTEL GROUP TWO</Typography>
+        <Typography paragraph variant='h2'>
+          HOTEL GROUP TWO
+        </Typography>
       </div>
       <Typography variant='subtitle1' className={classes.white}>
         Our hotel is renovated in 2018. Our hotel with a concentrated flavor of Yerevan and a combination of the best European services. The
@@ -44,7 +46,9 @@ export default function About() {
         hotel.
       </Typography>
       <Card className={classes.card}>
-        <Typography variant='h4'>DELUXE SUITE</Typography>
+        <Typography paragraph variant='h4'>
+          DELUXE SUITE
+        </Typography>
         <Typography variant='subtitle2'>
           Relax in our Deluxe featuring large and well decorated rooms with maximum of comfort in a minimalist style. The sober colors along
           with bright details add a touch of elegance to the interior of the suite. The charm of the Deluxe is complemented by the stunning
@@ -65,7 +69,7 @@ export default function About() {
                 <img key={e + i} src={e} alt='deluxe' />
               ))}
             </Carousel>
-            <Typography variant='subtitle1' align='right'>
+            <Typography variant='subtitle1' align={device ? 'center' : 'right'}>
               Size: 35-39 sq. m.
               <br />
               Controlled air-conditioning
@@ -88,7 +92,9 @@ export default function About() {
         </CardContent>
       </Card>
       <Card className={classes.card}>
-        <Typography variant='h4'>PREMIER SUITE</Typography>
+        <Typography paragraph variant='h4'>
+          PREMIER SUITE
+        </Typography>
         <Typography variant='subtitle2'>
           The warm and welcoming Premier Suite features 40-43 sq. m. living room and a comfortable bedroom. In most of suites hot tub and
           King bed are available. This contemporary, yet classical Suite offers unparalleled luxury due to its first-rate service, working
@@ -110,7 +116,7 @@ export default function About() {
                 <img key={e + i} src={e} alt='premier' />
               ))}
             </Carousel>
-            <Typography variant='subtitle1' align='left'>
+            <Typography variant='subtitle1' align={device ? 'center' : 'left'}>
               Size: 40-43 sq. m.
               <br />
               Controlled air-conditioning
@@ -137,7 +143,9 @@ export default function About() {
         </CardContent>
       </Card>
       <Card className={classes.card}>
-        <Typography variant='h4'>EXECUTIVE SUITE</Typography>
+        <Typography paragraph variant='h4'>
+          EXECUTIVE SUITE
+        </Typography>
         <Typography variant='subtitle2'>
           The spacious Executive Suite offers a perfect balance of luxury and space with its separate living room and bedroom. This suite is
           for those who are looking for personal service, perfect amenities and extra space. The Executive Suites expose an open-plan
@@ -158,7 +166,7 @@ export default function About() {
                 <img key={e + i} src={e} alt='executive' />
               ))}
             </Carousel>
-            <Typography variant='subtitle1' align='right'>
+            <Typography variant='subtitle1' align={device ? 'center' : 'right'}>
               46-55 sq. m.
               <br />
               2 LCD TV

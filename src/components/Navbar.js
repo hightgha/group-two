@@ -9,9 +9,9 @@ import { Avatar, Button } from '@material-ui/core';
 import { ABOUT_ROUTE, HOME_ROUTE, PROFILE_ROUTE, SIGNIN_ROUTE, SIGNUP_ROUTE } from '../constants/routes';
 import { signOutUser } from '../requests/firebase';
 import avatars from '../avatars';
-
+import { COLOR_MOOD_GRAY } from '../constants/default';
 const useStyles = makeStyles((theme) => ({
-  appBar: { position: 'sticky', backgroundColor: 'rgb(169,169,169)' },
+  appBar: { position: 'sticky', backgroundColor: COLOR_MOOD_GRAY },
   logo: { maxWidth: 160, maxHeight: 50 },
   navlinks: { color: 'black', margin: 5, textDecoration: 'none' },
   button: { fontSize: 16 },
