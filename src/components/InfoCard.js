@@ -128,7 +128,7 @@ export default function InfoCard(props) {
           {user?.displayName === roomInfo.booked ? (
             <>
               <Tooltip title='Orders' placement='top'>
-                <IconButton onClick={() => setExpanded(!expanded)}>
+                <IconButton onClick={() => setExpanded(!expanded)} disabled={!roomInfo.orders.length}>
                   <FormatListBulleted />
                 </IconButton>
               </Tooltip>

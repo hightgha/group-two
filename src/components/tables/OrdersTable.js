@@ -20,11 +20,11 @@ export default function OrdersTable(props) {
     {
       headerName: 'Order Name',
       field: 'str',
-      width: 180,
+      flex: 2,
     },
     {
       field: 'actions',
-      width: 180,
+      flex: 2,
       cellRenderer: ({ data: order }) => {
         if (!order.completed && !order.canceled) {
           return (
@@ -53,7 +53,7 @@ export default function OrdersTable(props) {
     {
       field: 'status',
       cellRenderer: ({ data }) => (data.completed ? 'completed' : data.canceled ? 'canceled' : 'waiting'),
-      width: 120,
+      flex: 1,
       cellStyle: ({ data }) => ({ color: data.canceled ? 'red' : data.completed ? 'green' : 'orange', textTransform: 'uppercase' }),
     },
   ]);
@@ -64,7 +64,7 @@ export default function OrdersTable(props) {
       setRowData(data.map((e, ID) => ({ ...e, ID })));
     });
     onValue(roomOrdersRef(roomNumber), (snapshot) => {
-      const data = snapshot.val().map((e, ID) => ({ ...e, ID }));
+      const data = snapshot.val()?.map((e, ID) => ({ ...e, ID }));
       if (JSON.stringify(data) !== JSON.stringify(rowData)) {
         setRowData(data);
       }

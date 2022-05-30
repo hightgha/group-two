@@ -42,7 +42,7 @@ export default function Hotel(props) {
         ))}
       </div>
       <Paper className={classes.door}>
-        {userData?.permission === 'staff' || userData?.permission === 'cheif' ? (
+        {userData?.permission === 'staff' || userData?.permission === 'owner' ? (
           <Button className={classes.door} onClick={onDoorClick} />
         ) : (
           <Button className={classes.door} />
