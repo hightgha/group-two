@@ -1,26 +1,17 @@
 import React, { useContext, useState } from 'react';
 import { Dialog, DialogContent, DialogTitle, Button, makeStyles, Tab, Tabs } from '@material-ui/core';
 import UserDataContext from '../../contexts/UserDataContext';
-import UsersTable from '../tables/UsersTable';
-import HotelTable from '../tables/HotelTable';
-import LogsTable from '../tables/LogsTable';
+import { UsersTable, HotelTable, LogsTable } from '../tables/';
 
 const useStyles = makeStyles({
   root: {
     overflowY: 'scroll',
-    '&::-webkit-scrollbar': {
-      background: 'white',
-      width: 8,
-    },
-    '&::-webkit-scrollbar-thumb': {
-      background: 'black',
-      width: 8,
-      borderRadius: 4,
-    },
+    '&::-webkit-scrollbar': { background: 'white', width: 8 },
+    '&::-webkit-scrollbar-thumb': { background: 'black', width: 8, borderRadius: 4 },
   },
 });
 
-export default function ManagementTable(props) {
+export default function ManagementDialog(props) {
   const classes = useStyles();
   const [value, setValue] = useState(0);
   const { onClose } = props;

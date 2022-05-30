@@ -7,6 +7,7 @@ import imagesPremier from '../images/PremierSuite';
 import clsx from 'clsx';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
+import useLayout from '../hooks/useLayout';
 
 const useStyles = makeStyles({
   container: {
@@ -30,7 +31,7 @@ const useStyles = makeStyles({
 
 export default function About() {
   const classes = useStyles();
-  const device = useMediaQuery('@media (max-width: 950px)');
+  const device = useLayout();
   const location = useLocation();
   const refExecutive = useRef();
   const refDeluxe = useRef();
@@ -75,7 +76,7 @@ export default function About() {
           view of the city center.
         </Typography>
         <CardContent>
-          <div className={clsx(classes.wrap, { [classes.column]: device })}>
+          <div className={clsx(classes.wrap, { [classes.column]: device !== 'desktop' })}>
             <Carousel
               infiniteLoop
               autoPlay
@@ -83,13 +84,13 @@ export default function About() {
               showStatus={false}
               showThumbs={false}
               swipeable
-              width={!device && 500}
+              width={device === 'desktop' && 500}
               dynamicHeight>
               {imagesDeluxe.map((e, i) => (
                 <img key={e + i} src={e} alt='deluxe' />
               ))}
             </Carousel>
-            <Typography variant='subtitle1' align={device ? 'center' : 'right'}>
+            <Typography variant='subtitle1' align={device === 'desktop' ? 'right' : 'center'}>
               Size: 35-39 sq. m.
               <br />
               Controlled air-conditioning
@@ -122,7 +123,7 @@ export default function About() {
           makes you feel at home.
         </Typography>
         <CardContent>
-          <div className={clsx(classes.wrap, { [classes.column]: device, [classes.reverse]: !device })}>
+          <div className={clsx(classes.wrap, { [classes.column]: device !== 'desktop', [classes.reverse]: device === 'desktop' })}>
             <Carousel
               infiniteLoop
               autoPlay
@@ -130,13 +131,13 @@ export default function About() {
               showStatus={false}
               showThumbs={false}
               swipeable
-              width={!device && 500}
+              width={device === 'desktop' && 500}
               dynamicHeight>
               {imagesPremier.map((e, i) => (
                 <img key={e + i} src={e} alt='premier' />
               ))}
             </Carousel>
-            <Typography variant='subtitle1' align={device ? 'center' : 'left'}>
+            <Typography variant='subtitle1' align={device === 'desktop' ? 'left' : 'center'}>
               Size: 40-43 sq. m.
               <br />
               Controlled air-conditioning
@@ -172,7 +173,7 @@ export default function About() {
           bedroom furnished in a contemporary European style.
         </Typography>
         <CardContent>
-          <div className={clsx(classes.wrap, { [classes.column]: device })}>
+          <div className={clsx(classes.wrap, { [classes.column]: device !== 'desktop' })}>
             <Carousel
               infiniteLoop
               autoPlay
@@ -180,13 +181,13 @@ export default function About() {
               showStatus={false}
               showThumbs={false}
               swipeable
-              width={!device && 500}
+              width={device === 'desktop' && 500}
               dynamicHeight>
               {imagesExecutive.map((e, i) => (
                 <img key={e + i} src={e} alt='executive' />
               ))}
             </Carousel>
-            <Typography variant='subtitle1' align={device ? 'center' : 'right'}>
+            <Typography variant='subtitle1' align={device === 'desktop' ? 'right' : 'center'}>
               46-55 sq. m.
               <br />
               2 LCD TV

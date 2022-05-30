@@ -1,12 +1,11 @@
-import { makeStyles } from '@material-ui/core';
-import Hotel from './Hotel';
-import InfoCard from './InfoCard';
 import { useEffect, useState } from 'react';
-import { getHotelNumbers, hotelRef } from '../requests/firebase';
 import { onValue } from 'firebase/database';
-import FormDialog from './dialogs/FormDialog';
-import ManagementDialog from './dialogs/ManagementDialog';
+import { getHotelNumbers, hotelRef } from '../requests/firebase';
+import { ManagementDialog, FormDialog } from './dialogs/';
 import { DEFAULT_ROOM } from '../constants/default';
+import { makeStyles } from '@material-ui/core';
+import InfoCard from './InfoCard';
+import Hotel from './Hotel';
 
 const useStyles = makeStyles((theme) => ({
   container: {

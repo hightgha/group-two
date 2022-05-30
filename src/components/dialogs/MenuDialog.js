@@ -1,29 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogTitle, ImageList, ImageListItem, ImageListItemBar, IconButton } from '@material-ui/core';
-import { Divider, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText, useMediaQuery } from '@material-ui/core';
+import { Divider, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
 import { makeStyles, Tab, Tabs, Typography, Avatar, BottomNavigation, BottomNavigationAction, Button } from '@material-ui/core';
 import { DRINKS, MEALS } from '../../constants/categories';
-import RemoveCircle from '@material-ui/icons/RemoveCircle';
-import FastfoodIcon from '@material-ui/icons/Fastfood';
-import LocalBarIcon from '@material-ui/icons/LocalBar';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import { RemoveCircle, Fastfood, LocalBar, AddCircle } from '@material-ui/icons';
+import useLayout from '../../hooks/useLayout';
 
 const useStyles = makeStyles((theme) => ({
   root: { flexGrow: 1, display: 'flex', height: 24 },
   tabs: { borderRight: `1px solid ${theme.palette.divider}` },
-  rootImageList: { display: 'flex', justifyContent: 'space-around', overflow: 'hidden', backgroundColor: theme.palette.background.paper },
-  imageList: { width: 350, height: 550 },
+  rootImageList: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+    backgroundColor: theme.palette.background.paper,
+  },
+  imageList: { height: 550 },
   image: { maxHeight: 170 },
   addIcon: { color: 'rgba(255, 255, 255, 0.5)' },
   title: { background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%,  rgba(0,0,0,0.3) 80%, rgba(0,0,0,0) 100%)' },
   orderWrap: { display: 'flex', flexDirection: 'column' },
-  orderList: { minWidth: 200, maxWidth: 200, minHeight: 460, maxHeight: 460, overflow: 'hidden scroll' },
+  orderList: { minWidth: '20vw', maxWidth: '90vw', minHeight: '85%', maxHeight: 460, overflow: 'hidden scroll' },
   avatar: { width: theme.spacing(6), height: theme.spacing(6) },
   wrap: { display: 'flex', justifyContent: 'flex-end', alignItems: 'center' },
-  '@media (max-width: 950px)': {
-    imageList: { width: '90vw' },
-    orderList: { minWidth: '90vw', maxWidth: '90vw', minHeight: 'fit-content' },
-    rootImageList: { flexDirection: 'column' },
+  '@media (max-width: 450px)': {
+    rootImageList: {
+      flexDirection: 'column',
+    },
   },
 }));
 
@@ -36,7 +39,7 @@ export default function MenuDialog(props) {
   const [orders, setOrders] = useState([]);
   const [reservedData, setReservedData] = useState({ drinks: {}, meals: {} });
   const classes = useStyles();
-  const fullScreen = useMediaQuery('@media (max-width: 950px)');
+  const device = useLayout();
 
   useEffect(() => {
     function fetchFromApi() {
@@ -69,11 +72,11 @@ export default function MenuDialog(props) {
 
   return (
     <div>
-      <Dialog fullScreen={fullScreen} open onClose={handleClose}>
+      <Dialog fullScreen open onClose={handleClose}>
         <DialogTitle>
           <BottomNavigation value={navigation} onChange={(event, newValue) => setNavigation(newValue)} showLabels>
-            <BottomNavigationAction label='Meal' icon={<FastfoodIcon />} />
-            <BottomNavigationAction label='Drinks' icon={<LocalBarIcon />} />
+            <BottomNavigationAction label='Meal' icon={<Fastfood />} />
+            <BottomNavigationAction label='Drinks' icon={<LocalBar />} />
           </BottomNavigation>
 
           <div className={classes.root}>
@@ -89,7 +92,7 @@ export default function MenuDialog(props) {
         <DialogContent>
           <div className={classes.rootImageList}>
             <div>
-              <ImageList cols={2} gap={5} rowHeight={180} className={classes.imageList}>
+              <ImageList cols={device === 'mobile' ? 1 : device === 'tablet' ? 2 : 4} gap={5} rowHeight={180} className={classes.imageList}>
                 {content.length > 0 &&
                   content.map((e) => {
                     const str = e.strMeal || e.strDrink;
@@ -117,7 +120,7 @@ export default function MenuDialog(props) {
                               }
                               className={classes.addIcon}
                               size='small'>
-                              <AddCircleIcon />
+                              <AddCircle />
                             </IconButton>
                           }
                         />

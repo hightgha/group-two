@@ -20,6 +20,7 @@ export default function HotelTable() {
   const classes = useStyles();
   const [rowData, setRowData] = useState();
   const [orders, setOrders] = useState();
+  const defaultColDef = { sortingOrder: ['desc', 'asc'], resizable: true, sortable: true };
   const [columnDefs] = useState([
     { field: 'room', pinned: 'left', width: 80 },
     {
@@ -66,7 +67,6 @@ export default function HotelTable() {
       },
     },
   ]);
-  const defaultColDef = { sortingOrder: ['desc', 'asc'], resizable: true, sortable: true };
 
   useEffect(() => {
     getHotelNumbers().then((data) => {
