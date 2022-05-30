@@ -1,12 +1,13 @@
 import React from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, useMediaQuery } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
+import useLayout from '../../hooks/useLayout';
 
 export default function CancelDialog(props) {
   const { handleClose, onConfirm } = props;
-  const fullScreen = useMediaQuery('@media (max-width: 950px)');
+  const device = useLayout();
 
   return (
-    <Dialog open fullScreen={fullScreen} onClose={handleClose}>
+    <Dialog open fullScreen={device !== 'desktop'} onClose={handleClose}>
       <DialogTitle>Confirm your cancellation</DialogTitle>
       <DialogContent>
         <DialogContentText>Are you sure you want to cancel your booking</DialogContentText>

@@ -1,30 +1,18 @@
-import React, { useState, useContext, useRef } from 'react';
-import { makeStyles } from '@material-ui/core';
-import { Card, CardHeader, CardContent, CardActions, IconButton } from '@material-ui/core';
+import React, { useState, useContext } from 'react';
+import { Card, CardHeader, CardContent, CardActions, IconButton, makeStyles, Tooltip } from '@material-ui/core';
 import { Collapse, Divider, List, ListItem, ListItemText, Typography } from '@material-ui/core';
-import CancelIcon from '@material-ui/icons/Cancel';
-import CreateIcon from '@material-ui/icons/Create';
-import Brightness1Icon from '@material-ui/icons/Brightness1';
-import CheckIcon from '@material-ui/icons/Check';
-import ClearIcon from '@material-ui/icons/Clear';
-import BookIcon from '@material-ui/icons/Book';
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
-import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
-import MenuDialog from './dialogs/MenuDialog';
-import BookDialog from './dialogs/BookDialog';
-import CancelDialog from './dialogs/CancelDialog';
-import UserContext from '../contexts/UserContext';
-import { setRoomInfo } from '../requests/firebase';
-import { ABOUT_ROUTE } from '../constants/routes';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Cancel, Create, Check, Clear, Book, Brightness1 } from '@material-ui/icons';
+import { AccessTime, AddShoppingCart, FormatListBulleted, HelpOutline } from '@material-ui/icons';
+import { MenuDialog, BookDialog, CancelDialog, EditDialog } from './dialogs/';
 import { COLOR_GREEN, COLOR_RED, DEFAULT_ROOM } from '../constants/default';
+import { ABOUT_ROUTE } from '../constants/routes';
+import { Link, useNavigate } from 'react-router-dom';
+import { setRoomInfo } from '../requests/firebase';
 import { v4 as uuidv4 } from 'uuid';
-import EditDialog from './dialogs/EditDialog';
+import UserContext from '../contexts/UserContext';
 
 const useStyles = makeStyles((theme) => ({
-  root: { maxWidth: 345, minWidth: 345, backgroundColor: '#dfdfdf' },
+  root: { minWidth: 345, maxWidth: 345, backgroundColor: '#dfdfdf' },
   bottomButton: { display: 'flex', justifyContent: 'center' },
   red: { color: COLOR_RED },
   green: { color: COLOR_GREEN },
@@ -34,21 +22,13 @@ const useStyles = makeStyles((theme) => ({
   link: {
     color: 'black',
     textDecoration: 'none',
-    '&:hover': {
-      color: 'rgba(144,238,144, 1)',
-    },
+    '&:hover': { color: 'rgba(144,238,144, 1)' },
   },
   collapse: {
     maxHeight: 310,
     overflowY: 'scroll',
-    '&::-webkit-scrollbar': {
-      width: 8,
-      background: 'none',
-    },
-    '&::-webkit-scrollbar-thumb': {
-      background: 'grey',
-      borderRadius: 4,
-    },
+    '&::-webkit-scrollbar': { width: 8, background: 'none' },
+    '&::-webkit-scrollbar-thumb': { background: 'grey', borderRadius: 4 },
   },
   '@media (max-width: 950px)': {
     root: { backgroundColor: '#dfdfdf', marginTop: 30 },
@@ -65,8 +45,7 @@ export default function InfoCard(props) {
   const [showMenuDialog, setShowMenuDialog] = useState(false);
   const user = useContext(UserContext);
   const navigate = useNavigate();
-
-  const typeOfRoom =
+  const type =
     roomInfo.room % 10 === 1 || roomInfo.room % 10 === 6
       ? 'DELUXE'
       : roomInfo.room % 10 === 2 || roomInfo.room % 10 === 5
@@ -110,21 +89,25 @@ export default function InfoCard(props) {
         <CardHeader
           title={`Room: ${roomInfo.room}`}
           subheader={`Status: ${roomInfo.booked ? 'Booked' : 'Free'}`}
-          avatar={<Brightness1Icon className={roomInfo.booked ? classes.red : classes.green} />}
+          avatar={<Brightness1 className={roomInfo.booked ? classes.red : classes.green} />}
           action={
             roomInfo.booked ? (
-              <IconButton disabled={roomInfo.booked !== user?.displayName} onClick={() => setShowCancelDialog(true)}>
-                <CancelIcon />
-              </IconButton>
+              <Tooltip title='Cancel' placement='left'>
+                <IconButton disabled={roomInfo.booked !== user?.displayName} onClick={() => setShowCancelDialog(true)}>
+                  <Cancel />
+                </IconButton>
+              </Tooltip>
             ) : (
-              <IconButton onClick={() => (user ? setShowBookDialog(true) : openFormDialog())}>
-                <BookIcon />
-              </IconButton>
+              <Tooltip title='Book' placement='left'>
+                <IconButton onClick={() => (user ? setShowBookDialog(true) : openFormDialog())}>
+                  <Book />
+                </IconButton>
+              </Tooltip>
             )
           }
         />
         <CardContent>
-          <Typography>{typeOfRoom}</Typography>
+          <Typography>{type}</Typography>
           {user?.displayName === roomInfo.booked ? (
             <Typography paragraph variant='body2'>
               <b>Booked: </b> {roomInfo.booked} <br />
@@ -134,10 +117,8 @@ export default function InfoCard(props) {
             </Typography>
           ) : (
             <Typography paragraph color='textSecondary'>
-              {'To see more information'}
-              <br />
-              {' about rooms '}
-              <Link className={classes.link} to={ABOUT_ROUTE} state={{ type: typeOfRoom }}>
+              {'To see more information'} <br /> {' about rooms '}
+              <Link className={classes.link} to={ABOUT_ROUTE} state={{ type }}>
                 click here
               </Link>
             </Typography>
@@ -146,20 +127,28 @@ export default function InfoCard(props) {
         <CardActions className={classes.bottomButton}>
           {user?.displayName === roomInfo.booked ? (
             <>
-              <IconButton onClick={() => setExpanded(!expanded)}>
-                <FormatListBulletedIcon />
-              </IconButton>
-              <IconButton onClick={() => setShowMenuDialog(true)}>
-                <AddShoppingCartIcon />
-              </IconButton>
-              <IconButton onClick={() => setShowEditDialog(true)}>
-                <CreateIcon />
-              </IconButton>
+              <Tooltip title='Orders' placement='top'>
+                <IconButton onClick={() => setExpanded(!expanded)}>
+                  <FormatListBulleted />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title='Menu' placement='top'>
+                <IconButton onClick={() => setShowMenuDialog(true)}>
+                  <AddShoppingCart />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title='Edit' placement='top'>
+                <IconButton onClick={() => setShowEditDialog(true)}>
+                  <Create />
+                </IconButton>
+              </Tooltip>
             </>
           ) : (
-            <IconButton onClick={() => navigate(ABOUT_ROUTE, { state: { type: typeOfRoom } })}>
-              <HelpOutlineIcon />
-            </IconButton>
+            <Tooltip title='Information' placement='top'>
+              <IconButton onClick={() => navigate(ABOUT_ROUTE, { state: { type } })}>
+                <HelpOutline />
+              </IconButton>
+            </Tooltip>
           )}
         </CardActions>
         {user?.displayName === roomInfo.booked && (
@@ -169,11 +158,11 @@ export default function InfoCard(props) {
               {roomInfo.orders.map((order, index) => (
                 <ListItem key={uuidv4()}>
                   {order.completed ? (
-                    <CheckIcon className={classes.green} />
+                    <Check className={classes.green} />
                   ) : order.canceled ? (
-                    <ClearIcon className={classes.red} />
+                    <Clear className={classes.red} />
                   ) : (
-                    <AccessTimeIcon className={classes.yellow} />
+                    <AccessTime className={classes.yellow} />
                   )}
                   <ListItemText
                     {...{
@@ -182,7 +171,7 @@ export default function InfoCard(props) {
                     }}
                   />
                   <IconButton disabled={order.canceled || order.completed} onClick={() => cancelOrder(index)} size='small'>
-                    <ClearIcon />
+                    <Clear />
                   </IconButton>
                 </ListItem>
               ))}
