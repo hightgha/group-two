@@ -1,4 +1,4 @@
-import { AppBar, Card, CardContent, Divider, makeStyles, Toolbar, Typography, useMediaQuery } from '@material-ui/core';
+import { Card, CardContent, Divider, makeStyles, Typography } from '@material-ui/core';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
 import imagesDeluxe from '../images/DeluxeSuite';
@@ -8,7 +8,6 @@ import clsx from 'clsx';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
 import useLayout from '../hooks/useLayout';
-import { COLOR_MOOD_GRAY } from '../constants/default';
 
 const useStyles = makeStyles({
   container: {
@@ -54,6 +53,8 @@ export default function About() {
         break;
       case 'EXECUTIVE':
         refExecutive.current?.scrollIntoView({ block: 'center' });
+        break;
+      default:
         break;
     }
   }, [location.state]);

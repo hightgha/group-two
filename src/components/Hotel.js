@@ -2,7 +2,7 @@ import { Button, makeStyles, Paper } from '@material-ui/core';
 import clsx from 'clsx';
 import { useContext } from 'react';
 import UserDataContext from '../contexts/UserDataContext';
-import { COLOR_RED, COLOR_GREEN, COLOR_MOOD_GRAY, COLOR_LIGHT_GRAY } from '../constants/default';
+import { COLOR_GREEN, COLOR_MOOD_GRAY, COLOR_LIGHT_GRAY } from '../constants/default';
 
 const useStyles = makeStyles((theme) => ({
   hotel: { width: 264, height: 540, backgroundColor: COLOR_LIGHT_GRAY, padding: 8 },
