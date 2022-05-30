@@ -93,9 +93,11 @@ export default function InfoCard(props) {
           action={
             roomInfo.booked ? (
               <Tooltip title='Cancel' placement='left'>
-                <IconButton disabled={roomInfo.booked !== user?.displayName} onClick={() => setShowCancelDialog(true)}>
-                  <Cancel />
-                </IconButton>
+                <span>
+                  <IconButton disabled={roomInfo.booked !== user?.displayName} onClick={() => setShowCancelDialog(true)}>
+                    <Cancel />
+                  </IconButton>
+                </span>
               </Tooltip>
             ) : (
               <Tooltip title='Book' placement='left'>
@@ -128,9 +130,11 @@ export default function InfoCard(props) {
           {user?.displayName === roomInfo.booked ? (
             <>
               <Tooltip title='Orders' placement='top'>
-                <IconButton onClick={() => setExpanded(!expanded)} disabled={!roomInfo.orders.length}>
-                  <FormatListBulleted />
-                </IconButton>
+                <span>
+                  <IconButton onClick={() => setExpanded(!expanded)} disabled={!roomInfo.orders.length}>
+                    <FormatListBulleted />
+                  </IconButton>
+                </span>
               </Tooltip>
               <Tooltip title='Menu' placement='top'>
                 <IconButton onClick={() => setShowMenuDialog(true)}>

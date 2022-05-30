@@ -13,7 +13,7 @@ const useStyles = makeStyles({
 
 export default function FormDialog(props) {
   const classes = useStyles();
-  const [formType, setFormType] = useState(true);
+  const [formType, setFormType] = useState('login');
   const { onClose } = props;
   const user = useContext(UserContext);
   const device = useLayout();

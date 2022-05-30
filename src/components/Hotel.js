@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   window: { width: 28, height: 32, margin: 8 },
   floor: { display: 'flex' },
   free: { background: COLOR_GREEN },
-  booked: { background: COLOR_RED },
+  booked: { background: COLOR_MOOD_GRAY },
   reverse: { display: 'flex', flexDirection: 'column-reverse' },
 }));
 
