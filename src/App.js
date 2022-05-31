@@ -35,26 +35,18 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [userData, setUserData] = useState(null);
 
-  onAuthStateChanged(auth, (data) => {
-    if (loading) {
-      setLoading(false);
-    }
-    if (data !== user) {
-      setUser(data);
-    }
-  });
-
   useEffect(() => {
-    if (user) {
-      getUserData(user.displayName).then((data) => {
-        if (JSON.stringify(data) !== JSON.stringify(userData)) {
-          setUserData(data);
-        }
-      });
-    } else {
-      setUserData(null);
-    }
-  }, [user]);
+    const listener = onAuthStateChanged(auth, (current) => {
+      if (loading) {
+        setLoading(false);
+      }
+      getUserData(current?.displayName)
+        .then((data) => setUserData(data))
+        .catch(() => setUserData(null))
+        .finally(() => setUser(current));
+    });
+    return listener;
+  }, []);
 
   return (
     <UserContext.Provider value={user}>

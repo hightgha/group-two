@@ -27,49 +27,45 @@ export default function Profile() {
     }
   }, [user]);
 
-  return (
+  return user ? (
     <Card className={classes.container}>
-      {user ? (
-        <>
-          <Typography variant='h5'>Profile</Typography>
-          <List>
-            <ListItem>
-              <ListItemText primary={`Username: ${user.displayName}`} />
-            </ListItem>
-            <ListItem>
-              <ListItemText primary={`Display name: ${userData.displayName}`} />
-            </ListItem>
-            <ListItem>
-              <ListItemText
-                primary={`Email address: ${userData.email}`}
-                secondary={
-                  <Typography color={user.emailVerified ? 'primary' : 'secondary'} variant='caption'>
-                    {'Verified status: ' + (user.emailVerified ? 'Verified' : 'Not Verified')}
-                  </Typography>
-                }
-              />
-            </ListItem>
-            {!user.emailVerified && (
-              <Button
-                disabled={buttonStatus}
-                onClick={() => {
-                  setButtonStatus(true);
-                  sendEmailVerif();
-                }}>
-                {!buttonStatus ? 'Send Email Verification' : 'Email Verification Sended'}
-              </Button>
-            )}
-            <ListItem>
-              <ListItemText primary={`Gender: ${userData.gender === 'm' ? 'Male' : 'Female'}`} />
-            </ListItem>
-            <ListItem>
-              <ListItemText primary={`Account created at: ${user.metadata.creationTime.slice(0, -4)}`} />
-            </ListItem>
-          </List>
-        </>
-      ) : (
-        <Navigate to={HOME_ROUTE} />
-      )}
+      <Typography variant='h5'>Profile</Typography>
+      <List>
+        <ListItem>
+          <ListItemText primary={`Username: ${user.displayName}`} />
+        </ListItem>
+        <ListItem>
+          <ListItemText primary={`Display name: ${userData.displayName}`} />
+        </ListItem>
+        <ListItem>
+          <ListItemText
+            primary={`Email address: ${userData.email}`}
+            secondary={
+              <Typography color={user.emailVerified ? 'primary' : 'secondary'} variant='caption'>
+                {'Verified status: ' + (user.emailVerified ? 'Verified' : 'Not Verified')}
+              </Typography>
+            }
+          />
+        </ListItem>
+        {!user.emailVerified && (
+          <Button
+            disabled={buttonStatus}
+            onClick={() => {
+              setButtonStatus(true);
+              sendEmailVerif();
+            }}>
+            {!buttonStatus ? 'Send Email Verification' : 'Email Verification Sended'}
+          </Button>
+        )}
+        <ListItem>
+          <ListItemText primary={`Gender: ${userData.gender === 'm' ? 'Male' : 'Female'}`} />
+        </ListItem>
+        <ListItem>
+          <ListItemText primary={`Account created at: ${user.metadata.creationTime.slice(0, -4)}`} />
+        </ListItem>
+      </List>
     </Card>
+  ) : (
+    <Navigate to={HOME_ROUTE} />
   );
 }

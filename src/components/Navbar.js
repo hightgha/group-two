@@ -1,18 +1,15 @@
 import React, { useContext } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
+import { makeStyles, AppBar, Toolbar, Avatar, Button } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
-import clsx from 'clsx';
-import UserContext from '../contexts/UserContext';
-import { Avatar, Button } from '@material-ui/core';
 import { ABOUT_ROUTE, HOME_ROUTE, PROFILE_ROUTE, SIGNIN_ROUTE, SIGNUP_ROUTE } from '../constants/routes';
+import { COLOR_MOOD_GRAY } from '../constants/default';
+import UserContext from '../contexts/UserContext';
 import { signOutUser } from '../requests/firebase';
 import avatars from '../avatars';
-import { COLOR_MOOD_GRAY } from '../constants/default';
+import clsx from 'clsx';
+
 const useStyles = makeStyles((theme) => ({
   appBar: { position: 'sticky', backgroundColor: COLOR_MOOD_GRAY },
-  logo: { maxWidth: 160, maxHeight: 50 },
   navlinks: { color: 'black', margin: 5, textDecoration: 'none' },
   button: { fontSize: 16 },
   activeLink: { textDecoration: 'underline' },
