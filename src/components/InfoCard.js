@@ -59,7 +59,7 @@ export default function InfoCard(props) {
   }
 
   function addItemsFromMenu(items) {
-    const orders = [...roomInfo?.orders, ...items];
+    const orders = [...roomInfo?.orders, ...items].map((e, ID) => ({ ...e, ID }));
     setShowMenuDialog(false);
     setRoomInfo(roomInfo.room, { orders }, roomInfo?.orders?.length);
     onInfoChange({ ...roomInfo, orders });
