@@ -1,6 +1,6 @@
 import { Button, FormControl, InputLabel, makeStyles, MenuItem, Select, TextField } from '@material-ui/core';
-import { useState } from 'react';
 import { createUser, getUserData, writeUserData, updateUserData, sendEmailVerif } from '../requests/firebase';
+import { useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   formWrap: {

@@ -26,7 +26,7 @@ export default function HotelTable() {
     {
       headerName: 'Status',
       field: 'booked',
-      width: 120,
+      flex: 1,
       editable: true,
       cellRenderer: ({ data: { booked } }) => {
         return booked || 'free';
@@ -34,7 +34,7 @@ export default function HotelTable() {
     },
     {
       field: 'orders',
-      width: 120,
+      flex: 1,
       cellRenderer: ({ data: { orders, room } }) => {
         return orders ? (
           <Button size='small' onClick={() => setOrders(room)}>
@@ -47,21 +47,21 @@ export default function HotelTable() {
     },
     {
       field: 'from',
-      width: 120,
+      flex: 1,
       cellRenderer: ({ data: { from } }) => {
         return from ? new Date(from).toLocaleDateString() : '-';
       },
     },
     {
       field: 'to',
-      width: 120,
+      flex: 1,
       cellRenderer: ({ data: { to } }) => {
         return to ? new Date(to).toLocaleDateString() : '-';
       },
     },
     {
       field: 'bookingDate',
-      width: 120,
+      flex: 1,
       cellRenderer: ({ data: { bookingDate } }) => {
         return bookingDate ? new Date(bookingDate).toLocaleDateString() : '-';
       },

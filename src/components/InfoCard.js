@@ -59,7 +59,7 @@ export default function InfoCard(props) {
   }
 
   function addItemsFromMenu(items) {
-    const orders = [...roomInfo?.orders, ...items];
+    const orders = [...roomInfo?.orders, ...items].map((e, ID) => ({ ...e, ID }));
     setShowMenuDialog(false);
     setRoomInfo(roomInfo.room, { orders }, roomInfo?.orders?.length);
     onInfoChange({ ...roomInfo, orders });
@@ -93,9 +93,11 @@ export default function InfoCard(props) {
           action={
             roomInfo.booked ? (
               <Tooltip title='Cancel' placement='left'>
-                <IconButton disabled={roomInfo.booked !== user?.displayName} onClick={() => setShowCancelDialog(true)}>
-                  <Cancel />
-                </IconButton>
+                <span>
+                  <IconButton disabled={roomInfo.booked !== user?.displayName} onClick={() => setShowCancelDialog(true)}>
+                    <Cancel />
+                  </IconButton>
+                </span>
               </Tooltip>
             ) : (
               <Tooltip title='Book' placement='left'>
@@ -128,9 +130,11 @@ export default function InfoCard(props) {
           {user?.displayName === roomInfo.booked ? (
             <>
               <Tooltip title='Orders' placement='top'>
-                <IconButton onClick={() => setExpanded(!expanded)}>
-                  <FormatListBulleted />
-                </IconButton>
+                <span>
+                  <IconButton onClick={() => setExpanded(!expanded)} disabled={!roomInfo.orders.length}>
+                    <FormatListBulleted />
+                  </IconButton>
+                </span>
               </Tooltip>
               <Tooltip title='Menu' placement='top'>
                 <IconButton onClick={() => setShowMenuDialog(true)}>

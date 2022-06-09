@@ -25,8 +25,8 @@ export default function ManagementDialog(props) {
         <Button onClick={onClose}>Close</Button>
         <Tabs centered value={value} indicatorColor='primary' textColor='primary' onChange={(e, value) => setValue(value)}>
           <Tab label='Numbers / Orders' />
-          <Tab label='Logs' disabled={permission !== 'cheif'} />
-          <Tab label='Users' disabled={permission !== 'cheif'} />
+          <Tab label='Logs' disabled={permission !== 'owner'} />
+          <Tab label='Users' disabled={permission !== 'owner'} />
         </Tabs>
       </DialogTitle>
       <DialogContent className={classes.root}>

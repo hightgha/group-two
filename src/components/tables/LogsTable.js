@@ -19,21 +19,21 @@ export default function LogsTable() {
       width: 200,
       cellRenderer: ({ data: { logged } }) => new Date(logged).toUTCString().slice(0, -4),
     },
-    { field: 'room', width: 90 },
+    { field: 'room', flex: 1 },
     {
       field: 'action',
-      width: 150,
+      flex: 1,
       cellRenderer: ({ data: { booked, orders, action, order } }) =>
         (booked && `Booked ${booked}`) || (orders?.length && 'Orders added') || (action && `Order ${order.ID} ${action}`) || 'Unbooked',
     },
     {
       headerName: 'orders (changes)',
       field: 'orders',
-      width: 150,
+      flex: 1,
       cellRenderer: ({ data: { orders, prevOrders } }) =>
         orders?.length ? `${orders.length} ( +${orders.length - (prevOrders || 0)} )` : '-',
     },
-    { field: 'Duration (From / To)', width: 200, cellRenderer: ({ data: { from, to } }) => (from ? from + ' / ' + to : '-') },
+    { field: 'Duration (From / To)', flex: 1, cellRenderer: ({ data: { from, to } }) => (from ? from + ' / ' + to : '-') },
   ]);
 
   useEffect(() => {

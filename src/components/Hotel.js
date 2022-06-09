@@ -2,7 +2,7 @@ import { Button, makeStyles, Paper } from '@material-ui/core';
 import clsx from 'clsx';
 import { useContext } from 'react';
 import UserDataContext from '../contexts/UserDataContext';
-import { COLOR_RED, COLOR_GREEN, COLOR_MOOD_GRAY, COLOR_LIGHT_GRAY } from '../constants/default';
+import { COLOR_GREEN, COLOR_MOOD_GRAY, COLOR_LIGHT_GRAY } from '../constants/default';
 
 const useStyles = makeStyles((theme) => ({
   hotel: { width: 264, height: 540, backgroundColor: COLOR_LIGHT_GRAY, padding: 8 },
@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   window: { width: 28, height: 32, margin: 8 },
   floor: { display: 'flex' },
   free: { background: COLOR_GREEN },
-  booked: { background: COLOR_RED },
+  booked: { background: COLOR_MOOD_GRAY },
   reverse: { display: 'flex', flexDirection: 'column-reverse' },
 }));
 
@@ -42,7 +42,7 @@ export default function Hotel(props) {
         ))}
       </div>
       <Paper className={classes.door}>
-        {userData?.permission === 'staff' || userData?.permission === 'cheif' ? (
+        {userData?.permission === 'staff' || userData?.permission === 'owner' ? (
           <Button className={classes.door} onClick={onDoorClick} />
         ) : (
           <Button className={classes.door} />

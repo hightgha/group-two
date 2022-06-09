@@ -16,25 +16,25 @@ export default function UsersTable() {
     { field: 'username', pinned: 'left', width: 110 },
     {
       field: 'permission',
-      width: 110,
+      flex: 1,
       editable: true,
       valueGetter: (params) => params.data.permission,
       valueSetter: (params) => {
-        if (['user', 'staff', 'cheif'].includes(params.newValue) && params.oldValue !== params.newValue) {
+        if (['user', 'staff', 'owner'].includes(params.newValue) && params.oldValue !== params.newValue) {
           changeUserInfo(params.data.username, 'permission', params.newValue);
           params.data.permission = params.newValue;
         }
       },
       cellStyle: ({ value }) => {
-        if (value === 'staff' || value === 'cheif') {
+        if (value === 'staff' || value === 'owner') {
           return { fontWeight: 'bold' };
         }
       },
     },
-    { field: 'displayName', width: 150 },
-    { field: 'email' },
-    { field: 'gender', width: 90, cellRenderer: ({ data: { gender } }) => (gender === 'm' ? 'Male' : 'Female') },
-    { field: 'avatar', width: 90 },
+    { field: 'displayName', flex: 1 },
+    { field: 'email', flex: 1 },
+    { field: 'gender', flex: 1, cellRenderer: ({ data: { gender } }) => (gender === 'm' ? 'Male' : 'Female') },
+    { field: 'avatar', flex: 1 },
   ]);
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export default function UsersTable() {
   }, []);
 
   const getRowStyle = ({ data: { permission } }) => {
-    if (permission === 'cheif') return { backgroundColor: 'rgba(240,128,128, 0.5)' };
+    if (permission === 'owner') return { backgroundColor: 'rgba(240,128,128, 0.5)' };
     if (permission === 'staff') return { backgroundColor: 'rgba(144,238,144, 0.5)' };
   };
 
