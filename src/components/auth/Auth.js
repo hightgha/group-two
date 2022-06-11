@@ -1,9 +1,9 @@
 import { Button, Card, makeStyles, Typography } from '@material-ui/core';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { HOME_ROUTE, RESET_ROUTE, SIGNIN_ROUTE, SIGNUP_ROUTE } from '../constants/routes';
+import { HOME_ROUTE, RESET_ROUTE, SIGNIN_ROUTE, SIGNUP_ROUTE } from '../../constants/routes';
 import { ArrowBack, ArrowForward } from '@material-ui/icons/';
 import { useContext } from 'react';
-import UserContext from '../contexts/UserContext';
+import UserContext from '../../contexts/UserContext';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 import ResetPassForm from './ResetPassForm';

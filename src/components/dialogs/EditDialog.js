@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Button } from '@material-ui/core';
 import useLayout from '../../hooks/useLayout';
+import { DEVICES } from '../../constants/categories';
 
 export default function EditDialog(props) {
   const [to, setTo] = useState('');
@@ -8,7 +9,7 @@ export default function EditDialog(props) {
   const device = useLayout();
 
   return (
-    <Dialog open fullScreen={device !== 'desktop'} onClose={handleClose}>
+    <Dialog open fullScreen={device !== DEVICES.desktop} onClose={handleClose}>
       <DialogTitle>Editing room {roomInfo.room}</DialogTitle>
       <DialogContent>
         <DialogContentText>You can only change booking second date</DialogContentText>

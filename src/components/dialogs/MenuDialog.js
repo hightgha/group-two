@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogTitle, ImageList, ImageListItem, ImageListItemBar, IconButton } from '@material-ui/core';
 import { Divider, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
 import { makeStyles, Tab, Tabs, Typography, Avatar, BottomNavigation, BottomNavigationAction, Button } from '@material-ui/core';
-import { DRINKS, MEALS } from '../../constants/categories';
+import { DEVICES, DRINKS, MEALS } from '../../constants/categories';
 import { RemoveCircle, Fastfood, LocalBar, AddCircle } from '@material-ui/icons';
 import useLayout from '../../hooks/useLayout';
 
@@ -92,7 +92,11 @@ export default function MenuDialog(props) {
         <DialogContent>
           <div className={classes.rootImageList}>
             <div>
-              <ImageList cols={device === 'mobile' ? 1 : device === 'tablet' ? 2 : 4} gap={5} rowHeight={180} className={classes.imageList}>
+              <ImageList
+                cols={device === DEVICES.mobile ? 1 : device === DEVICES.tablet ? 2 : 4}
+                gap={5}
+                rowHeight={180}
+                className={classes.imageList}>
                 {content.length > 0 &&
                   content.map((e) => {
                     const str = e.strMeal || e.strDrink;

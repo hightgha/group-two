@@ -8,6 +8,7 @@ import clsx from 'clsx';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
 import useLayout from '../hooks/useLayout';
+import { DEVICES, ROOM_TYPES } from '../constants/categories';
 
 const useStyles = makeStyles({
   container: {
@@ -45,13 +46,13 @@ export default function About() {
   const refPremier = useRef();
   useEffect(() => {
     switch (location.state?.type) {
-      case 'DELUXE':
+      case ROOM_TYPES.deluxe:
         refDeluxe.current?.scrollIntoView({ block: 'center' });
         break;
-      case 'PREMIER':
+      case ROOM_TYPES.premier:
         refPremier.current?.scrollIntoView({ block: 'center' });
         break;
-      case 'EXECUTIVE':
+      case ROOM_TYPES.executive:
         refExecutive.current?.scrollIntoView({ block: 'center' });
         break;
       default:
@@ -78,7 +79,7 @@ export default function About() {
         </Typography>
         <Card className={classes.card} ref={refDeluxe}>
           <Typography paragraph variant='h4'>
-            DELUXE SUITE
+            {ROOM_TYPES.deluxe} SUITE
           </Typography>
           <Typography variant='subtitle2'>
             Relax in our Deluxe featuring large and well decorated rooms with maximum of comfort in a minimalist style. The sober colors
@@ -86,7 +87,7 @@ export default function About() {
             stunning view of the city center.
           </Typography>
           <CardContent>
-            <div className={clsx(classes.wrap, { [classes.column]: device !== 'desktop' })}>
+            <div className={clsx(classes.wrap, { [classes.column]: device !== DEVICES.desktop })}>
               <Carousel
                 infiniteLoop
                 autoPlay
@@ -94,13 +95,13 @@ export default function About() {
                 showStatus={false}
                 showThumbs={false}
                 swipeable
-                width={device === 'desktop' && 500}
+                width={device === DEVICES.desktop && 500}
                 dynamicHeight>
                 {imagesDeluxe.map((e, i) => (
-                  <img key={e + i} src={e} alt='deluxe' />
+                  <img key={e + i} src={e} alt={ROOM_TYPES.deluxe} />
                 ))}
               </Carousel>
-              <Typography variant='subtitle1' align={device === 'desktop' ? 'right' : 'center'}>
+              <Typography variant='subtitle1' align={device === DEVICES.desktop ? 'right' : 'center'}>
                 Size: 35-39 sq. m.
                 <br />
                 Controlled air-conditioning
@@ -124,7 +125,7 @@ export default function About() {
         </Card>
         <Card className={classes.card} ref={refPremier}>
           <Typography paragraph variant='h4'>
-            PREMIER SUITE
+            {ROOM_TYPES.premier} SUITE
           </Typography>
           <Typography variant='subtitle2'>
             The warm and welcoming Premier Suite features 40-43 sq. m. living room and a comfortable bedroom. In most of suites hot tub and
@@ -133,7 +134,11 @@ export default function About() {
             makes you feel at home.
           </Typography>
           <CardContent>
-            <div className={clsx(classes.wrap, { [classes.column]: device !== 'desktop', [classes.reverse]: device === 'desktop' })}>
+            <div
+              className={clsx(classes.wrap, {
+                [classes.column]: device !== DEVICES.desktop,
+                [classes.reverse]: device === DEVICES.desktop,
+              })}>
               <Carousel
                 infiniteLoop
                 autoPlay
@@ -141,13 +146,13 @@ export default function About() {
                 showStatus={false}
                 showThumbs={false}
                 swipeable
-                width={device === 'desktop' && 500}
+                width={device === DEVICES.desktop && 500}
                 dynamicHeight>
                 {imagesPremier.map((e, i) => (
-                  <img key={e + i} src={e} alt='premier' />
+                  <img key={e + i} src={e} alt={ROOM_TYPES.premier} />
                 ))}
               </Carousel>
-              <Typography variant='subtitle1' align={device === 'desktop' ? 'left' : 'center'}>
+              <Typography variant='subtitle1' align={device === DEVICES.desktop ? 'left' : 'center'}>
                 Size: 40-43 sq. m.
                 <br />
                 Controlled air-conditioning
@@ -175,7 +180,7 @@ export default function About() {
         </Card>
         <Card className={classes.card} ref={refExecutive}>
           <Typography paragraph variant='h4'>
-            EXECUTIVE SUITE
+            {ROOM_TYPES.executive} SUITE
           </Typography>
           <Typography variant='subtitle2'>
             The spacious Executive Suite offers a perfect balance of luxury and space with its separate living room and bedroom. This suite
@@ -183,7 +188,7 @@ export default function About() {
             bedroom furnished in a contemporary European style.
           </Typography>
           <CardContent>
-            <div className={clsx(classes.wrap, { [classes.column]: device !== 'desktop' })}>
+            <div className={clsx(classes.wrap, { [classes.column]: device !== DEVICES.desktop })}>
               <Carousel
                 infiniteLoop
                 autoPlay
@@ -191,13 +196,13 @@ export default function About() {
                 showStatus={false}
                 showThumbs={false}
                 swipeable
-                width={device === 'desktop' && 500}
+                width={device === DEVICES.desktop && 500}
                 dynamicHeight>
                 {imagesExecutive.map((e, i) => (
-                  <img key={e + i} src={e} alt='executive' />
+                  <img key={e + i} src={e} alt={ROOM_TYPES.executive} />
                 ))}
               </Carousel>
-              <Typography variant='subtitle1' align={device === 'desktop' ? 'right' : 'center'}>
+              <Typography variant='subtitle1' align={device === DEVICES.desktop ? 'right' : 'center'}>
                 46-55 sq. m.
                 <br />
                 2 LCD TV

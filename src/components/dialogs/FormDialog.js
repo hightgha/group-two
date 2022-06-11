@@ -1,11 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { makeStyles, Typography, Dialog, DialogActions, DialogContent, DialogTitle, Button } from '@material-ui/core';
 import { ArrowBack, ArrowForward } from '@material-ui/icons';
-import LoginForm from '../LoginForm';
-import RegisterForm from '../RegisterForm';
+import LoginForm from '../auth/LoginForm';
+import RegisterForm from '../auth/RegisterForm';
 import UserContext from '../../contexts/UserContext';
 import useLayout from '../../hooks/useLayout';
-import ResetPassForm from '../ResetPassForm';
+import ResetPassForm from '../auth/ResetPassForm';
+import { DEVICES } from '../../constants/categories';
 
 const useStyles = makeStyles({
   center: { display: 'flex', justifyContent: 'center' },
@@ -20,7 +21,7 @@ export default function FormDialog(props) {
 
   return (
     !user && (
-      <Dialog open fullScreen={device !== 'desktop'} onClose={onClose}>
+      <Dialog open fullScreen={device !== DEVICES.desktop} onClose={onClose}>
         <DialogTitle className={classes.center}>
           <Typography variant='button'>{formType ? 'please sign in to continue' : 'please sign up to continue'}</Typography>
         </DialogTitle>

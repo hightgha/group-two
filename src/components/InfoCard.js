@@ -10,6 +10,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { setRoomInfo } from '../requests/firebase';
 import { v4 as uuidv4 } from 'uuid';
 import UserContext from '../contexts/UserContext';
+import { ROOM_TYPES } from '../constants/categories';
 
 const useStyles = makeStyles((theme) => ({
   root: { minWidth: 345, maxWidth: 345, backgroundColor: '#dfdfdf' },
@@ -47,10 +48,10 @@ export default function InfoCard(props) {
   const navigate = useNavigate();
   const type =
     roomInfo.room % 10 === 1 || roomInfo.room % 10 === 6
-      ? 'DELUXE'
+      ? ROOM_TYPES.deluxe
       : roomInfo.room % 10 === 2 || roomInfo.room % 10 === 5
-      ? 'PREMIER'
-      : 'EXECUTIVE';
+      ? ROOM_TYPES.premier
+      : ROOM_TYPES.executive;
 
   function cancelOrder(index) {
     const orders = roomInfo.orders.map((e, i) => ({ ...e, canceled: e.canceled || index === i }));

@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import UserContext from '../../contexts/UserContext';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, TextField, DialogTitle } from '@material-ui/core';
 import useLayout from '../../hooks/useLayout';
+import { DEVICES } from '../../constants/categories';
 
 export default function BookDialog(props) {
   const [from, setFrom] = useState('');
@@ -11,7 +12,7 @@ export default function BookDialog(props) {
   const device = useLayout();
 
   return (
-    <Dialog open fullScreen={device !== 'desktop'} onClose={handleClose}>
+    <Dialog open fullScreen={device !== DEVICES.desktop} onClose={handleClose}>
       <DialogTitle>Booking now</DialogTitle>
       <DialogContent>
         <DialogContentText>Please enter how long you are going to be here</DialogContentText>

@@ -1,5 +1,5 @@
 import { Button, makeStyles, TextField, Typography } from '@material-ui/core';
-import { sendResetPassword } from '../requests/firebase';
+import { sendResetPassword } from '../../requests/firebase';
 import { useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({

@@ -27,3 +27,15 @@ export const MEALS = [
   'Breakfast',
   'Goat',
 ];
+
+export const ROOM_TYPES = {
+  deluxe: 'DELUXE',
+  executive: 'EXECUTIVE',
+  premier: 'PREMIER',
+};
+
+export const DEVICES = {
+  desktop: 'desktop',
+  mobile: 'mobile',
+  tablet: 'tablet',
+};

@@ -5,7 +5,7 @@ import { ABOUT_ROUTE, HOME_ROUTE, PROFILE_ROUTE, SIGNIN_ROUTE, SIGNUP_ROUTE } fr
 import { COLOR_MOOD_GRAY } from '../constants/default';
 import UserContext from '../contexts/UserContext';
 import { signOutUser } from '../requests/firebase';
-import avatars from '../avatars';
+import avatars from '../images/avatars';
 import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
