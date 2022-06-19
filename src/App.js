@@ -8,7 +8,7 @@ import UserDataContext from './contexts/UserDataContext';
 import UserContext from './contexts/UserContext';
 import backgroundHomeImage from './images/';
 import About from './components/About';
-import Auth from './components/Auth';
+import Auth from './components/auth/Auth';
 import Home from './components/Home';
 import Loader from './components/Loader';
 import Navbar from './components/Navbar';
