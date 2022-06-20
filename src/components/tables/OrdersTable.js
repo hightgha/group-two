@@ -59,17 +59,19 @@ export default function OrdersTable(props) {
   ]);
 
   const defaultColDef = { resizable: true, sortable: true };
+
   useEffect(() => {
     getOrders(roomNumber).then((data) => {
       setRowData(data.map((e, ID) => ({ ...e, ID })));
     });
-    onValue(roomOrdersRef(roomNumber), (snapshot) => {
+    const unlisten = onValue(roomOrdersRef(roomNumber), (snapshot) => {
       const data = snapshot.val()?.map((e, ID) => ({ ...e, ID }));
       if (JSON.stringify(data) !== JSON.stringify(rowData)) {
         setRowData(data);
       }
     });
-  }, [roomNumber]);
+    return () => unlisten();
+  }, [roomNumber]); // eslint-disable-line
 
   return (
     <div className={`${classes.size} ag-theme-material`}>

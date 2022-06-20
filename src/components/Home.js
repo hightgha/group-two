@@ -42,6 +42,15 @@ export default function Home() {
   const [currentRoom, setCurrentRoom] = useState(null);
   const [hotelNumbers, setHotelNumbers] = useState(Array(10).fill(Array(6).fill({ room: null, ...DEFAULT_ROOM })));
 
+  const onRoomUpdate = () => {
+    setCurrentRoom(
+      hotelNumbers
+        .find((_, i) => i === String(currentRoom?.room).slice(0, -1) - 1)
+        .find((_, i) => i === String(currentRoom?.room).slice(-1) - 1),
+    );
+    setManage(false);
+  };
+
   useEffect(() => {
     getHotelNumbers().then((hotel) => {
       hotel = hotel.map((floor) => floor.map((room) => ({ ...DEFAULT_ROOM, ...room })));
@@ -49,19 +58,22 @@ export default function Home() {
     });
   }, []);
 
-  onValue(hotelRef, (snapshot) => {
-    const data = snapshot.val()?.map((floor) => floor.map((roomInfo) => ({ ...DEFAULT_ROOM, ...roomInfo })));
-    if (JSON.stringify(data) !== JSON.stringify(hotelNumbers)) {
-      setHotelNumbers(data);
-    }
-  });
+  useEffect(() => {
+    const unlisten = onValue(hotelRef, (snapshot) => {
+      const data = snapshot.val()?.map((floor) => floor.map((roomInfo) => ({ ...DEFAULT_ROOM, ...roomInfo })));
+      if (JSON.stringify(data) !== JSON.stringify(hotelNumbers)) {
+        setHotelNumbers(data);
+      }
+    });
+    return () => unlisten();
+  }, [hotelNumbers]);
 
   return (
     <div className={classes.body}>
       <div className={classes.container}>
         <Hotel hotel={hotelNumbers} onDoorClick={() => setManage(true)} onWindowClick={(roomInfo) => setCurrentRoom(roomInfo)} />
         {form && <FormDialog onClose={() => setForm(false)} />}
-        {manage && <ManagementDialog onClose={() => setManage(false)} />}
+        {manage && <ManagementDialog onClose={onRoomUpdate} />}
         {currentRoom && (
           <InfoCard onInfoChange={(roomInfo) => setCurrentRoom(roomInfo)} roomInfo={currentRoom} openFormDialog={() => setForm(true)} />
         )}
