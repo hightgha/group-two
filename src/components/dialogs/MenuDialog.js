@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Dialog, DialogContent, DialogTitle, ImageList, ImageListItem, ImageListItemBar, IconButton } from '@material-ui/core';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Dialog, DialogContent, DialogTitle, ImageList, ImageListItem, ImageListItemBar } from '@material-ui/core';
 import { Divider, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
 import { makeStyles, Tab, Tabs, Typography, Avatar, BottomNavigation, BottomNavigationAction, Button } from '@material-ui/core';
+import { IconButton, TextField, InputAdornment } from '@material-ui/core';
+import debounce from 'lodash.debounce';
 import { DEVICES, DRINKS, MEALS } from '../../constants/categories';
-import { RemoveCircle, Fastfood, LocalBar, AddCircle } from '@material-ui/icons';
+import { RemoveCircle, Fastfood, LocalBar, AddCircle, Search } from '@material-ui/icons';
 import useLayout from '../../hooks/useLayout';
 
 const useStyles = makeStyles((theme) => ({
@@ -28,6 +30,10 @@ const useStyles = makeStyles((theme) => ({
       flexDirection: 'column',
     },
   },
+  textField: {
+    marginTop: 5,
+    marginBottom: 5,
+  },
 }));
 
 export default function MenuDialog(props) {
@@ -40,6 +46,13 @@ export default function MenuDialog(props) {
   const [reservedData, setReservedData] = useState({ drinks: {}, meals: {} });
   const classes = useStyles();
   const device = useLayout();
+  const [searchValue, setSearchValue] = useState('');
+
+  const handleChange = (e) => {
+    setSearchValue(e.target.value);
+  };
+
+  const debouncedHandle300 = useMemo(() => debounce(handleChange, 300), []);
 
   useEffect(() => {
     function fetchFromApi() {
@@ -64,16 +77,56 @@ export default function MenuDialog(props) {
     } else {
       fetchFromApi();
     }
-  }, [navigation, drinkM, mealM]);
+  }, [navigation, drinkM, mealM]); // eslint-disable-line
 
   function addItem(data) {
     setOrders([...orders, data]);
   }
 
+  const renderContent = () => {
+    if (content.length > 0)
+      return content
+        .filter((e) => (e.strMeal || e.strDrink).includes(searchValue))
+        .map((e) => {
+          const str = e.strMeal || e.strDrink;
+          const strThumb = e.strMealThumb || e.strDrinkThumb;
+          return (
+            <ImageListItem key={str + strThumb} className={classes.image}>
+              <img src={strThumb} alt={str} />
+              <ImageListItemBar
+                title={
+                  <Typography variant='caption' align='center'>
+                    {str}
+                  </Typography>
+                }
+                className={classes.title}
+                actionIcon={
+                  <IconButton
+                    onClick={() =>
+                      addItem({
+                        completed: false,
+                        canceled: false,
+                        str,
+                        strThumb,
+                        type: strThumb.slice(15, strThumb.indexOf('db')),
+                      })
+                    }
+                    className={classes.addIcon}
+                    size='small'>
+                    <AddCircle />
+                  </IconButton>
+                }
+              />
+            </ImageListItem>
+          );
+        });
+  };
+
   return (
     <div>
       <Dialog fullScreen open onClose={handleClose}>
         <DialogTitle>
+          <Button onClick={handleClose}>Close</Button>
           <BottomNavigation value={navigation} onChange={(event, newValue) => setNavigation(newValue)} showLabels>
             <BottomNavigationAction label='Meal' icon={<Fastfood />} />
             <BottomNavigationAction label='Drinks' icon={<LocalBar />} />
@@ -90,6 +143,19 @@ export default function MenuDialog(props) {
           </div>
         </DialogTitle>
         <DialogContent>
+          <TextField
+            fullWidth
+            className={classes.textField}
+            variant='outlined'
+            onChange={debouncedHandle300}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position='start'>
+                  <Search />
+                </InputAdornment>
+              ),
+            }}
+          />
           <div className={classes.rootImageList}>
             <div>
               <ImageList
@@ -97,40 +163,7 @@ export default function MenuDialog(props) {
                 gap={5}
                 rowHeight={180}
                 className={classes.imageList}>
-                {content.length > 0 &&
-                  content.map((e) => {
-                    const str = e.strMeal || e.strDrink;
-                    const strThumb = e.strMealThumb || e.strDrinkThumb;
-                    return (
-                      <ImageListItem key={str + strThumb} className={classes.image}>
-                        <img src={strThumb} alt={str} />
-                        <ImageListItemBar
-                          title={
-                            <Typography variant='caption' align='center'>
-                              {str}
-                            </Typography>
-                          }
-                          className={classes.title}
-                          actionIcon={
-                            <IconButton
-                              onClick={() =>
-                                addItem({
-                                  completed: false,
-                                  canceled: false,
-                                  str,
-                                  strThumb,
-                                  type: strThumb.slice(15, strThumb.indexOf('db')),
-                                })
-                              }
-                              className={classes.addIcon}
-                              size='small'>
-                              <AddCircle />
-                            </IconButton>
-                          }
-                        />
-                      </ImageListItem>
-                    );
-                  })}
+                {renderContent()}
               </ImageList>
             </div>
             <div className={classes.orderWrap}>
@@ -153,11 +186,7 @@ export default function MenuDialog(props) {
                       </ListItemAvatar>
                       <ListItemText>{item.str}</ListItemText>
                       <ListItemSecondaryAction>
-                        <IconButton
-                          size='small'
-                          onClick={() => {
-                            setOrders(orders.filter((e, i) => index !== i));
-                          }}>
+                        <IconButton size='small' onClick={() => setOrders(orders.filter((e, i) => index !== i))}>
                           <RemoveCircle />
                         </IconButton>
                       </ListItemSecondaryAction>

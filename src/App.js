@@ -46,7 +46,7 @@ export default function App() {
         .finally(() => setUser(current));
     });
     return listener;
-  }, []);
+  }, []); // eslint-disable-line
 
   return (
     <UserContext.Provider value={user}>
