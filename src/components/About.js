@@ -69,13 +69,12 @@ export default function About() {
           </Typography>
         </div>
         <Typography variant='subtitle1' className={classes.white}>
-          Our hotel is renovated in 2018. Our hotel with a concentrated flavor of Yerevan and a combination of the best European services.
-          The hotel is located in the extended center of Yerevan. Our hotel is a 10-minute walk and a 5-minute drive from the city center.
-          From the hotel to the airport takes 20 minutes by car/taxi.The hotel is located in an unbeatable location, next to the Church of
-          SurbSarkis and the house-Museum of Sergei Parajanov. The arrangement of hotel rooms, the quiet location and surrounding greenery
-          provide utmost atmosphere for our guests.A big outdoor swimming pool provides a very comfortable place to relax and escape hot
-          weather. There is an open-air café. Highly qualified staff and a perfect service system will ensure your pleasant stay at the
-          'Our' hotel.
+          Our hotel is renovated in 2018. The hotel with a concentrated flavor of Yerevan and a combination of the best European services.
+          The hotel is located in the extended center of Yerevan. It is a 10-minute walk and a 5-minute drive from the city center. From the
+          hotel to the airport takes 20 minutes by car/taxi.The hotel is located in an unbeatable location, next to the Church of SurbSarkis
+          and the house-Museum of Sergei Parajanov. The arrangement of hotel rooms, the quiet location and surrounding greenery provide
+          utmost atmosphere for our guests.A big outdoor swimming pool provides a very comfortable place to relax and escape hot weather.
+          There is an open-air café. Highly qualified staff and a perfect service system will ensure your pleasant stay at the hotel.
         </Typography>
         <Card className={classes.card} ref={refDeluxe}>
           <Typography paragraph variant='h4'>
